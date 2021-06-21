@@ -1,4 +1,17 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# package lock files
+package-lock.json
+*.lock
+
+#.vscode notes and keys
+.vscode
+
+#google spreadsheet api credentials
+credentials.json
+configs/*
+
+# keep the folder for the record
+!.gitkeep
 
 # dependencies
 /node_modules
@@ -10,7 +23,7 @@
 
 # production
 /build
-
+/dist
 # misc
 .DS_Store
 .env.local
