@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Select from '../../components/Select';
 import Input from '../../components/Input';
+import Header from '../../components/Header';
 import api from '../../services/api';
 
 import './home.css'
@@ -13,9 +14,8 @@ export default class Home extends Component {
             { value: 2, label: 'Resistencia' },
             { value: 3, label: 'Posadas' }
         ],
+        loadingLogIn: false,
         users: [],
-        headerId: "",
-        titleId: "login-title",
         userId: '',
         password: '',
         sucursal: '',
@@ -35,7 +35,7 @@ export default class Home extends Component {
             });
         } catch (error) {
             this.setState({
-                error: error.response.data.error
+                error: error.response !== undefined ? error.response.data.error : "Error no identificado al cargar datos"
             });
         }
     };
@@ -50,6 +50,7 @@ export default class Home extends Component {
                 cordy,
                 cordx
             });
+            this.setState({loadingLogIn: true});
             await api.post('/login', {
                 userId,
                 password,
@@ -57,36 +58,20 @@ export default class Home extends Component {
                 cordy,
                 cordx
             });
-
-            // redirect now
+            this.setState({loadingLogIn: false});
             
+            // redirect now
+            this.props.history.push('/preventista');
         } catch (error) {
             this.setState({
-                error: error.response.data.error
+                error: error.response !== undefined ? error.response.data.error : "Error no identificado al hacer el login",
+                loadingLogIn: false
             });
         }
     };
 
     // call axios get the supervisores data
     componentDidMount() {
-        window.addEventListener('scroll', () => {
-            const distanceY = window.pageYOffset || document.documentElement.scrollTop;
-            const shrinkOn = "16";
-            console.log(distanceY)
-            //Now In the condition change the state to smaller so if the condition is true it will change to smaller otherwise to default state
-            if (distanceY > shrinkOn) {
-                this.setState({
-                    headerId: "header-smaller",
-                    titleId: "login-title-smaller"
-                });
-            } else {
-                this.setState({
-                    headerId: "",
-                    titleId: "login-title"
-                });
-            }
-        });
-
         if (!("geolocation" in navigator)) {
             this.setState({
                 error: 'Geolocalización no activada'
@@ -106,10 +91,7 @@ export default class Home extends Component {
     render() {
         return (
             <div className="login-wrap">
-                <header id={this.state.headerId}>
-                    <h1 id={this.state.titleId}>Formularios de Supervision</h1>
-                </header>
-
+                <Header />
                 <main>
                     {/* value and label */}
                     <Select options={this.state.users} label="Supervisor" name="supervisor" id="supervisor" onChange={e => this.setState({ userId: e.target.value })} />
@@ -120,7 +102,14 @@ export default class Home extends Component {
                             {this.state.error}
                         </div>
                     :null}   
-                    <button onClick={this.handleLogin} id="login-button" className="btn btn-primary">LogIn</button>
+                    <button disabled={this.state.loadingLogIn} onClick={this.handleLogin} id="login-button" className="btn btn-primary">
+                            {this.state.loadingLogIn
+                            ?
+                                <i className="fas fa-circle-notch fa-spin"></i>
+                            :
+                                <>LogIn</>
+                            }
+                    </button>
                 </main>
             </div>
         );

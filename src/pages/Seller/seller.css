@@ -1,5 +1,5 @@
 
-.login-wrap {
+.seller-wrap {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -8,7 +8,7 @@
     justify-content: center;
 }
 
-.login-wrap main {
+.seller-wrap main {
     background: #FFF;
     width: 95%;
     max-width: 54rem;
@@ -20,14 +20,8 @@
     padding: 1.6rem;
 }
 
-#login-button {
-    width: 50%;
-    align-self: center;
-}
-
-
 @media(max-width: 350px) {
-    .login-wrap main {
+    .seller-wrap main {
         margin-top: 20%;
     }
 }
