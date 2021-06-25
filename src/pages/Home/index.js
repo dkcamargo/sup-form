@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Select from "../../components/Select";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
@@ -134,7 +134,7 @@ export default class Home extends Component {
             className="btn btn-primary"
           >
             {this.state.loadingLogIn ? (
-              <i className="fas fa-circle-notch fa-spin"></i>
+              <AiOutlineLoading3Quarters className="icon-spin" />
             ) : (
               <>LogIn</>
             )}
