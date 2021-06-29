@@ -12,6 +12,7 @@ export default class Seller extends Component {
   state = {
     selectedSeller: "",
     selectedRoute: "",
+    evaluationType: "",
     selectedSellerRoutes: [],
     sellers: [
       { value: "1", label: "Facundo Regalado" },
@@ -22,12 +23,10 @@ export default class Seller extends Component {
   };
 
   renderError = (errorMessage) => {
-    this.setState({error: errorMessage});
+    this.setState({ error: errorMessage });
     setTimeout(() => {
-        this.setState({error: ""});
-      },
-       1500
-    );
+      this.setState({ error: "" });
+    }, 1500);
   };
 
   handleSellerSelection = (selectedSellerValue) => {
@@ -52,15 +51,20 @@ export default class Seller extends Component {
     this.setState({
       selectedSellerRoutes: routes[selectedSellerValue]
     });
-  }
+  };
 
   handleSellerSubmit = async (event) => {
-    return this.props.history.push('/relevamiento/1');
+    const { evaluationType } = this.state;
+    if (evaluationType === "coaching") {
+      return this.props.history.push("/coaching/1");
+    } else if (evaluationType === "survey") {
+      return this.props.history.push("/relevamiento/1");
+    }
     // test empty
     // eslint-disable-next-line
     const { selectedSeller, selectedRoute } = this.state;
-    if(selectedSeller === '' || selectedRoute === '') {
-      this.renderError('Tenés que elegir alguna opción')
+    if (selectedSeller === "" || selectedRoute === "") {
+      this.renderError("Tenés que elegir alguna opción");
     }
   };
 
@@ -91,6 +95,40 @@ export default class Seller extends Component {
             id="ruta"
             onChange={(e) => this.setState({ selectedRoute: e.target.value })}
           />
+
+          <div className="evaluation-type">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="evaluation-type"
+                id="survey"
+                value="survey"
+                onChange={(e) =>
+                  this.setState({ evaluationType: e.target.value })
+                }
+              />
+              <label class="form-check-label" for="relevamiento">
+                Relevamiento
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="evaluation-type"
+                id="coaching"
+                value="coaching"
+                onChange={(e) =>
+                  this.setState({ evaluationType: e.target.value })
+                }
+              />
+              <label class="form-check-label" for="coaching">
+                Coaching
+              </label>
+            </div>
+          </div>
+
           {this.state.error !== "" ? (
             <div className="alert alert-danger" role="alert">
               {this.state.error}
@@ -103,6 +141,19 @@ export default class Seller extends Component {
             className="btn btn-primary  btn-lg"
           >
             Empezar
+          </button>
+          <div className="or">
+            <hr />
+            <p>o entonces</p>
+            <hr />
+          </div>
+          <button
+            disabled={this.state.loadingLogIn}
+            onClick={this.handleSellerSubmit}
+            id="login-button"
+            className="btn btn-secondary  btn-lg"
+          >
+            Continuar
           </button>
         </main>
       </div>

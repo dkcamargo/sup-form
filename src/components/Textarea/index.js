@@ -1,17 +1,14 @@
-import React from 'react';
+import React from "react";
 
-
-const Textarea = ({
-    label,
-    name,
-    ...rest
-}) => {
+const Textarea = ({ label, name, ...rest }) => {
   return (
     <div className="textarea-block">
-        <label htmlFor={name}>{label}</label>
-        <textarea id={name} {...rest}/>
+      <label style={{ marginBottom: "0.8rem" }} htmlFor={name}>
+        {label}
+      </label>
+      <textarea id={name} {...rest} />
     </div>
   );
-}
+};
 
 export default Textarea;

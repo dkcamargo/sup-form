@@ -1,17 +1,20 @@
-import React from 'react';
+import React from "react";
 
-
-const Input = ({
-    label,
-    name,
-    ...rest
-}) => {
+const Input = ({ label, name, ...rest }) => {
   return (
     <div className="form-group">
-        <label htmlFor={name}>{label}</label>
-        <input className="form-control" style={{minHeight: '3rem'}} type="text" id={name} {...rest}/>
+      <label style={{ marginBottom: "0.8rem" }} htmlFor={name}>
+        {label}
+      </label>
+      <input
+        className="form-control"
+        style={{ minHeight: "3rem" }}
+        type="text"
+        id={name}
+        {...rest}
+      />
     </div>
   );
-}
+};
 
 export default Input;

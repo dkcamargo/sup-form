@@ -20,7 +20,7 @@
 }
 
 .seller-wrap h2 {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
 }
 
@@ -33,6 +33,25 @@
   height: 1px;
 }
 
+.seller-wrap .evaluation-type {
+  align-self: center;
+  margin: 1.2rem 0;
+}
+
+.seller-wrap .or {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seller-wrap .or p {
+  white-space: nowrap;
+  margin: 0 0.8rem;
+}
+
+.seller-wrap .or hr {
+  background: #000;
+}
 @media (max-width: 350px) {
   .seller-wrap main {
     margin-top: min(12.8rem, 20%);
