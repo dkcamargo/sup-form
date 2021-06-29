@@ -9,7 +9,7 @@ export default class Header extends Component {
 
     componentDidMount() {
         window.addEventListener('scroll', () => {
-            const distanceY = window.pageYOffset || document.documentElement.scrollTop;
+            const distanceY = window.pageYOffset ;
             const shrinkOn = "16";
             console.log(distanceY)
             //Now In the condition change the state to smaller so if the condition is true it will change to smaller otherwise to default state

@@ -6,7 +6,7 @@ header {
     justify-content: center;
     font-family: 'Raleway', sans-serif;
     color: #FFF;
-    padding-block: 0.8rem;
+    padding: 0 0.8rem;
     position: fixed; /* Fixed position - sit on top of the page */
     top: 0;
 }

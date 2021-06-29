@@ -5,6 +5,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition: 2s;
 }
 
 .login-wrap main {
@@ -17,6 +18,20 @@
   /* padding-block: 1.6rem;
     padding-inline: 1.2rem; */
   padding: 1.6rem;
+}
+
+.login-wrap h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 3.6rem;
+}
+
+.login-wrao hr {
+  color: #d5d5d8;
+  border-radius: 1px;
+  justify-self: center;
+  align-self: center;
+  width: 95%;
+  height: 1px;
 }
 
 #login-button {

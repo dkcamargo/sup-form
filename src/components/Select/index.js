@@ -6,7 +6,7 @@ const Select = ({ label, name, options, loadOption, ...rest }) => {
       <label htmlFor={name} style={{ marginLeft: "0.4rem" }}>
         {label}
       </label>
-      <select className="form-control" id={name} {...rest}>
+      <select className="form-control" style={{minHeight: '3rem'}} id={name} {...rest}>
         <option value="0" hidden>
           Elegí una opción
         </option>

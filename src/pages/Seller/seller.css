@@ -19,6 +19,20 @@
   padding: 1.6rem;
 }
 
+.seller-wrap h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 3.6rem;
+}
+
+.seller-wrap hr {
+  color: #d5d5d8;
+  border-radius: 1px;
+  justify-self: center;
+  align-self: center;
+  width: 95%;
+  height: 1px;
+}
+
 @media (max-width: 350px) {
   .seller-wrap main {
     margin-top: min(12.8rem, 20%);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Select from "../../components/Select";
+import Auth from "../../components/Auth";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
 import api from "../../services/api";
@@ -10,16 +11,26 @@ import "./seller.css";
 export default class Seller extends Component {
   state = {
     selectedSeller: "",
-    selectedSellerRoutes: [],
     selectedRoute: "",
+    selectedSellerRoutes: [],
     sellers: [
       { value: "1", label: "Facundo Regalado" },
       { value: "2", label: "Gabriel Gomez" },
       { value: "3", label: "Belén Escalante" }
-    ]
+    ],
+    error: ""
   };
 
-  handleSellerSelection(selectedSellerValue) {
+  renderError = (errorMessage) => {
+    this.setState({error: errorMessage});
+    setTimeout(() => {
+        this.setState({error: ""});
+      },
+       1500
+    );
+  };
+
+  handleSellerSelection = (selectedSellerValue) => {
     // get the routes from api
     const routes = {
       "1": [
@@ -43,11 +54,24 @@ export default class Seller extends Component {
     });
   }
 
+  handleSellerSubmit = async (event) => {
+    return this.props.history.push('/relevamiento/1');
+    // test empty
+    // eslint-disable-next-line
+    const { selectedSeller, selectedRoute } = this.state;
+    if(selectedSeller === '' || selectedRoute === '') {
+      this.renderError('Tenés que elegir alguna opción')
+    }
+  };
+
   render() {
     return (
       <div className="seller-wrap">
+        {/* <Auth /> */}
         <Header />
         <main>
+          <h2>Elección de Ruta</h2>
+          <hr />
           <Select
             options={this.state.sellers}
             loadOption="Cargando"
@@ -67,11 +91,16 @@ export default class Seller extends Component {
             id="ruta"
             onChange={(e) => this.setState({ selectedRoute: e.target.value })}
           />
+          {this.state.error !== "" ? (
+            <div className="alert alert-danger" role="alert">
+              {this.state.error}
+            </div>
+          ) : null}
           <button
             disabled={this.state.loadingLogIn}
-            onClick={this.handleLogin}
+            onClick={this.handleSellerSubmit}
             id="login-button"
-            className="btn btn-primary"
+            className="btn btn-primary  btn-lg"
           >
             Empezar
           </button>

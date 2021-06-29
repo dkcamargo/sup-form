@@ -24,6 +24,15 @@ export default class Home extends Component {
     cordx: 0.0
   };
 
+  renderError = (errorMessage) => {
+    this.setState({error: errorMessage});
+    setTimeout(() => {
+        this.setState({error: ""});
+      },
+       2500
+    );
+  };
+
   getOpttions = async () => {
     try {
       const response = await api.get("/users");
@@ -34,18 +43,22 @@ export default class Home extends Component {
         })
       });
     } catch (error) {
-      this.setState({
-        error:
-          error.response !== undefined
-            ? error.response.data.error
-            : "Error no identificado al cargar datos"
-      });
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al cargar datos"
+      );
     }
   };
 
   handleLogin = async () => {
+    return this.props.history.push("/preventista");
+  // eslint-disable-next-line
+    const { userId, password, sucursal, cordy, cordx } = this.state;
+      if(userId === '' || password === ''|| sucursal === '') {
+        return this.renderError('No podés dejar los campos vacios!')
+      }
     try {
-      const { userId, password, sucursal, cordy, cordx } = this.state;
       console.log({
         userId,
         password,
@@ -62,15 +75,17 @@ export default class Home extends Component {
         cordx
       });
       this.setState({ loadingLogIn: false });
-
+      //load session cookie
+      window.localStorage.setItem('logged', true);
       // redirect now
       this.props.history.push("/preventista");
     } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al hacer el LogIn"
+      );
       this.setState({
-        error:
-          error.response !== undefined
-            ? error.response.data.error
-            : "Error no identificado al hacer el login",
         loadingLogIn: false
       });
     }
@@ -79,9 +94,7 @@ export default class Home extends Component {
   // call axios get the supervisores data
   componentDidMount() {
     if (!("geolocation" in navigator)) {
-      this.setState({
-        error: "Geolocalización no activada"
-      });
+      this.renderError('Geolocalización no activada');
     }
 
     navigator.geolocation.getCurrentPosition((position) => {
@@ -99,7 +112,8 @@ export default class Home extends Component {
       <div className="login-wrap">
         <Header />
         <main>
-          {/* value and label */}
+          <h2>LogIn</h2>
+          <hr />
           <Select
             options={this.state.users}
             loadOption="Cargando"
@@ -131,7 +145,7 @@ export default class Home extends Component {
             disabled={this.state.loadingLogIn}
             onClick={this.handleLogin}
             id="login-button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-lg"
           >
             {this.state.loadingLogIn ? (
               <AiOutlineLoading3Quarters className="icon-spin" />
