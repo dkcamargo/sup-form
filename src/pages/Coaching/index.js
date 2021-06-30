@@ -6,7 +6,7 @@ import Input from "../../components/Input";
 import Header from "../../components/Header";
 import api from "../../services/api";
 
-import "./survey.css";
+import "./coaching.css";
 
 export default class Survey extends Component {
   state = {
@@ -24,7 +24,7 @@ export default class Survey extends Component {
   render() {
     const { clientCountage } = this.state;
     return (
-      <div className="survey-wrap">
+      <div className="coaching-wrap">
         <Header />
         {/* <Auth /> */}
         <main id="main">

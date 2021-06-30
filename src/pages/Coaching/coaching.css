@@ -1,4 +1,4 @@
-.survey-wrap {
+.coaching-wrap {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -8,7 +8,7 @@
   overflow-y: scroll;
 }
 
-.survey-wrap main {
+.coaching-wrap main {
   background: #fff;
   width: 95%;
   max-width: 54rem;
@@ -19,16 +19,16 @@
   margin-bottom: 8rem;
 }
 
-.survey-wrap main > * {
+.coaching-wrap main > * {
   margin: 0.8rem 1.6rem;
 }
 
-.survey-wrap h2 {
+.coaching-wrap h2 {
   font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
 }
 
-.survey-wrap h2 strong {
+.coaching-wrap h2 strong {
   font: normal 4.8rem "Roboto Mono", sans-serif;
 }
 
@@ -58,7 +58,7 @@
   font-size: 3.6rem;
 }
 
-.survey-wrap hr {
+.coaching-wrap hr {
   color: #d5d5d8;
   border-radius: 1px;
   justify-self: center;
@@ -68,13 +68,13 @@
 }
 
 /* @media (max-width: 350px) {
-  .survey-wrap main {
+  .coaching-wrap main {
     margin-top: 40rem;
   }
 } */
 
 @media (max-width: 350px) {
-  .survey-wrap h2,
+  .coaching-wrap h2,
   h2 strong {
     font-size: 2.8rem;
   }

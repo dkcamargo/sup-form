@@ -1,0 +1,40 @@
+.continue-wrap {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.continue-wrap main {
+  background: #fff;
+  width: 95%;
+  max-width: 54rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  /* padding-block: 1.6rem;
+    padding-inline: 1.2rem; */
+  padding: 1.6rem;
+}
+
+.continue-wrap h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.6rem;
+}
+
+.continue-wrap hr {
+  color: #d5d5d8;
+  border-radius: 1px;
+  justify-self: center;
+  align-self: center;
+  width: 95%;
+  height: 1px;
+}
+
+@media (max-width: 350px) {
+  .continue-wrap main {
+    margin-top: min(12.8rem, 20%);
+  }
+}

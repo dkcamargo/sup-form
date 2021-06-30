@@ -74,6 +74,7 @@ export default class Seller extends Component {
         {/* <Auth /> */}
         <Header />
         <main>
+          {// add a logOut button => clear localStorage}
           <h2>Elección de Ruta</h2>
           <hr />
           <Select
