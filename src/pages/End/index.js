@@ -6,44 +6,48 @@ import Input from "../../components/Input";
 import Header from "../../components/Header";
 import api from "../../services/api";
 
-import "./seller.css";
+import "./end.css";
 
 export default class Seller extends Component {
-  state = {
-  };
+  state = {};
 
-  handleSameRoute(e) {
+  handleSameRoute = (e) => {
+    console.log(this.props);
     return;
   };
 
   handleBackToRouteSelection(e) {
     return;
-  };
+  }
 
-  // recovers actual client from localStorage if 30(survey) or 12(coaching) 
+  // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // coditional rendering the NextClient btn
   render() {
     return (
-      <div className="seller-wrap">
+      <div className="end-wrap">
         {/* <Auth /> */}
         <Header />
         <main>
-          <h2>Elección de Ruta</h2>
+          <h2>Fin</h2>
           <hr />
+          <div className="button wrap"
           <button
+            disabled={this.state.loadingLogIn}
             onClick={this.handleSameRoute}
-            id="login-button"
-            className="btn btn-secondary  btn-lg"
+            id="begin-button"
+            className="btn btn-primary  btn-lg submit-button"
           >
-            Proximo Cliente
+            Proximo cliente
           </button>
           <button
+            disabled={this.state.loadingLogIn}
             onClick={this.handleBackToRouteSelection}
-            id="login-button"
-            className="btn btn-secondary  btn-lg"
+            id="continue-button"
+            className="btn btn-danger  btn-lg submit-button"
           >
-            Vovler a Selección de Ruta
+            Selección de ruta
           </button>
+          </div>
         </main>
       </div>
     );

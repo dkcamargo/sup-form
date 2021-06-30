@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import Select from "../../components/Select";
@@ -14,12 +15,17 @@ export default class Survey extends Component {
     clientId: 0
   };
 
-  handleSurveySubmit() {
-    return;
-  }
+  handleSurveySubmit = () => {
+    /**
+     * send data to api and
+     * save number seller route and type in localstorage
+     * redirect to end pass the type by query
+     */
+    return this.props.history.push("/fin", this.props.location.state);
+  };
 
   componentDidMount() {
-    this.setState({ clientCountage: this.props.match.params.id });
+    this.setState({ clientCountage: this.props.location.state.clientCountage });
   }
   render() {
     const { clientCountage } = this.state;
@@ -43,9 +49,9 @@ export default class Survey extends Component {
 
           <button
             disabled={this.state.loadingLogIn}
-            onClick={this.handleSendSrvey}
-            id="submit-button"
-            className="btn btn-primary btn-lg"
+            onClick={this.handleSurveySubmit}
+            id="survey-button"
+            className="btn btn-primary btn-lg submit-button"
           >
             {this.state.loadingLogIn ? (
               <AiOutlineLoading3Quarters className="icon-spin" />

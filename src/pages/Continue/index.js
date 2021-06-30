@@ -6,14 +6,15 @@ import Input from "../../components/Input";
 import Header from "../../components/Header";
 import api from "../../services/api";
 
-import "./seller.css";
+import "./continue.css";
 
 export default class Seller extends Component {
   state = {
+    error: ""
   };
 
-  handleGoBack() {
-    return;
+  handleGoBack = () => {
+    return this.props.history.push("/preventista");
   };
   // render a list of buttons redirect to the selected route in the number it lasted
   render() {
@@ -34,7 +35,7 @@ export default class Seller extends Component {
           <button
             onClick={this.handleGoBack}
             id="back-button"
-            className="btn btn-danger  btn-lg"
+            className="btn btn-danger  btn-lg submit-button"
           >
             Volver
           </button>

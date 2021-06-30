@@ -25,20 +25,6 @@
   font-size: 3.6rem;
 }
 
-.login-wrao hr {
-  color: #d5d5d8;
-  border-radius: 1px;
-  justify-self: center;
-  align-self: center;
-  width: 95%;
-  height: 1px;
-}
-
-#login-button {
-  width: 50%;
-  align-self: center;
-}
-
 @media (max-width: 350px) {
   .login-wrap main {
     margin-top: min(12.8rem, 20%);

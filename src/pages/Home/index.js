@@ -25,12 +25,10 @@ export default class Home extends Component {
   };
 
   renderError = (errorMessage) => {
-    this.setState({error: errorMessage});
+    this.setState({ error: errorMessage });
     setTimeout(() => {
-        this.setState({error: ""});
-      },
-       2500
-    );
+      this.setState({ error: "" });
+    }, 2500);
   };
 
   getOpttions = async () => {
@@ -53,11 +51,11 @@ export default class Home extends Component {
 
   handleLogin = async () => {
     return this.props.history.push("/preventista");
-  // eslint-disable-next-line
+    // eslint-disable-next-line
     const { userId, password, sucursal, cordy, cordx } = this.state;
-      if(userId === '' || password === ''|| sucursal === '') {
-        return this.renderError('No podés dejar los campos vacios!')
-      }
+    if (userId === "" || password === "" || sucursal === "") {
+      return this.renderError("No podés dejar los campos vacios!");
+    }
     try {
       console.log({
         userId,
@@ -76,7 +74,7 @@ export default class Home extends Component {
       });
       this.setState({ loadingLogIn: false });
       //load session cookie
-      window.localStorage.setItem('logged', true);
+      window.localStorage.setItem("logged", true);
       // redirect now
       this.props.history.push("/preventista");
     } catch (error) {
@@ -94,7 +92,7 @@ export default class Home extends Component {
   // call axios get the supervisores data
   componentDidMount() {
     if (!("geolocation" in navigator)) {
-      this.renderError('Geolocalización no activada');
+      this.renderError("Geolocalización no activada");
     }
 
     navigator.geolocation.getCurrentPosition((position) => {
@@ -145,7 +143,7 @@ export default class Home extends Component {
             disabled={this.state.loadingLogIn}
             onClick={this.handleLogin}
             id="login-button"
-            className="btn btn-primary btn-lg"
+            className="btn btn-primary btn-lg submit-button"
           >
             {this.state.loadingLogIn ? (
               <AiOutlineLoading3Quarters className="icon-spin" />

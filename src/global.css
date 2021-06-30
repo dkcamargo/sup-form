@@ -63,6 +63,20 @@ main > * {
   }
 }
 
+.submit-button {
+  width: 50%;
+  align-self: center;
+}
+
+hr {
+  color: #000;
+  border-radius: 1px;
+  justify-self: center;
+  align-self: center;
+  width: 95%;
+  height: 1px;
+}
+
 @media (min-width: 780px) {
   :root {
     font-size: 62.5%;

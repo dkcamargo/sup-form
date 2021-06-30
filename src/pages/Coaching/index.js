@@ -44,8 +44,8 @@ export default class Survey extends Component {
           <button
             disabled={this.state.loadingLogIn}
             onClick={this.handleSendSrvey}
-            id="submit-button"
-            className="btn btn-primary btn-lg"
+            id="coaching-button"
+            className="btn btn-primary btn-lg submit-button"
           >
             {this.state.loadingLogIn ? (
               <AiOutlineLoading3Quarters className="icon-spin" />

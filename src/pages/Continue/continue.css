@@ -24,15 +24,6 @@
   font-size: 3.6rem;
 }
 
-.continue-wrap hr {
-  color: #d5d5d8;
-  border-radius: 1px;
-  justify-self: center;
-  align-self: center;
-  width: 95%;
-  height: 1px;
-}
-
 @media (max-width: 350px) {
   .continue-wrap main {
     margin-top: min(12.8rem, 20%);
