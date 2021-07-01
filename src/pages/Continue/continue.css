@@ -24,8 +24,11 @@
   font-size: 3.6rem;
 }
 
-@media (max-width: 350px) {
+@media (max-width: 391px) {
+  .continue-wrap {
+    justify-content: flex-start;
+  }
   .continue-wrap main {
-    margin-top: min(12.8rem, 20%);
+    margin-top: 12.8rem;
   }
 }

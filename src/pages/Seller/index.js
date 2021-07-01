@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import api from "../../services/api";
 
 import "./seller.css";
+import { AiFillWindows } from "react-icons/ai";
 
 export default class Seller extends Component {
   state = {
@@ -65,7 +66,7 @@ export default class Seller extends Component {
     }
 
     return this.props.history.push(`/${evaluationType}`, {
-      formType: "survey",
+      formType: evaluationType,
       clientCountage: 1,
       seller: this.state.selectedSeller,
       route: this.state.selectedRoute
@@ -75,7 +76,10 @@ export default class Seller extends Component {
   handleContinue = () => {
     return this.props.history.push("/continuar");
   };
-
+  handleLogOut = () => {
+    window.localStorage.clear();
+    return this.props.history.push("/");
+  };
   render() {
     return (
       <div className="seller-wrap">
@@ -144,10 +148,9 @@ export default class Seller extends Component {
             </div>
           ) : null}
           <button
-            disabled={this.state.loadingLogIn}
             onClick={this.handleSellerSubmit}
             id="begin-button"
-            className="btn btn-primary  btn-lg submit-button"
+            className="btn btn-primary btn-lg submit-button seller-button"
           >
             Empezar
           </button>
@@ -157,12 +160,18 @@ export default class Seller extends Component {
             <hr />
           </div>
           <button
-            disabled={this.state.loadingLogIn}
             onClick={this.handleContinue}
             id="continue-button"
-            className="btn btn-secondary  btn-lg submit-button"
+            className="btn btn-secondary btn-lg submit-button seller-button"
           >
             Continuar
+          </button>
+          <button
+            onClick={this.handleLogOut}
+            id="continue-button"
+            className="btn btn-danger btn-lg submit-button seller-button"
+          >
+            Log Out
           </button>
         </main>
       </div>

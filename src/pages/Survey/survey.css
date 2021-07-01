@@ -1,11 +1,10 @@
 .survey-wrap {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  overflow-y: scroll;
+  justify-content: center;
 }
 
 .survey-wrap main {
@@ -15,8 +14,8 @@
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  margin-top: 19.2rem;
   margin-bottom: 8rem;
+  padding: 1.6rem;
 }
 
 .survey-wrap main > * {
@@ -58,22 +57,7 @@
   font-size: 3.6rem;
 }
 
-.survey-wrap hr {
-  color: #d5d5d8;
-  border-radius: 1px;
-  justify-self: center;
-  align-self: center;
-  width: 95%;
-  height: 1px;
-}
-
-/* @media (max-width: 350px) {
-  .survey-wrap main {
-    margin-top: 40rem;
-  }
-} */
-
-@media (max-width: 350px) {
+@media (max-width: 391px) {
   .survey-wrap h2,
   h2 strong {
     font-size: 2.8rem;
