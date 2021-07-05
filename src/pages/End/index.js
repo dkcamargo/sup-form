@@ -14,7 +14,6 @@ export default class Seller extends Component {
   };
 
   handleSameRoute = (e) => {
-    console.log(this.props);
     return this.props.history.push(`/${this.props.location.state.formType}`, {
       formType: this.props.location.state.formType,
       clientCountage: Number(this.props.location.state.clientCountage) + 1,
@@ -29,53 +28,79 @@ export default class Seller extends Component {
 
   saveProgressInLocalStorage = () => {
     const {
+      id,
       seller,
       route,
       clientCountage,
       formType
     } = this.props.location.state;
-    console.log(seller);
-    console.log(route);
-    console.log(clientCountage);
-    console.log(formType);
-    window.localStorage.removeItem(`${seller}-${route}`);
+    console.log(this.props.location.state);
+
+    // get progresses from lstorage
+    const storedProgresses = JSON.parse(
+      window.localStorage.getItem("progress")
+    );
+    let progresses;
+    if (storedProgresses !== null) {
+      /**
+       * TODO
+       */
+      // if its not empty try to find this progress
+      const thisProgress = storedProgresses.find((progress) => progress === id);
+      // if found pop it from the array => add or addn't is decided after if it is or isn't the last one
+      // set the progresses without the old data
+      progresses = storedProgresses;
+    } else {
+      progresses = [];
+    }
+
+    // if its survey change the limit of submitions to 30
     if (formType === "relevamiento") {
+      // if its not the max number of submitions
       if (clientCountage !== 2) {
-        window.localStorage.setItem(
-          `${formType}-${seller}-${route}`,
-          this.props.location.state
-        );
+        // append the new data to the progresses array of data
+        progresses.push({
+          id,
+          formType,
+          clientCountage,
+          route,
+          seller
+        });
+        // set it all to the local storage
+        window.localStorage.setItem("progress", JSON.stringify(progresses));
       }
     } else if (formType === "coaching") {
+      //if its coaching limit of sumitions 12
       if (clientCountage !== 12) {
-        window.localStorage.setItem(
-          `${formType}-${seller}-${route}`,
-          this.props.location.state
-        );
+        /**
+         * TODO
+         */
+        return;
       }
     }
-
-    for (let i = 0; i < window.localStorage.length; i++) {
-      console.log(window.localStorage.getItem(window.localStorage.key(i)));
-    }
-
     return;
   };
 
   componentDidMount() {
-    const { clientCountage, formType } = this.props.location.state;
+    try {
+      const { clientCountage, formType } = this.props.location.state;
 
-    if (formType === "relevamiento") {
-      if (clientCountage === 2) {
-        this.setState({ lastOne: true });
+      if (formType === "relevamiento") {
+        if (clientCountage === 2) {
+          this.setState({ lastOne: true });
+        }
+      } else if (formType === "coaching") {
+        if (clientCountage === 12) {
+          this.setState({ lastOne: true });
+        }
       }
-    } else if (formType === "coaching") {
-      if (clientCountage === 12) {
-        this.setState({ lastOne: true });
-      }
+
+      this.saveProgressInLocalStorage();
+    } catch (error) {
+      console.log(error);
+      this.props.history.push("/preventista");
+      return;
     }
-
-    this.saveProgressInLocalStorage();
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // coditional rendering the NextClient btn

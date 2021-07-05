@@ -65,17 +65,35 @@ export default class Seller extends Component {
       return this.renderError("Tenés que elegir alguna opción");
     }
 
+    /***
+     * CONFIGURING PROGRESSES ID AUTOINCREMENT
+     */
+    //get the progresses array form lstorage
+    const progress = JSON.parse(window.localStorage.getItem("progress"));
+    // by default is one
+    var thisProgressId = 1;
+    // if lstorage is not empty get the destinated id for this submition=> id+1
+    if (progress !== null) {
+      // get last progress saved id
+      const lastId = progress[progress.length - 1].id;
+      // set new progress id to autoincrement
+      thisProgressId = lastId + 1;
+    }
+
+    // redirect and send variables to the next page
     return this.props.history.push(`/${evaluationType}`, {
       formType: evaluationType,
       clientCountage: 1,
       seller: this.state.selectedSeller,
-      route: this.state.selectedRoute
+      route: this.state.selectedRoute,
+      id: thisProgressId
     });
   };
 
   handleContinue = () => {
     return this.props.history.push("/continuar");
   };
+
   handleLogOut = () => {
     window.localStorage.clear();
     return this.props.history.push("/");
