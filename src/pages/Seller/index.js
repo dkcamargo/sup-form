@@ -2,12 +2,11 @@ import React, { Component } from "react";
 
 import Select from "../../components/Select";
 import Auth from "../../components/Auth";
-import Input from "../../components/Input";
+import FormContainer from "../../components/FormContainer";
 import Header from "../../components/Header";
 import api from "../../services/api";
 
 import "./seller.css";
-import { AiFillWindows } from "react-icons/ai";
 
 export default class Seller extends Component {
   state = {
@@ -69,13 +68,15 @@ export default class Seller extends Component {
      * CONFIGURING PROGRESSES ID AUTOINCREMENT
      */
     //get the progresses array form lstorage
-    const progress = JSON.parse(window.localStorage.getItem("progress"));
+    const storedProgresses = JSON.parse(window.localStorage.getItem("progress"));
+    console.log(storedProgresses)
     // by default is one
     var thisProgressId = 1;
     // if lstorage is not empty get the destinated id for this submition=> id+1
-    if (progress !== null) {
+    if (storedProgresses !== null && storedProgresses.length !== 0) {
+      console.log("ALLORA")
       // get last progress saved id
-      const lastId = progress[progress.length - 1].id;
+      const lastId = storedProgresses[storedProgresses.length - 1].id;
       // set new progress id to autoincrement
       thisProgressId = lastId + 1;
     }
@@ -100,99 +101,101 @@ export default class Seller extends Component {
   };
   render() {
     return (
-      <div className="seller-wrap">
-        {/* <Auth /> */}
+      <>
         <Header />
-        <main>
-          {/*  */}
-          <h2>Elección de Ruta</h2>
-          <hr />
-          <Select
-            options={this.state.sellers}
-            loadOption="Cargando"
-            label="Vendedor a Supervisar"
-            name="prevetista"
-            id="prevetista"
-            onChange={(e) => {
-              this.setState({ selectedSeller: e.target.value });
-              this.handleSellerSelection(e.target.value);
-            }}
-          />
-          <Select
-            options={this.state.selectedSellerRoutes}
-            loadOption="Primero elegí un preventista"
-            label="Ruta a supervisionar"
-            name="ruta"
-            id="ruta"
-            onChange={(e) => this.setState({ selectedRoute: e.target.value })}
-          />
-
-          <div className="evaluation-type">
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="evaluation-type"
-                id="survey"
-                value="relevamiento"
-                onChange={(e) =>
-                  this.setState({ evaluationType: e.target.value })
-                }
-              />
-              <label className="form-check-label" htmlFor="relevamiento">
-                Relevamiento
-              </label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="evaluation-type"
-                id="coaching"
-                value="coaching"
-                onChange={(e) =>
-                  this.setState({ evaluationType: e.target.value })
-                }
-              />
-              <label className="form-check-label" htmlFor="coaching">
-                Coaching
-              </label>
-            </div>
-          </div>
-
-          {this.state.error !== "" ? (
-            <div className="alert alert-danger" role="alert">
-              {this.state.error}
-            </div>
-          ) : null}
-          <button
-            onClick={this.handleSellerSubmit}
-            id="begin-button"
-            className="btn btn-primary btn-lg submit-button seller-button"
-          >
-            Empezar
-          </button>
-          <div className="or">
+        {/* <Auth /> */}  
+        <FormContainer>       
+          <main id="seller">
+            <h2>Elección de Ruta</h2>
             <hr />
-            <p>o entonces</p>
-            <hr />
-          </div>
-          <button
-            onClick={this.handleContinue}
-            id="continue-button"
-            className="btn btn-secondary btn-lg submit-button seller-button"
-          >
-            Continuar
-          </button>
-          <button
-            onClick={this.handleLogOut}
-            id="continue-button"
-            className="btn btn-danger btn-lg submit-button seller-button"
-          >
-            Log Out
-          </button>
-        </main>
-      </div>
+            <Select
+              options={this.state.sellers}
+              loadOption="Cargando"
+              label="Vendedor a Supervisar"
+              name="prevetista"
+              id="prevetista"
+              onChange={(e) => {
+                this.setState({ selectedSeller: e.target.value });
+                this.handleSellerSelection(e.target.value);
+              }}
+            />
+            <Select
+              options={this.state.selectedSellerRoutes}
+              loadOption="Primero elegí un preventista"
+              label="Ruta a supervisionar"
+              name="ruta"
+              id="ruta"
+              onChange={(e) => this.setState({ selectedRoute: e.target.value })}
+            />
+
+            <div className="evaluation-type">
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="evaluation-type"
+                  id="survey-radio"
+                  value="relevamiento"
+                  onChange={(e) =>
+                    this.setState({ evaluationType: e.target.value })
+                  }
+                />
+                <label className="form-check-label" htmlFor="relevamiento">
+                  Relevamiento
+                </label>
+              </div>
+              <div className="form-check form-check-inline">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="evaluation-type"
+                  id="coaching-radio"
+                  value="coaching"
+                  onChange={(e) =>
+                    this.setState({ evaluationType: e.target.value })
+                  }
+                />
+                <label className="form-check-label" htmlFor="coaching">
+                  Coaching
+                </label>
+              </div>
+            </div>
+
+            {this.state.error !== "" ? (
+              <div className="alert alert-danger" role="alert">
+                {this.state.error}
+              </div>
+            ) : null}
+            <button
+              onClick={this.handleSellerSubmit}
+              id="begin-button"
+              className="btn btn-primary btn-lg submit-button seller-button"
+            >
+              Empezar
+            </button>
+            <div className="or">
+              <hr />
+              <p>o entonces</p>
+              <hr />
+            </div>
+            <button
+              onClick={this.handleContinue}
+              id="continue-button"
+              className="btn btn-secondary btn-lg submit-button seller-button"
+            >
+              Continuar
+            </button>
+            <button
+              onClick={this.handleLogOut}
+              id="continue-button"
+              className="btn btn-danger btn-lg submit-button seller-button"
+            >
+              Log Out
+            </button>
+          </main>
+
+        </FormContainer>
+      </>
     );
   }
 }

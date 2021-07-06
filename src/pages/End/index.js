@@ -1,28 +1,37 @@
 import React, { Component } from "react";
 
-import Select from "../../components/Select";
-import Auth from "../../components/Auth";
-import Input from "../../components/Input";
 import Header from "../../components/Header";
-import api from "../../services/api";
+import FormContainer from "../../components/FormContainer";
 
 import "./end.css";
 
 export default class Seller extends Component {
   state = {
-    lastOne: false
+    lastOne: false,
+    surveyClientCountage: 30,
+    coachingClientCountage: 12
   };
 
   handleSameRoute = (e) => {
-    return this.props.history.push(`/${this.props.location.state.formType}`, {
-      formType: this.props.location.state.formType,
-      clientCountage: Number(this.props.location.state.clientCountage) + 1,
-      seller: this.props.location.state.selectedSeller,
-      route: this.props.location.state.selectedRoute
+    // send all info as parameters creating a recurtion
+    const {
+      formType,
+      clientCountage,
+      seller,
+      route,
+      id
+    } = this.props.location.state;
+    return this.props.history.push(`/${formType}`, {
+      formType: formType,
+      clientCountage: Number(clientCountage) + 1,
+      seller: seller,
+      route: route,
+      id: id
     });
   };
 
   handleBackToRouteSelection = (e) => {
+    // go back to the seller selection leaving the lstorage as it is
     return this.props.history.push("/preventista");
   };
 
@@ -34,30 +43,30 @@ export default class Seller extends Component {
       clientCountage,
       formType
     } = this.props.location.state;
+    
+    console.log("/fin location.state:")
     console.log(this.props.location.state);
 
     // get progresses from lstorage
     const storedProgresses = JSON.parse(
       window.localStorage.getItem("progress")
     );
-    let progresses;
-    if (storedProgresses !== null) {
-      /**
-       * TODO
-       */
+
+    var progresses;
+    if (storedProgresses !== null && storedProgresses.length !== 0) {
       // if its not empty try to find this progress
-      const thisProgress = storedProgresses.find((progress) => progress === id);
-      // if found pop it from the array => add or addn't is decided after if it is or isn't the last one
+      const popedProgress = storedProgresses.filter(progress => (progress.id !== id));      
       // set the progresses without the old data
-      progresses = storedProgresses;
+      progresses = popedProgress;
     } else {
       progresses = [];
     }
 
+    const { surveyClientCountage, coachingClientCountage} = this.state;
     // if its survey change the limit of submitions to 30
     if (formType === "relevamiento") {
       // if its not the max number of submitions
-      if (clientCountage !== 2) {
+      if (clientCountage !== surveyClientCountage) {
         // append the new data to the progresses array of data
         progresses.push({
           id,
@@ -66,36 +75,45 @@ export default class Seller extends Component {
           route,
           seller
         });
-        // set it all to the local storage
-        window.localStorage.setItem("progress", JSON.stringify(progresses));
-      }
-    } else if (formType === "coaching") {
-      //if its coaching limit of sumitions 12
-      if (clientCountage !== 12) {
-        /**
-         * TODO
-         */
-        return;
       }
     }
+    if (formType === "coaching") {
+      console.log('here1')
+      //if its coaching limit of sumitions 12
+      if (clientCountage !== coachingClientCountage) {
+        console.log('here2')
+        // append the new data to the progresses array of data
+        progresses.push({
+          id,
+          formType,
+          clientCountage,
+          route,
+          seller
+        });
+      }
+    }
+    // set it all to the local storage
+    window.localStorage.setItem("progress", JSON.stringify(progresses));
     return;
   };
 
   componentDidMount() {
     try {
       const { clientCountage, formType } = this.props.location.state;
+      const { surveyClientCountage, coachingClientCountage} = this.state;
 
       if (formType === "relevamiento") {
-        if (clientCountage === 2) {
+        if (clientCountage === surveyClientCountage) {
           this.setState({ lastOne: true });
         }
       } else if (formType === "coaching") {
-        if (clientCountage === 12) {
+        if (clientCountage === coachingClientCountage) {
           this.setState({ lastOne: true });
         }
       }
 
       this.saveProgressInLocalStorage();
+
     } catch (error) {
       console.log(error);
       this.props.history.push("/preventista");
@@ -103,48 +121,50 @@ export default class Seller extends Component {
     }
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
-  // coditional rendering the NextClient btn
+  // conditional rendering the NextClient btn
   render() {
     const { lastOne } = this.state;
     return (
-      <div className="end-wrap">
-        {/* <Auth /> */}
+      <>
         <Header />
-        <main>
-          <h2>Fin</h2>
-          <hr />
-          <div
-            className={
-              !lastOne
-                ? "end-button-wrap"
-                : "end-button-wrap end-button-wrap-ended"
-            }
-          >
-            <button
-              disabled={this.state.loadingLogIn}
-              onClick={this.handleBackToRouteSelection}
-              id="continue-button"
+        {/* <Auth /> */}
+        <FormContainer>
+          <main className="end">
+            <h2>Fin</h2>
+            <hr />
+            <div
               className={
                 !lastOne
-                  ? "btn btn-danger  btn-lg end-button"
-                  : "btn btn-danger  btn-lg end-button end-button-ended"
+                  ? "end-button-wrap"
+                  : "end-button-wrap end-button-wrap-ended"
               }
             >
-              Selección de ruta
-            </button>
-            {!lastOne ? (
               <button
                 disabled={this.state.loadingLogIn}
-                onClick={this.handleSameRoute}
-                id="begin-button"
-                className="btn btn-primary  btn-lg end-button"
+                onClick={this.handleBackToRouteSelection}
+                id="continue-button"
+                className={
+                  !lastOne
+                    ? "btn btn-danger  btn-lg end-button"
+                    : "btn btn-danger  btn-lg end-button end-button-ended"
+                }
               >
-                Proximo cliente
+                Selección de ruta
               </button>
-            ) : null}
-          </div>
-        </main>
-      </div>
+              {!lastOne ? (
+                <button
+                  disabled={this.state.loadingLogIn}
+                  onClick={this.handleSameRoute}
+                  id="begin-button"
+                  className="btn btn-primary  btn-lg end-button"
+                >
+                  Proximo cliente
+                </button>
+              ) : null}
+            </div>
+          </main>
+        </FormContainer>
+      </>
     );
   }
 }

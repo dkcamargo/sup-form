@@ -1,13 +1,4 @@
-.continue-wrap {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.continue-wrap main {
+.continue {
   background: #fff;
   width: 95%;
   max-width: 54rem;
@@ -19,16 +10,17 @@
   padding: 1.6rem;
 }
 
-.continue-wrap h2 {
+.continue h2 {
   font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
 }
 
-@media (max-width: 391px) {
-  .continue-wrap {
-    justify-content: flex-start;
-  }
-  .continue-wrap main {
-    margin-top: 12.8rem;
-  }
+.progresses > * {
+  margin-bottom: 1.2rem;
+}
+
+.progresses strong {
+  display: inline;
+  font-size: 2.2rem;
+  font-weight: normal;
 }

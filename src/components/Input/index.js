@@ -3,7 +3,7 @@ import React from "react";
 const Input = ({ label, name, ...rest }) => {
   return (
     <div className="form-group">
-      <label style={{ marginBottom: "0.8rem" }} htmlFor={name}>
+      <label style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }} htmlFor={name}>
         {label}
       </label>
       <input

@@ -3,6 +3,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Select from "../../components/Select";
 import Input from "../../components/Input";
 import Header from "../../components/Header";
+import FormContainer from "../../components/FormContainer";
 import api from "../../services/api";
 
 import "./home.css";
@@ -107,52 +108,54 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="login-wrap">
+      <>
         <Header />
-        <main>
-          <h2>LogIn</h2>
-          <hr />
-          <Select
-            options={this.state.users}
-            loadOption="Cargando"
-            label="Supervisor"
-            name="supervisor"
-            id="supervisor"
-            onChange={(e) => this.setState({ userId: e.target.value })}
-          />
-          <Input
-            label="Contraseña"
-            type="password"
-            name="password"
-            id="password"
-            onChange={(e) => this.setState({ password: e.target.value })}
-          />
-          <Select
-            options={this.state.sucursales}
-            label="Sucursal"
-            name="sucursal"
-            id="sucursal"
-            onChange={(e) => this.setState({ sucursal: e.target.value })}
-          />
-          {this.state.error !== "" ? (
-            <div className="alert alert-danger" role="alert">
-              {this.state.error}
-            </div>
-          ) : null}
-          <button
-            disabled={this.state.loadingLogIn}
-            onClick={this.handleLogin}
-            id="login-button"
-            className="btn btn-primary btn-lg submit-button"
-          >
-            {this.state.loadingLogIn ? (
-              <AiOutlineLoading3Quarters className="icon-spin" />
-            ) : (
-              <>LogIn</>
-            )}
-          </button>
-        </main>
-      </div>
+        <FormContainer>
+          <main className="home">
+            <h2>LogIn</h2>
+            <hr />
+            <Select
+              options={this.state.users}
+              loadOption="Cargando"
+              label="Supervisor"
+              name="supervisor"
+              id="supervisor"
+              onChange={(e) => this.setState({ userId: e.target.value })}
+            />
+            <Input
+              label="Contraseña"
+              type="password"
+              name="password"
+              id="password"
+              onChange={(e) => this.setState({ password: e.target.value })}
+            />
+            <Select
+              options={this.state.sucursales}
+              label="Sucursal"
+              name="sucursal"
+              id="sucursal"
+              onChange={(e) => this.setState({ sucursal: e.target.value })}
+            />
+            {this.state.error !== "" ? (
+              <div className="alert alert-danger" role="alert">
+                {this.state.error}
+              </div>
+            ) : null}
+            <button
+              disabled={this.state.loadingLogIn}
+              onClick={this.handleLogin}
+              id="login-button"
+              className="btn btn-primary btn-lg submit-button"
+            >
+              {this.state.loadingLogIn ? (
+                <AiOutlineLoading3Quarters className="icon-spin" />
+              ) : (
+                <>LogIn</>
+              )}
+            </button>
+          </main>
+        </FormContainer>
+      </>
     );
   }
 }

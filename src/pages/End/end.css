@@ -1,13 +1,4 @@
-.end-wrap {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.end-wrap main {
+.end {
   background: #fff;
   width: 95%;
   max-width: 54rem;
@@ -15,25 +6,26 @@
   flex-direction: column;
   border-radius: 4px;
   padding: 1.6rem;
+  margin-top: 25vh;
 }
 
-.end-wrap h2 {
+.end h2 {
   font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
 }
 
-.end-wrap .evaluation-type {
+.end .evaluation-type {
   align-self: center;
   margin: 1.2rem 0;
 }
 
-.end-wrap .or {
+.end .or {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.end-wrap .or p {
+.end .or p {
   white-space: nowrap;
   margin: 0 0.8rem;
 }
@@ -51,14 +43,4 @@
 }
 .end-button-ended {
   width: 80%;
-}
-
-@media (max-width: 391px) {
-  .end-wrap {
-    justify-content: flex-start;
-  }
-
-  .end-wrap main {
-    margin-top: 12.8rem;
-  }
 }

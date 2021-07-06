@@ -6,9 +6,9 @@
   justify-content: center;
   font-family: "Raleway", sans-serif;
   color: #fff;
-  padding: 0.8rem 0;
   position: fixed; /* Fixed position - sit on top of the page */
   top: 0;
+  z-index: 6;
 }
 
 .header h1 {
