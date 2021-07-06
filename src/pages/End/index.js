@@ -135,7 +135,6 @@ export default class Seller extends Component {
         <FormContainer>
           <main className="end">
             <h2>Fin</h2>
-            <hr />
             <div
               className={
                 !lastOne
