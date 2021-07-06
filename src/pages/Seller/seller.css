@@ -19,6 +19,8 @@
 }
 
 #seller .or {
+  align-self: center;
+  width: 95%;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,0 +1,16 @@
+.hole-width-switch {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2.4rem 0;
+  padding: 0 0.8rem;
+}
+.hole-width-switch .hole-width-input {
+  width: 4rem;
+  height: 2.4rem;
+}
+
+.hole-width-switch .hole-width-label {
+  font-size: 2.4rem;
+}

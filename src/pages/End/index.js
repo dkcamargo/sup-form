@@ -19,14 +19,16 @@ export default class Seller extends Component {
       clientCountage,
       seller,
       route,
-      id
+      id,
+      sellerName
     } = this.props.location.state;
     return this.props.history.push(`/${formType}`, {
       formType: formType,
       clientCountage: Number(clientCountage) + 1,
       seller: seller,
       route: route,
-      id: id
+      id: id,
+      sellerName: sellerName
     });
   };
 
@@ -41,10 +43,11 @@ export default class Seller extends Component {
       seller,
       route,
       clientCountage,
-      formType
+      formType,
+      sellerName
     } = this.props.location.state;
-    
-    console.log("/fin location.state:")
+
+    console.log("/fin location.state:");
     console.log(this.props.location.state);
 
     // get progresses from lstorage
@@ -55,14 +58,16 @@ export default class Seller extends Component {
     var progresses;
     if (storedProgresses !== null && storedProgresses.length !== 0) {
       // if its not empty try to find this progress
-      const popedProgress = storedProgresses.filter(progress => (progress.id !== id));      
+      const popedProgress = storedProgresses.filter(
+        (progress) => progress.id !== id
+      );
       // set the progresses without the old data
       progresses = popedProgress;
     } else {
       progresses = [];
     }
 
-    const { surveyClientCountage, coachingClientCountage} = this.state;
+    const { surveyClientCountage, coachingClientCountage } = this.state;
     // if its survey change the limit of submitions to 30
     if (formType === "relevamiento") {
       // if its not the max number of submitions
@@ -73,22 +78,22 @@ export default class Seller extends Component {
           formType,
           clientCountage,
           route,
-          seller
+          seller,
+          sellerName
         });
       }
     }
     if (formType === "coaching") {
-      console.log('here1')
       //if its coaching limit of sumitions 12
       if (clientCountage !== coachingClientCountage) {
-        console.log('here2')
         // append the new data to the progresses array of data
         progresses.push({
           id,
           formType,
           clientCountage,
           route,
-          seller
+          seller,
+          sellerName
         });
       }
     }
@@ -100,7 +105,7 @@ export default class Seller extends Component {
   componentDidMount() {
     try {
       const { clientCountage, formType } = this.props.location.state;
-      const { surveyClientCountage, coachingClientCountage} = this.state;
+      const { surveyClientCountage, coachingClientCountage } = this.state;
 
       if (formType === "relevamiento") {
         if (clientCountage === surveyClientCountage) {
@@ -113,7 +118,6 @@ export default class Seller extends Component {
       }
 
       this.saveProgressInLocalStorage();
-
     } catch (error) {
       console.log(error);
       this.props.history.push("/preventista");

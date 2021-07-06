@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import Select from "../../components/Select";
 import Input from "../../components/Input";
+import Switch from "../../components/Switch";
+import SwitchToggleButtons from "../../components/SwitchToggleButtons";
 import Header from "../../components/Header";
-import api from "../../services/api";
+// import api from "../../services/api";
 
 import "./survey.css";
 import FormContainer from "../../components/FormContainer";
@@ -12,8 +13,11 @@ import FormContainer from "../../components/FormContainer";
 export default class Survey extends Component {
   state = {
     clientCountage: 0,
+    loadingSend: false,
     clientId: 0,
-    loadingSend: false
+    clientName: "",
+    clientVisited: "",
+    numberOfVisits: ""
   };
 
   handleSurveySubmit = () => {
@@ -26,7 +30,13 @@ export default class Survey extends Component {
   };
 
   componentDidMount() {
-    this.setState({ clientCountage: this.props.location.state.clientCountage });
+    try {
+      this.setState({
+        clientCountage: this.props.location.state.clientCountage
+      });
+    } catch (error) {
+      this.props.history.push("/preventista");
+    }
   }
   render() {
     const { clientCountage } = this.state;
@@ -47,6 +57,31 @@ export default class Survey extends Component {
               name="client-id"
               id="client-id"
               onChange={(e) => this.setState({ clientId: e.target.value })}
+            />
+            <Input
+              label="Nombre del Cliente"
+              type="text"
+              name="client-name"
+              id="client-name"
+              onChange={(e) => this.setState({ clientName: e.target.value })}
+            />
+            <Switch
+              label="Cliente con Visita?"
+              name="client-visited"
+              id="client-visited"
+              onChange={(e) => this.setState({ clientVisited: e.target.value })}
+            />
+            <SwitchToggleButtons
+              label="Frecuencia de visita:"
+              options={[
+                { label: "menos de una vez", value: "-1", name: "less-one" },
+                { label: "una vez", value: "1", name: "once" },
+                { label: "dos veces", value: "2", name: "twice" }
+              ]}
+              name="times-visited"
+              onChange={(e) =>
+                this.setState({ numberOfVisits: e.target.value })
+              }
             />
 
             <button

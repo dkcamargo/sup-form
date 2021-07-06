@@ -68,13 +68,15 @@ export default class Seller extends Component {
      * CONFIGURING PROGRESSES ID AUTOINCREMENT
      */
     //get the progresses array form lstorage
-    const storedProgresses = JSON.parse(window.localStorage.getItem("progress"));
-    console.log(storedProgresses)
+    const storedProgresses = JSON.parse(
+      window.localStorage.getItem("progress")
+    );
+    console.log(storedProgresses);
     // by default is one
     var thisProgressId = 1;
     // if lstorage is not empty get the destinated id for this submition=> id+1
     if (storedProgresses !== null && storedProgresses.length !== 0) {
-      console.log("ALLORA")
+      console.log("ALLORA");
       // get last progress saved id
       const lastId = storedProgresses[storedProgresses.length - 1].id;
       // set new progress id to autoincrement
@@ -86,6 +88,9 @@ export default class Seller extends Component {
       formType: evaluationType,
       clientCountage: 1,
       seller: this.state.selectedSeller,
+      sellerName: this.state.sellers.find(
+        (seller) => seller.value === this.state.selectedSeller
+      ).label,
       route: this.state.selectedRoute,
       id: thisProgressId
     });
@@ -103,8 +108,8 @@ export default class Seller extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}  
-        <FormContainer>       
+        {/* <Auth /> */}
+        <FormContainer>
           <main id="seller">
             <h2>Elección de Ruta</h2>
             <hr />
@@ -193,7 +198,6 @@ export default class Seller extends Component {
               Log Out
             </button>
           </main>
-
         </FormContainer>
       </>
     );
