@@ -16,11 +16,13 @@ export default class FormContainer extends Component {
   componentDidMount() {
     // when the page resize change the margin top for being always above the header
     window.addEventListener("resize", this.resizeMarginTop);
+    window.addEventListener("scroll", this.resizeMarginTop);
     this.resizeMarginTop();
   }
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeMarginTop);
+    window.removeEventListener("scroll", this.resizeMarginTop);
   }
 
   render() {

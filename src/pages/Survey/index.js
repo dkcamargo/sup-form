@@ -4,6 +4,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Input from "../../components/Input";
 import Switch from "../../components/Switch";
 import SwitchToggleButtons from "../../components/SwitchToggleButtons";
+import TableCheckToggleButtons from "../../components/TableCheckToggleButtons";
 import Header from "../../components/Header";
 // import api from "../../services/api";
 
@@ -74,16 +75,42 @@ export default class Survey extends Component {
             <SwitchToggleButtons
               label="Frecuencia de visita:"
               options={[
-                { label: "menos de una vez", value: "-1", name: "less-one" },
-                { label: "una vez", value: "1", name: "once" },
-                { label: "dos veces", value: "2", name: "twice" }
+                { label: "Menos de una vez", value: "-1", name: "less-one" },
+                { label: "Una vez", value: "1", name: "once" },
+                { label: "Dos veces", value: "2", name: "twice" }
               ]}
               name="times-visited"
               onChange={(e) =>
                 this.setState({ numberOfVisits: e.target.value })
               }
             />
+            <TableCheckToggleButtons
+              label="Relevamiento productos REDCOM:"
+              columns={[
+                {
+                  label: "Sin Producto",
+                  value: "sin-producto",
+                  name: "no-product"
+                },
+                { label: "Gondola", value: "gondola", name: "gondola" },
+                { label: "Afiche", value: "afiche", name: "poster" },
+                {
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
+                }
+              ]}
+              lines={[
+                { name: "secco", label: "Secco" },
+                { name: "sdlp", label: "Siera de Los Padres" },
+                { name: "nevares", label: "Nevares" },
+                { name: "vitalissima", label: "Vitalissima" },
+                { name: "quento", label: "Snacks Quento" },
+                { name: "linea", label: "Linea Papel" }
+              ]}
+            />
 
+            <hr />
             <button
               disabled={this.state.loadingSend}
               onClick={this.handleSurveySubmit}
