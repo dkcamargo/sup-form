@@ -16,3 +16,18 @@
 .inline-switch-toggle .inline-switch-toggle-buttons {
   width: 100%;
 }
+
+@media (max-width: 305px) {
+  .inline-switch-toggle .inline-switch-toggle-buttons {
+    flex-direction: column;
+    border-radius: 3px;
+    overflow-y: hidden;
+    padding-left: 1px;
+  }
+  .inline-switch-toggle .inline-switch-toggle-buttons label {
+    border-radius: 0;
+  }
+  .inline-switch-toggle .inline-switch-toggle-buttons label:not(:last-child) {
+    border-bottom: 0;
+  }
+}

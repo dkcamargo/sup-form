@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./table_check_toggle_buttons.css";
+import { ButtonGroupLabel } from "./table_check_toggle_buttons.js";
+
 const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
   // const handleInputChange = (event) => {
   //   console.log(event);
@@ -7,6 +9,12 @@ const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
   //   console.log(thisInput);
   //   thisInput.setAttribute("checked", !thisInput.checked);
   // };
+  const [checked, setChecked] = useState(false);
+  const handleCheck = (e) => {
+    console.log(!document.getElementById(e.target.htmlFor).checked);
+    setChecked(!document.getElementById(e.target.htmlFor).checked);
+  };
+
   return (
     <div className="form-check inline-table-check-toggle">
       <label
@@ -30,36 +38,38 @@ const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
             >
               {line.label}
             </label>
-            <hr />
-            {columns.map((column) => (
-              <div
-                className="form-check inline-table-check-toggle-buttons"
-                role="group"
-                aria-label="Basic table check toggle button group"
-                style={{ marginBottom: "1.2rem" }}
-                id={`${line.name}-buttons`}
-              >
-                <label
-                  className="form-check-label table-check"
-                  for={`${line.name}-${column.name}`}
-                  onFocus={(e) => e.target.blur()}
-                  onTouchEnd={(e) => {
-                    e.target.blur();
-                  }}
-                >
-                  {column.label}
-                </label>
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id={`${line.name}-${column.name}`}
-                  autocomplete="off"
-                  {...rest}
-                  value={column.value}
-                  onFocus={(e) => e.target.blur()}
-                />
-              </div>
-            ))}
+            <div
+              className="btn-group inline-table-check-toggle-buttons"
+              role="group"
+              aria-label="Basic table check toggle button group"
+              style={{ marginBottom: "1.2rem" }}
+              id={`${line.name}-buttons`}
+            >
+              {columns.map((column) => (
+                <>
+                  <input
+                    type="checkbox"
+                    className="btn-check"
+                    id={`${line.name}-${column.name}`}
+                    autocomplete="off"
+                    {...rest}
+                    value={column.value}
+                    onFocus={(e) => e.target.blur()}
+                  />
+
+                  <ButtonGroupLabel
+                    as="label"
+                    onTouchEnd={handleCheck}
+                    checked={checked}
+                    className="btn btn-outline-primary table-check"
+                    htmlFor={`${line.name}-${column.name}`}
+                    onFocus={(e) => e.target.blur()}
+                  >
+                    {column.label}
+                  </ButtonGroupLabel>
+                </>
+              ))}
+            </div>
           </>
         ))}
       </div>

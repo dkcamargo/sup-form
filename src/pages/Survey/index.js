@@ -5,6 +5,7 @@ import Input from "../../components/Input";
 import Switch from "../../components/Switch";
 import SwitchToggleButtons from "../../components/SwitchToggleButtons";
 import TableCheckToggleButtons from "../../components/TableCheckToggleButtons";
+import TableSwitches from "../../components/TableSwitches";
 import Header from "../../components/Header";
 // import api from "../../services/api";
 
@@ -102,7 +103,20 @@ export default class Survey extends Component {
               ]}
               lines={[
                 { name: "secco", label: "Secco" },
-                { name: "sdlp", label: "Siera de Los Padres" },
+                { name: "sdlp", label: "Sierra de Los Padres" },
+                { name: "nevares", label: "Nevares" },
+                { name: "vitalissima", label: "Vitalissima" },
+                { name: "quento", label: "Snacks Quento" },
+                { name: "linea", label: "Linea Papel" }
+              ]}
+            />
+
+            <TableSwitches
+              name="exhibition"
+              label="Exhibición Marcas"
+              lines={[
+                { name: "secco", label: "Secco" },
+                { name: "sdlp", label: "Sierra de Los Padres" },
                 { name: "nevares", label: "Nevares" },
                 { name: "vitalissima", label: "Vitalissima" },
                 { name: "quento", label: "Snacks Quento" },
