@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import Input from "../../components/Input";
+import CheckInput from "../../components/CheckInput";
+import Textarea from "../../components/Textarea";
 import Switch from "../../components/Switch";
 import SwitchToggleButtons from "../../components/SwitchToggleButtons";
 import TableCheckToggleButtons from "../../components/TableCheckToggleButtons";
@@ -19,7 +21,8 @@ export default class Survey extends Component {
     clientId: 0,
     clientName: "",
     clientVisited: "",
-    numberOfVisits: ""
+    numberOfVisits: "",
+    logisticsProblems: ""
   };
 
   handleSurveySubmit = () => {
@@ -49,23 +52,23 @@ export default class Survey extends Component {
         <FormContainer>
           <main id="survey">
             <h2>
-              Cliente Numero: <strong>{clientCountage}</strong>
+              Cliente Numero <strong>{clientCountage}</strong>
             </h2>
             <hr />
-            <Input
-              label="Codigo del Cliente"
-              type="number"
-              pattern="\d*"
-              name="client-id"
-              id="client-id"
-              onChange={(e) => this.setState({ clientId: e.target.value })}
-            />
             <Input
               label="Nombre del Cliente"
               type="text"
               name="client-name"
               id="client-name"
               onChange={(e) => this.setState({ clientName: e.target.value })}
+            />
+            <CheckInput
+              label="Codigo del Cliente"
+              type="number"
+              pattern="\d*"
+              name="client-id"
+              id="client-id"
+              onChange={(e) => this.setState({ clientId: e.target.value })}
             />
             <Switch
               label="Cliente con Visita?"
@@ -76,9 +79,10 @@ export default class Survey extends Component {
             <SwitchToggleButtons
               label="Frecuencia de visita:"
               options={[
-                { label: "Menos de una vez", value: "-1", name: "less-one" },
+                { label: "Dos veces", value: "2", name: "twice" },
                 { label: "Una vez", value: "1", name: "once" },
-                { label: "Dos veces", value: "2", name: "twice" }
+                { label: "Menos de una vez", value: "-1", name: "less-one" },
+                { label: "Distancia", value: "-2", name: "distance" }
               ]}
               name="times-visited"
               onChange={(e) =>
@@ -113,7 +117,7 @@ export default class Survey extends Component {
 
             <TableSwitches
               name="exhibition"
-              label="Exhibición Marcas"
+              label="Exhibición Marcas:"
               lines={[
                 { name: "secco", label: "Secco" },
                 { name: "sdlp", label: "Sierra de Los Padres" },
@@ -124,7 +128,77 @@ export default class Survey extends Component {
               ]}
             />
 
-            <hr />
+            <TableCheckToggleButtons
+              label="Relevamiento Competencia Gaseosas:"
+              columns={[
+                {
+                  label: "Sin Producto",
+                  value: "sin-producto",
+                  name: "no-product"
+                },
+                { label: "Gondola", value: "gondola", name: "gondola" },
+                { label: "Afiche", value: "afiche", name: "poster" },
+                {
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
+                }
+              ]}
+              lines={[
+                { name: "cabalgata", label: "Cabalgata" },
+                { name: "manaos", label: "Manaos" },
+                { name: "caribe", label: "Caribe" },
+                { name: "cunnington", label: "Cunnington" },
+                { name: "axis", label: "Axis" }
+              ]}
+            />
+
+            <TableCheckToggleButtons
+              label="Relevamiento Competencia Gaseosas:"
+              columns={[
+                {
+                  label: "Sin Producto",
+                  value: "sin-producto",
+                  name: "no-product"
+                },
+                { label: "Gondola", value: "gondola", name: "gondola" },
+                { label: "Afiche", value: "afiche", name: "poster" },
+                {
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
+                }
+              ]}
+              lines={[
+                { name: "levite", label: "Levite" },
+                { name: "aquarius", label: "Aquarius" },
+                { name: "awafruit", label: "Awafruit" },
+                { name: "baggio-fresh", label: "Baggio Fresh" }
+              ]}
+            />
+            <Textarea label="Comentarios Generales:" name="general-comment" />
+            <Switch
+              label="Reclamos Logistica?"
+              name="logistics"
+              id="logistics"
+              value={true}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  this.setState({ logisticsProblems: true });
+                } else {
+                  this.setState({ logisticsProblems: false });
+                }
+              }}
+            />
+            {this.state.logisticsProblems ? (
+              <Textarea
+                label="Comentarios Logistica:"
+                name="logistics-comment"
+              />
+            ) : (
+              <></>
+            )}
+
             <button
               disabled={this.state.loadingSend}
               onClick={this.handleSurveySubmit}

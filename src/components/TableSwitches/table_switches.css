@@ -1,4 +1,14 @@
+.table-switches {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 2.4rem 0;
+  padding: 0 0.8rem;
+}
 .table-switches .table-switches-label {
+  align-self: flex-start;
   font-size: 2.4rem;
 }
 
