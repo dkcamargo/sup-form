@@ -68,21 +68,24 @@ export default class Survey extends Component {
               pattern="\d*"
               name="client-id"
               id="client-id"
+              info="Al desactivar se entiende que el cliente o no sabe el código o es un cliente nuevo."
               onChange={(e) => this.setState({ clientId: e.target.value })}
             />
             <Switch
               label="Cliente con Visita?"
               name="client-visited"
               id="client-visited"
-              onChange={(e) => this.setState({ clientVisited: e.target.value })}
+              onChange={(e) =>
+                this.setState({ clientVisited: e.target.checked })
+              }
             />
             <SwitchToggleButtons
               label="Frecuencia de visita:"
               options={[
                 { label: "Dos veces", value: "2", name: "twice" },
                 { label: "Una vez", value: "1", name: "once" },
-                { label: "Menos de una vez", value: "-1", name: "less-one" },
-                { label: "Distancia", value: "-2", name: "distance" }
+                { label: "No visita", value: "0", name: "no" },
+                { label: "Distancia", value: "-1", name: "distance" }
               ]}
               name="times-visited"
               onChange={(e) =>

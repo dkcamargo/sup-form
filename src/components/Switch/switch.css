@@ -13,4 +13,5 @@
 
 .hole-width-switch .hole-width-label {
   font-size: 2.4rem;
+  max-width: 75%;
 }

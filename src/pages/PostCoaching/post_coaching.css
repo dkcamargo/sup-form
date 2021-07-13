@@ -1,0 +1,34 @@
+#post-coaching {
+  background: #fff;
+  width: 95%;
+  max-width: 54rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  margin-bottom: 8rem;
+  padding: 1.6rem;
+}
+
+#post-coaching main > * {
+  margin: 0.8rem 1.6rem;
+}
+
+#post-coaching h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.6rem;
+}
+
+#post-coaching h2 strong {
+  font: normal 4.8rem "Roboto Mono", sans-serif;
+}
+
+#post-coaching .submit-button {
+  margin-top: 2.4rem;
+}
+
+@media (max-width: 391px) {
+  #post-coaching h2,
+  h2 strong {
+    font-size: 2.8rem;
+  }
+}

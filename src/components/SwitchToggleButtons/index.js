@@ -1,12 +1,12 @@
 import React from "react";
 import "./switch_toggle_buttons.css";
-const SwitchToggleButtons = ({ label, options, name, ...rest }) => {
+const SwitchToggleButtons = ({ label, options, labelStyle, name, ...rest }) => {
   return (
     <div className="form-check inline-switch-toggle">
       <label
         className="form-check-label inline-switch-toggle-label"
         htmlFor={name}
-        style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }}
+        style={labelStyle}
       >
         {label}
       </label>
@@ -15,18 +15,22 @@ const SwitchToggleButtons = ({ label, options, name, ...rest }) => {
         role="group"
         aria-label="Basic radio toggle button group"
       >
-        {options.map((option) => (
+        {options.map((option, index) => (
           <>
             <input
+              key={index}
               type="radio"
               className="btn-check"
               name={name}
               id={option.name}
-              autocomplete="off"
+              autoComplete="off"
               {...rest}
               value={option.value}
             />
-            <label className="btn btn-outline-primary btn-lg" for={option.name}>
+            <label
+              className="btn btn-outline-primary btn-lg"
+              htmlFor={option.name}
+            >
               {option.label}
             </label>
           </>

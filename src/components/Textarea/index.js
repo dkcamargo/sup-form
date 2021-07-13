@@ -3,7 +3,7 @@ import React from "react";
 const Textarea = ({ label, name, ...rest }) => {
   return (
     <div
-      className="input-group input-group-lg"
+      className="form-floating"
       style={{
         width: "95%",
         alignSelf: "center",
@@ -18,12 +18,14 @@ const Textarea = ({ label, name, ...rest }) => {
           color: "#000",
           minHeight: "4.2rem",
           height: "12.8rem",
-          borderColor: "#0d6efd77"
+          borderColor: "#0d6efd77",
+          paddingTop: "2.4rem"
         }}
         className="form-control"
         id={name}
         {...rest}
       />
+      <label for={name}>{label}</label>
     </div>
   );
 };

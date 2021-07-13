@@ -113,7 +113,26 @@ export default class Seller extends Component {
         }
       } else if (formType === "coaching") {
         if (clientCountage === coachingClientCountage) {
-          this.setState({ lastOne: true });
+          if (this.props.location.state.postCoaching) {
+            this.setState({ lastOne: true });
+          } else {
+            const {
+              formType,
+              seller,
+              route,
+              id,
+              sellerName
+            } = this.props.location.state;
+            return this.props.history.push(`/post-coaching`, {
+              formType: formType,
+              clientCountage: Number(coachingClientCountage),
+              seller: seller,
+              route: route,
+              id: id,
+              sellerName: sellerName,
+              postCoaching: true
+            });
+          }
         }
       }
 
@@ -148,8 +167,8 @@ export default class Seller extends Component {
                 id="continue-button"
                 className={
                   !lastOne
-                    ? "btn btn-danger  btn-lg end-button"
-                    : "btn btn-danger  btn-lg end-button end-button-ended"
+                    ? "btn btn-secondary  btn-lg end-button"
+                    : "btn btn-success  btn-lg end-button end-button-ended"
                 }
               >
                 Selección de ruta

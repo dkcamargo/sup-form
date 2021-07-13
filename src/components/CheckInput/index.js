@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CheckInput = ({ label, name, ...rest }) => {
+const CheckInput = ({ label, name, info, ...rest }) => {
   const [enabled, setEnabled] = useState(true);
   return (
     <div className="form-group">
@@ -10,7 +10,7 @@ const CheckInput = ({ label, name, ...rest }) => {
       >
         {label}
       </label>
-      <div class="input-group mb-3">
+      <div className="input-group mb-3">
         <input
           className="form-control"
           disabled={!enabled}
@@ -19,19 +19,31 @@ const CheckInput = ({ label, name, ...rest }) => {
           id={name}
           {...rest}
         />
-        <div class="input-group-text">
+        <div className="input-group-text">
           <input
-            class="form-check-input mt-0"
+            className="form-check-input mt-0"
             type="checkbox"
             value=""
             checked={enabled}
             aria-label="Checkbox for following text input"
             onChange={(e) => {
+              document.getElementById(name).value = "";
               setEnabled(e.target.checked);
             }}
           />
         </div>
       </div>
+      {!enabled && info ? (
+        <div
+          style={{ fontSize: "1.2rem" }}
+          className="alert alert-info"
+          role="alert"
+        >
+          {info}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
