@@ -13,8 +13,9 @@ const TableSwitches = ({ label, lines, name, ...rest }) => {
         {label}
       </label>
       <div className="table-switches-data" id={name}>
-        {lines.map((line) => (
+        {lines.map((line, index) => (
           <Switch
+            key={index}
             label={line.label}
             name={`${name}-${line.name}`}
             id={`${name}-${line.name}`}

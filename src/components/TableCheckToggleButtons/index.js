@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import "./table_check_toggle_buttons.css";
 import { ButtonGroupLabel } from "./table_check_toggle_buttons.js";
 
-const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
-  // const handleInputChange = (event) => {
-  //   console.log(event);
-  //   const thisInput = document.getElementById(event.target.id);
-  //   console.log(thisInput);
-  //   thisInput.setAttribute("checked", !thisInput.checked);
-  // };
+const TableCheckToggleButtons = ({
+  label,
+  columns,
+  lines,
+  name,
+  onChange,
+  ...rest
+}) => {
   const [checked, setChecked] = useState(false);
   const handleCheck = (e) => {
     console.log(!document.getElementById(e.target.htmlFor).checked);
@@ -25,8 +26,8 @@ const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
         {label}
       </label>
       <div className="table-check-table-data" id={name}>
-        {lines.map((line) => (
-          <>
+        {lines.map((line, index) => (
+          <Fragment key={index}>
             <label
               className="form-check-label inline-table-check-toggle-label"
               htmlFor={line.name}
@@ -45,16 +46,16 @@ const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
               style={{ marginBottom: "1.2rem" }}
               id={`${line.name}-buttons`}
             >
-              {columns.map((column) => (
-                <>
+              {columns.map((column, index) => (
+                <Fragment key={index}>
                   <input
                     type="checkbox"
                     className="btn-check"
                     id={`${line.name}-${column.name}`}
-                    autocomplete="off"
                     {...rest}
                     value={column.value}
                     onFocus={(e) => e.target.blur()}
+                    onChange={onChange}
                   />
 
                   <ButtonGroupLabel
@@ -67,10 +68,10 @@ const TableCheckToggleButtons = ({ label, columns, lines, name, ...rest }) => {
                   >
                     {column.label}
                   </ButtonGroupLabel>
-                </>
+                </Fragment>
               ))}
             </div>
-          </>
+          </Fragment>
         ))}
       </div>
     </div>

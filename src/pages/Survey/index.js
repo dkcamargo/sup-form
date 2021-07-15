@@ -21,8 +21,31 @@ export default class Survey extends Component {
     clientId: 0,
     clientName: "",
     clientVisited: "",
-    numberOfVisits: "",
-    logisticsProblems: ""
+    frequency: "",
+    logisticsProblems: "",
+    logisicProblemComment: ""
+  };
+
+  handleTableCheckSelect = () => {
+    const redcomProductsArray = [
+      ...document
+        .getElementById("survey-redcom-products")
+        .getElementsByTagName("input")
+    ];
+
+    console.log(redcomProductsArray);
+
+    redcomProductsArray.forEach(function (element, index, array) {
+      // console.log(`${element.id} ${element.checked}`);
+      if (element.checked) {
+        if (element.id.split("-")[1] === "gondola") {
+          console.log("test");
+          document
+            .getElementById(`${element.id.split("-")[0]}-no-product`)
+            .setAttribute("checked", true);
+        }
+      }
+    });
   };
 
   handleSurveySubmit = () => {
@@ -82,15 +105,15 @@ export default class Survey extends Component {
             <SwitchToggleButtons
               label="Frecuencia de visita:"
               options={[
-                { label: "Dos veces", value: "2", name: "twice" },
-                { label: "Una vez", value: "1", name: "once" },
-                { label: "No visita", value: "0", name: "no" },
-                { label: "Distancia", value: "-1", name: "distance" }
+                { label: "Dos veces", value: "twice", name: "twice" },
+                { label: "Una vez", value: "once", name: "once" },
+                { label: "No visita", value: "no", name: "no" },
+                { label: "Distancia", value: "distance", name: "distance" }
               ]}
               name="times-visited"
-              onChange={(e) =>
-                this.setState({ numberOfVisits: e.target.value })
-              }
+              onChange={(e) => {
+                this.setState({ frequency: e.target.value });
+              }}
             />
             <TableCheckToggleButtons
               label="Relevamiento productos REDCOM:"
@@ -116,6 +139,8 @@ export default class Survey extends Component {
                 { name: "quento", label: "Snacks Quento" },
                 { name: "linea", label: "Linea Papel" }
               ]}
+              onChange={this.handleTableCheckSelect}
+              name="survey-redcom-products"
             />
 
             <TableSwitches
@@ -186,17 +211,16 @@ export default class Survey extends Component {
               id="logistics"
               value={true}
               onChange={(e) => {
-                if (e.target.checked) {
-                  this.setState({ logisticsProblems: true });
-                } else {
-                  this.setState({ logisticsProblems: false });
-                }
+                this.setState({ logisticsProblems: e.target.checked });
               }}
             />
             {this.state.logisticsProblems ? (
               <Textarea
                 label="Comentarios Logistica:"
                 name="logistics-comment"
+                onChange={(e) => {
+                  this.setState({ logisicProblemComment: e.target.value });
+                }}
               />
             ) : (
               <></>

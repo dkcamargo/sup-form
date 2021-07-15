@@ -25,7 +25,7 @@ const Textarea = ({ label, name, ...rest }) => {
         id={name}
         {...rest}
       />
-      <label for={name}>{label}</label>
+      <label htmlFor={name}>{label}</label>
     </div>
   );
 };

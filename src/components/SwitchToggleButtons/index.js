@@ -1,6 +1,13 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./switch_toggle_buttons.css";
-const SwitchToggleButtons = ({ label, options, labelStyle, name, ...rest }) => {
+const SwitchToggleButtons = ({
+  label,
+  options,
+  labelStyle,
+  onChange,
+  name,
+  ...rest
+}) => {
   return (
     <div className="form-check inline-switch-toggle">
       <label
@@ -16,14 +23,14 @@ const SwitchToggleButtons = ({ label, options, labelStyle, name, ...rest }) => {
         aria-label="Basic radio toggle button group"
       >
         {options.map((option, index) => (
-          <>
+          <Fragment key={index}>
             <input
-              key={index}
               type="radio"
               className="btn-check"
               name={name}
               id={option.name}
               autoComplete="off"
+              onChange={onChange}
               {...rest}
               value={option.value}
             />
@@ -33,7 +40,7 @@ const SwitchToggleButtons = ({ label, options, labelStyle, name, ...rest }) => {
             >
               {option.label}
             </label>
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
