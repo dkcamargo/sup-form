@@ -8,6 +8,7 @@ const TableCheckToggleButtons = ({
   lines,
   name,
   onChange,
+  disabled,
   ...rest
 }) => {
   const [checked, setChecked] = useState(false);
@@ -54,6 +55,7 @@ const TableCheckToggleButtons = ({
                     id={`${line.name}-${column.name}`}
                     {...rest}
                     value={column.value}
+                    disabled={disabled}
                     onFocus={(e) => e.target.blur()}
                     onChange={onChange}
                   />

@@ -26,26 +26,21 @@ export default class Survey extends Component {
     logisicProblemComment: ""
   };
 
-  handleTableCheckSelect = () => {
+  handleTableCheckSelect = (e) => {
     const redcomProductsArray = [
       ...document
         .getElementById("survey-redcom-products")
         .getElementsByTagName("input")
     ];
 
-    console.log(redcomProductsArray);
-
-    redcomProductsArray.forEach(function (element, index, array) {
-      // console.log(`${element.id} ${element.checked}`);
-      if (element.checked) {
-        if (element.id.split("-")[1] === "gondola") {
-          console.log("test");
-          document
-            .getElementById(`${element.id.split("-")[0]}-no-product`)
-            .setAttribute("checked", true);
-        }
-      }
-    });
+    if (e.target.id.split("-")[1] === "noproduct") {
+      document
+        .getElementById(`${e.target.id.split("-")[0]}-gondola`)
+        .setAttribute("disabled", e.target.checked);
+      document
+        .getElementById(`${e.target.id.split("-")[0]}-pricing`)
+        .setAttribute("disabled", e.target.checked);
+    }
   };
 
   handleSurveySubmit = () => {
@@ -121,14 +116,26 @@ export default class Survey extends Component {
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
-                  name: "no-product"
+                  name: "noproduct",
+                  disabled: "false"
                 },
-                { label: "Gondola", value: "gondola", name: "gondola" },
-                { label: "Afiche", value: "afiche", name: "poster" },
+                {
+                  label: "Gondola",
+                  value: "gondola",
+                  name: "gondola",
+                  disabled: "false"
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster",
+                  disabled: "false"
+                },
                 {
                   label: "Precificación",
                   value: "precificacion",
-                  name: "pricing"
+                  name: "pricing",
+                  disabled: "false"
                 }
               ]}
               lines={[
@@ -162,7 +169,7 @@ export default class Survey extends Component {
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
-                  name: "no-product"
+                  name: "noproduct"
                 },
                 { label: "Gondola", value: "gondola", name: "gondola" },
                 { label: "Afiche", value: "afiche", name: "poster" },
@@ -187,7 +194,7 @@ export default class Survey extends Component {
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
-                  name: "no-product"
+                  name: "noproduct"
                 },
                 { label: "Gondola", value: "gondola", name: "gondola" },
                 { label: "Afiche", value: "afiche", name: "poster" },

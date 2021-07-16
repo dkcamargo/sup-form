@@ -30,7 +30,7 @@ export default class Header extends Component {
   render() {
     return (
       <header id={this.state.headerId} className="header">
-        <h1 id={this.state.titleId}>Formularios de Supervision</h1>
+        <h1 id={this.state.titleId}>Formularios de Supervision Redcom</h1>
       </header>
     );
   }
