@@ -51,7 +51,7 @@ export default class Home extends Component {
   };
 
   handleLogin = async () => {
-    return this.props.history.push("/preventista");
+    // return this.props.history.push("/preventista");
     // eslint-disable-next-line
     const { userId, password, sucursal, cordy, cordx } = this.state;
     if (userId === "" || password === "" || sucursal === "") {
@@ -76,6 +76,8 @@ export default class Home extends Component {
       this.setState({ loadingLogIn: false });
       //load session cookie
       window.localStorage.setItem("logged", true);
+      window.localStorage.setItem("supervisor", userId);
+      window.localStorage.setItem("sucursal", sucursal);
       // redirect now
       this.props.history.push("/preventista");
     } catch (error) {
