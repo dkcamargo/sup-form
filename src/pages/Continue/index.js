@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 
-import Select from "../../components/Select";
 import Auth from "../../components/Auth";
-import Input from "../../components/Input";
 import Header from "../../components/Header";
 import FormContainer from "../../components/FormContainer";
 import api from "../../services/api";
@@ -52,7 +50,7 @@ export default class Seller extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main className="continue">
             {progresses !== null && progresses.length !== 0 ? (

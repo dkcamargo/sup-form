@@ -125,7 +125,7 @@ export default class Seller extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main id="seller">
             <h2>Elección de Ruta</h2>

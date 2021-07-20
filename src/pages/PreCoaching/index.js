@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import Select from "../../components/Select";
-import Input from "../../components/Input";
+import Auth from "../../components/Auth";
 import Header from "../../components/Header";
 import Switch from "../../components/Switch";
 import api from "../../services/api";
@@ -61,7 +60,7 @@ export default class PreCoaching extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main id="pre-coaching">
             <h2>Antes de iniciar la ruta</h2>

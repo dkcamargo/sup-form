@@ -9,7 +9,9 @@ import SwitchToggleButtons from "../../components/SwitchToggleButtons";
 import TableCheckToggleButtons from "../../components/TableCheckToggleButtons";
 import TableSwitches from "../../components/TableSwitches";
 import Header from "../../components/Header";
-// import api from "../../services/api";
+import Auth from "../../components/Auth";
+import CSStoObjectNotation from "../../utils/notation";
+import api from "../../services/api";
 
 import "./survey.css";
 import FormContainer from "../../components/FormContainer";
@@ -22,25 +24,79 @@ export default class Survey extends Component {
     clientName: "",
     clientVisited: "",
     frequency: "",
+    generalComments: "",
     logisticsProblems: "",
-    logisicProblemComment: ""
+    logisicProblemComment: "",
+    surveyRedcom: {},
+    surveySoda: {},
+    surveyWater: {}
+  };
+
+  handlePosibleChecks(tag) {
+    if (tag.id.split("-")[1] === "noproduct") {
+      if (tag.checked) {
+        document
+          .getElementById(`${tag.id.split("-")[0]}-gondola`)
+          .setAttribute("disabled", true);
+        document
+          .getElementById(`${tag.id.split("-")[0]}-pricing`)
+          .setAttribute("disabled", true);
+      } else {
+        document
+          .getElementById(`${tag.id.split("-")[0]}-gondola`)
+          .removeAttribute("disabled");
+        document
+          .getElementById(`${tag.id.split("-")[0]}-pricing`)
+          .removeAttribute("disabled");
+      }
+    } else if (
+      tag.id.split("-")[1] === "gondola" ||
+      tag.id.split("-")[1] === "pricing"
+    ) {
+      if (tag.checked) {
+        document
+          .getElementById(`${tag.id.split("-")[0]}-noproduct`)
+          .setAttribute("disabled", true);
+      } else {
+        document
+          .getElementById(`${tag.id.split("-")[0]}-noproduct`)
+          .removeAttribute("disabled");
+      }
+    }
+  }
+  handleTableCheckSelectByCOntainerId = (id) => {
+    // get inputs elements by container id
+    const productsElements = [
+      ...document.getElementById(id).getElementsByTagName("input")
+    ];
+
+    // store the needed data in string for converting to JSON
+    const productElementsStrings = productsElements.map((productElement) => {
+      return `"${CSStoObjectNotation(productElement.id)}": "${
+        productElement.checked
+      }"`;
+    });
+    // converting to json object all data in one object and return
+    return JSON.parse(
+      `{${productElementsStrings.map(
+        (productElementString) => productElementString
+      )}}`
+    );
   };
 
   handleTableCheckSelect = (e) => {
-    const redcomProductsArray = [
-      ...document
-        .getElementById("survey-redcom-products")
-        .getElementsByTagName("input")
-    ];
+    this.handlePosibleChecks(e.target);
+    const container = e.target.parentElement.parentElement.id;
+    const updatedData = this.handleTableCheckSelectByCOntainerId(container);
 
-    if (e.target.id.split("-")[1] === "noproduct") {
-      document
-        .getElementById(`${e.target.id.split("-")[0]}-gondola`)
-        .setAttribute("disabled", e.target.checked);
-      document
-        .getElementById(`${e.target.id.split("-")[0]}-pricing`)
-        .setAttribute("disabled", e.target.checked);
+    if (container === "survey-redcom-products") {
+      this.setState({ surveyRedcom: updatedData });
+    } else if (container === "survey-soda-compentence-products") {
+      this.setState({ surveySoda: updatedData });
+    } else if (container === "survey-water-compentence-products") {
+      this.setState({ surveyWater: updatedData });
     }
+    console.log();
   };
 
   handleSurveySubmit = () => {
@@ -49,7 +105,8 @@ export default class Survey extends Component {
      * save number seller route and type in localstorage
      * redirect to end pass the type by query
      */
-    return this.props.history.push("/fin", this.props.location.state);
+    console.log(this.state);
+    // return this.props.history.push("/fin", this.props.location.state);
   };
 
   componentDidMount() {
@@ -57,16 +114,32 @@ export default class Survey extends Component {
       this.setState({
         clientCountage: this.props.location.state.clientCountage
       });
+      this.setState({
+        surveyRedcom: this.handleTableCheckSelectByCOntainerId(
+          "survey-redcom-products"
+        )
+      });
+      this.setState({
+        surveySoda: this.handleTableCheckSelectByCOntainerId(
+          "survey-soda-compentence-products"
+        )
+      });
+      this.setState({
+        surveyWater: this.handleTableCheckSelectByCOntainerId(
+          "survey-water-compentence-products"
+        )
+      });
     } catch (error) {
       this.props.history.push("/preventista");
     }
   }
+
   render() {
     const { clientCountage } = this.state;
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main id="survey">
             <h2>
@@ -144,7 +217,7 @@ export default class Survey extends Component {
                 { name: "nevares", label: "Nevares" },
                 { name: "vitalissima", label: "Vitalissima" },
                 { name: "quento", label: "Snacks Quento" },
-                { name: "linea", label: "Linea Papel" }
+                { name: "papel", label: "Linea Papel" }
               ]}
               onChange={this.handleTableCheckSelect}
               name="survey-redcom-products"
@@ -159,7 +232,7 @@ export default class Survey extends Component {
                 { name: "nevares", label: "Nevares" },
                 { name: "vitalissima", label: "Vitalissima" },
                 { name: "quento", label: "Snacks Quento" },
-                { name: "linea", label: "Linea Papel" }
+                { name: "papel", label: "Linea Papel" }
               ]}
             />
 
@@ -186,6 +259,8 @@ export default class Survey extends Component {
                 { name: "cunnington", label: "Cunnington" },
                 { name: "axis", label: "Axis" }
               ]}
+              onChange={this.handleTableCheckSelect}
+              name="survey-soda-compentence-products"
             />
 
             <TableCheckToggleButtons
@@ -210,8 +285,16 @@ export default class Survey extends Component {
                 { name: "awafruit", label: "Awafruit" },
                 { name: "baggio-fresh", label: "Baggio Fresh" }
               ]}
+              onChange={this.handleTableCheckSelect}
+              name="survey-water-compentence-products"
             />
-            <Textarea label="Comentarios Generales:" name="general-comment" />
+            <Textarea
+              label="Comentarios Generales:"
+              name="general-comment"
+              onChange={(e) => {
+                this.setState({ generalComments: e.target.value });
+              }}
+            />
             <Switch
               label="Reclamos Logistica?"
               name="logistics"

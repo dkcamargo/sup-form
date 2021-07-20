@@ -7,6 +7,7 @@ import SwitchToggleButtons from "../../components/SwitchToggleButtons";
 import CheckInput from "../../components/CheckInput";
 import FormContainer from "../../components/FormContainer";
 import Header from "../../components/Header";
+import Auth from "../../components/Auth";
 import api from "../../services/api";
 
 import "./coaching.css";
@@ -94,7 +95,7 @@ export default class Coaching extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main id="coaching">
             <h2>

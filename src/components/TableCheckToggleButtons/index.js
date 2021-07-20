@@ -66,6 +66,7 @@ const TableCheckToggleButtons = ({
                     checked={checked}
                     className="btn btn-outline-primary table-check"
                     htmlFor={`${line.name}-${column.name}`}
+                    id={`label-${line.name}-${column.name}`}
                     onFocus={(e) => e.target.blur()}
                   >
                     {column.label}

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import Select from "../../components/Select";
-import Input from "../../components/Input";
+import Auth from "../../components/Auth";
 import Textarea from "../../components/Textarea";
 import Header from "../../components/Header";
 import Switch from "../../components/Switch";
@@ -43,7 +42,7 @@ export default class PostCoaching extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main id="post-coaching">
             <h2>Despues de terminar la ruta</h2>

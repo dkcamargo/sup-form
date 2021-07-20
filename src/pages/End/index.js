@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import Header from "../../components/Header";
+import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
 
 import "./end.css";
@@ -150,7 +151,7 @@ export default class Seller extends Component {
     return (
       <>
         <Header />
-        {/* <Auth /> */}
+        <Auth />
         <FormContainer>
           <main className="end">
             <h2>Fin</h2>

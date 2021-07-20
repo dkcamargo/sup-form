@@ -14,12 +14,11 @@ export default class FormContainer extends Component {
   };
 
   componentDidMount() {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-
     // when the page resize change the margin top for being always above the header
     window.addEventListener("resize", this.resizeMarginTop);
     window.addEventListener("scroll", this.resizeMarginTop);
     this.resizeMarginTop();
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
 
   componentWillUnmount() {
