@@ -2,7 +2,7 @@ import React from "react";
 import "./table_switches.css";
 import Switch from "../../components/Switch";
 
-const TableSwitches = ({ label, lines, name, ...rest }) => {
+const TableSwitches = ({ label, lines, name, onChange, ...rest }) => {
   return (
     <div className="form-check table-switches" id={name}>
       <label
@@ -19,7 +19,7 @@ const TableSwitches = ({ label, lines, name, ...rest }) => {
             label={line.label}
             name={`${name}-${line.name}`}
             id={`${name}-${line.name}`}
-            onChange={(e) => {}}
+            onChange={onChange}
           />
         ))}
       </div>

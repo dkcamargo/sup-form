@@ -121,6 +121,13 @@ export default class Seller extends Component {
   componentDidMount() {
     this.getSellers();
   }
+
+  constructor(props) {
+    super(props);
+
+    this.state.selectedSeller = "";
+    this.state.sellers = [];
+  }
   render() {
     return (
       <>
@@ -137,13 +144,21 @@ export default class Seller extends Component {
               name="prevetista"
               id="prevetista"
               onChange={(e) => {
-                this.setState({ selectedSeller: e.target.value });
+                this.setState({
+                  selectedSeller: e.target.value,
+                  selectedSellerRoutes: []
+                });
                 this.handleSellerSelection(e.target.value);
               }}
             />
             <Select
               options={this.state.selectedSellerRoutes}
-              loadOption="Elegí un preventista primero"
+              loadOption={
+                this.state.selectedSeller !== "" &&
+                this.state.selectedSellerRoutes !== []
+                  ? "Cargando"
+                  : "Elegí un preventista primero"
+              }
               label="Ruta a supervisionar"
               name="ruta"
               id="ruta"

@@ -21,6 +21,7 @@ export default class Survey extends Component {
     clientCountage: 0,
     loadingSend: false,
     clientId: 0,
+    error: "",
     clientName: "",
     clientVisited: "",
     frequency: "",
@@ -30,6 +31,14 @@ export default class Survey extends Component {
     surveyRedcom: {},
     surveySoda: {},
     surveyWater: {}
+  };
+
+  renderError = (errorMessage) => {
+    this.setState({ error: errorMessage });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    setTimeout(() => {
+      this.setState({ error: "" });
+    }, 4000);
   };
 
   handlePosibleChecks(tag) {
@@ -64,7 +73,8 @@ export default class Survey extends Component {
       }
     }
   }
-  handleTableCheckSelectByCOntainerId = (id) => {
+
+  handleTableSelectByContainerId = (id) => {
     // get inputs elements by container id
     const productsElements = [
       ...document.getElementById(id).getElementsByTagName("input")
@@ -87,7 +97,7 @@ export default class Survey extends Component {
   handleTableCheckSelect = (e) => {
     this.handlePosibleChecks(e.target);
     const container = e.target.parentElement.parentElement.id;
-    const updatedData = this.handleTableCheckSelectByCOntainerId(container);
+    const updatedData = this.handleTableSelectByContainerId(container);
 
     if (container === "survey-redcom-products") {
       this.setState({ surveyRedcom: updatedData });
@@ -95,18 +105,43 @@ export default class Survey extends Component {
       this.setState({ surveySoda: updatedData });
     } else if (container === "survey-water-compentence-products") {
       this.setState({ surveyWater: updatedData });
+    } else if (container === "exhibition") {
+      this.setState({ exhibition: updatedData });
     }
-    console.log();
   };
 
   handleSurveySubmit = () => {
     /**
+     * check for empty data => configure error
      * send data to api and
-     * save number seller route and type in localstorage
      * redirect to end pass the type by query
+     *
+     */
+    const {
+      clientId,
+      clientName,
+      clientVisited,
+      frequency,
+      generalComments,
+      logisticsProblems,
+      logisicProblemComment,
+      surveyRedcom,
+      surveySoda,
+      surveyWater
+    } = this.state;
+    if (frequency === "" || clientName === "") {
+      this.renderError(
+        `El campo de ${
+          clientName === "" ? "nombre del cliente" : "frecuencia de visita"
+        } no puede ser vacio`
+      );
+    }
+    /**
+     * request to api here!!
      */
     console.log(this.state);
-    // return this.props.history.push("/fin", this.props.location.state);
+
+    return this.props.history.push("/fin", this.props.location.state);
   };
 
   componentDidMount() {
@@ -114,24 +149,28 @@ export default class Survey extends Component {
       this.setState({
         clientCountage: this.props.location.state.clientCountage
       });
-      this.setState({
-        surveyRedcom: this.handleTableCheckSelectByCOntainerId(
-          "survey-redcom-products"
-        )
-      });
-      this.setState({
-        surveySoda: this.handleTableCheckSelectByCOntainerId(
-          "survey-soda-compentence-products"
-        )
-      });
-      this.setState({
-        surveyWater: this.handleTableCheckSelectByCOntainerId(
-          "survey-water-compentence-products"
-        )
-      });
     } catch (error) {
       this.props.history.push("/preventista");
     }
+
+    this.setState({
+      surveyRedcom: this.handleTableSelectByContainerId(
+        "survey-redcom-products"
+      )
+    });
+    this.setState({
+      surveySoda: this.handleTableSelectByContainerId(
+        "survey-soda-compentence-products"
+      )
+    });
+    this.setState({
+      surveyWater: this.handleTableSelectByContainerId(
+        "survey-water-compentence-products"
+      )
+    });
+    this.setState({
+      exhibition: this.handleTableSelectByContainerId("exhibition")
+    });
   }
 
   render() {
@@ -146,6 +185,15 @@ export default class Survey extends Component {
               Cliente Numero <strong>{clientCountage}</strong>
             </h2>
             <hr />
+            {this.state.error !== "" ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                style={{ marginBottom: "1.6rem" }}
+              >
+                {this.state.error}
+              </div>
+            ) : null}
             <Input
               label="Nombre del Cliente"
               type="text"
@@ -157,17 +205,21 @@ export default class Survey extends Component {
               label="Codigo del Cliente"
               type="number"
               pattern="\d*"
+              min="1"
               name="client-id"
               id="client-id"
               info="Al desactivar se entiende que el cliente o no sabe el código o es un cliente nuevo."
               onChange={(e) => this.setState({ clientId: e.target.value })}
+              onCheck={(e) => this.setState({ clientId: -1 })}
             />
             <Switch
               label="Cliente con Visita?"
               name="client-visited"
               id="client-visited"
               onChange={(e) =>
-                this.setState({ clientVisited: e.target.checked })
+                this.setState({
+                  clientVisited: e.target.checked ? true : false
+                })
               }
             />
             <SwitchToggleButtons
@@ -234,6 +286,7 @@ export default class Survey extends Component {
                 { name: "quento", label: "Snacks Quento" },
                 { name: "papel", label: "Linea Papel" }
               ]}
+              onChange={this.handleTableCheckSelect}
             />
 
             <TableCheckToggleButtons
@@ -315,7 +368,6 @@ export default class Survey extends Component {
             ) : (
               <></>
             )}
-
             <button
               disabled={this.state.loadingSend}
               onClick={this.handleSurveySubmit}

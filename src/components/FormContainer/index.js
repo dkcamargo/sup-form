@@ -7,6 +7,17 @@ export default class FormContainer extends Component {
     headerHeight: "0px"
   };
 
+  constructor(props) {
+    super(props);
+    try {
+      this.state.headerHeight = `${
+        document.querySelector(".header").clientHeight
+      }px`;
+    } catch {
+      this.state.headerHeight = `0px`;
+    }
+  }
+
   resizeMarginTop = () => {
     this.setState({
       headerHeight: `${document.querySelector(".header").clientHeight}px`
@@ -17,6 +28,7 @@ export default class FormContainer extends Component {
     // when the page resize change the margin top for being always above the header
     window.addEventListener("resize", this.resizeMarginTop);
     window.addEventListener("scroll", this.resizeMarginTop);
+    window.addEventListener("render", this.resizeMarginTop);
     this.resizeMarginTop();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
@@ -24,6 +36,7 @@ export default class FormContainer extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeMarginTop);
     window.removeEventListener("scroll", this.resizeMarginTop);
+    window.removeEventListener("render", this.resizeMarginTop);
   }
 
   render() {

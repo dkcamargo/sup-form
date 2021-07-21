@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./switch.css";
 const Switch = ({ label, name, labelStyle, ...rest }) => {
   return (
