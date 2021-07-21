@@ -42,6 +42,10 @@ export default class Survey extends Component {
   };
 
   handlePosibleChecks(tag) {
+    /**
+     * TODO
+     * solve noproduct bug
+     */
     if (tag.id.split("-")[1] === "noproduct") {
       if (tag.checked) {
         document
