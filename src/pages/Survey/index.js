@@ -30,7 +30,8 @@ export default class Survey extends Component {
     logisicProblemComment: "",
     surveyRedcom: {},
     surveySoda: {},
-    surveyWater: {}
+    surveyWater: {},
+    exhibition: {}
   };
 
   renderError = (errorMessage) => {
@@ -131,8 +132,31 @@ export default class Survey extends Component {
       logisicProblemComment,
       surveyRedcom,
       surveySoda,
-      surveyWater
+      surveyWater,
+      exhibition
     } = this.state;
+    const supervisor = window.localStorage.getItem("supervisor");
+    const sucursal = window.localStorage.getItem("sucursal");
+    const { seller, route } = this.props.location.state;
+
+    const data = {
+      sucursal,
+      supervisor,
+      seller,
+      route,
+      clientId,
+      clientName,
+      clientVisited,
+      frequency,
+      generalComments,
+      logisticsProblems,
+      logisicProblemComment,
+      surveyRedcom,
+      surveySoda,
+      surveyWater,
+      exhibition
+    };
+
     if (frequency === "" || clientName === "") {
       this.renderError(
         `El campo de ${
@@ -143,7 +167,7 @@ export default class Survey extends Component {
     /**
      * request to api here!!
      */
-    console.log(this.state);
+    api.post("/survey", data);
 
     return this.props.history.push("/fin", this.props.location.state);
   };
@@ -214,7 +238,6 @@ export default class Survey extends Component {
               id="client-id"
               info="Al desactivar se entiende que el cliente o no sabe el código o es un cliente nuevo."
               onChange={(e) => this.setState({ clientId: e.target.value })}
-              onCheck={(e) => this.setState({ clientId: -1 })}
             />
             <Switch
               label="Cliente con Visita?"
