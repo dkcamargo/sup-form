@@ -31,7 +31,9 @@ export default class Survey extends Component {
     surveyRedcom: {},
     surveySoda: {},
     surveyWater: {},
-    exhibition: {}
+    exhibition: {},
+    cordy: 0.0,
+    cordx: 0.0
   };
 
   renderError = (errorMessage) => {
@@ -133,7 +135,9 @@ export default class Survey extends Component {
       surveyRedcom,
       surveySoda,
       surveyWater,
-      exhibition
+      exhibition,
+      cordy,
+      cordx
     } = this.state;
     const supervisor = window.localStorage.getItem("supervisor");
     const sucursal = window.localStorage.getItem("sucursal");
@@ -154,7 +158,9 @@ export default class Survey extends Component {
       surveyRedcom,
       surveySoda,
       surveyWater,
-      exhibition
+      exhibition,
+      cordy,
+      cordx
     };
 
     if (frequency === "" || clientName === "") {
@@ -198,6 +204,13 @@ export default class Survey extends Component {
     });
     this.setState({
       exhibition: this.handleTableSelectByContainerId("exhibition")
+    });
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({
+        cordy: position.coords.latitude,
+        cordx: position.coords.longitude
+      });
     });
   }
 
