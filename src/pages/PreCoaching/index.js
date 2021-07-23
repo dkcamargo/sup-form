@@ -20,7 +20,9 @@ export default class PreCoaching extends Component {
     sales: false,
     helmet: false,
     noCellphone: false,
-    laws: false
+    laws: false,
+    cordy: 0.0,
+    cordx: 0.0
   };
 
   handlePreCoachingSubmit = () => {
@@ -28,6 +30,9 @@ export default class PreCoaching extends Component {
      * send data to api and
      * redirect to caoching 1 pass the type by query
      */
+    const supervisor = window.localStorage.getItem("supervisor");
+    const sucursal = window.localStorage.getItem("sucursal");
+    const { seller, route } = this.props.location.state;
     const {
       uniformPop,
       dailyGoal,
@@ -37,9 +42,16 @@ export default class PreCoaching extends Component {
       sales,
       helmet,
       noCellphone,
-      laws
+      laws,
+      cordx,
+      cordy
     } = this.state;
-    console.log({
+
+    const data = {
+      sucursal,
+      supervisor,
+      seller,
+      route,
       uniformPop,
       dailyGoal,
       price,
@@ -48,13 +60,23 @@ export default class PreCoaching extends Component {
       sales,
       helmet,
       noCellphone,
-      laws
-    });
+      laws,
+      cordx,
+      cordy
+    };
+
+    api.post("/pre-coaching", data);
+
     return this.props.history.push("/coaching", this.props.location.state);
   };
 
   componentDidMount() {
-    return;
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({
+        cordy: position.coords.latitude,
+        cordx: position.coords.longitude
+      });
+    });
   }
   render() {
     return (

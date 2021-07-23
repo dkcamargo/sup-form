@@ -16,7 +16,9 @@ export default class PostCoaching extends Component {
     comments: true,
     commentsText: "",
     strongPoints: "",
-    weakPoints: ""
+    weakPoints: "",
+    cordy: 0.0,
+    cordx: 0.0
   };
 
   handlePostCoachingSubmit = () => {
@@ -25,18 +27,40 @@ export default class PostCoaching extends Component {
      * save number seller route and type in localstorage
      * redirect to caoching 1 pass the type by query
      */
-    const { comments, strongPoints, weakPoints } = this.state;
+    const supervisor = window.localStorage.getItem("supervisor");
+    const sucursal = window.localStorage.getItem("sucursal");
+    const { seller, route } = this.props.location.state;
+
+    const { comments, strongPoints, weakPoints, cordx, cordy } = this.state;
 
     const commentsText = !comments
       ? "Sin Comentarios"
       : this.state.commentsText;
 
-    console.log({ commentsText, strongPoints, weakPoints });
+    const data = {
+      supervisor,
+      sucursal,
+      seller,
+      route,
+      commentsText,
+      strongPoints,
+      weakPoints,
+      cordx,
+      cordy
+    };
+
+    api.post("/post-coaching", data);
+
     return this.props.history.push("/fin", this.props.location.state);
   };
 
   componentDidMount() {
-    return;
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({
+        cordy: position.coords.latitude,
+        cordx: position.coords.longitude
+      });
+    });
   }
   render() {
     return (

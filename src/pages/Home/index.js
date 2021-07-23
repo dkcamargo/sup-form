@@ -58,13 +58,6 @@ export default class Home extends Component {
       return this.renderError("No podés dejar los campos vacios!");
     }
     try {
-      console.log({
-        userId,
-        password,
-        sucursal,
-        cordy,
-        cordx
-      });
       this.setState({ loadingLogIn: true });
       await api.post("/login", {
         userId,
