@@ -22,10 +22,19 @@ export default class PreCoaching extends Component {
     noCellphone: false,
     laws: false,
     cordy: 0.0,
-    cordx: 0.0
+    cordx: 0.0,
+    error: ""
   };
 
-  handlePreCoachingSubmit = () => {
+  renderError = (errorMessage) => {
+    this.setState({ error: errorMessage });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    setTimeout(() => {
+      this.setState({ error: "" });
+    }, 4000);
+  };
+
+  handlePreCoachingSubmit = async () => {
     /**
      * send data to api and
      * redirect to caoching 1 pass the type by query
@@ -65,9 +74,21 @@ export default class PreCoaching extends Component {
       cordy
     };
 
-    api.post("/pre-coaching", data);
-
-    return this.props.history.push("/coaching", this.props.location.state);
+    this.setState({ loadingSend: true });
+    try {
+      await api.post("/pre-coaching", data);
+      this.setState({ loadingSend: false });
+      return this.props.history.push("/coaching", this.props.location.state);
+    } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al hacer el Pre Coaching"
+      );
+      this.setState({
+        loadingLogIn: false
+      });
+    }
   };
 
   componentDidMount() {
@@ -77,6 +98,12 @@ export default class PreCoaching extends Component {
         cordx: position.coords.longitude
       });
     });
+
+    try {
+      const { seller, route } = this.props.location.state;
+    } catch (error) {
+      this.props.history.push("/preventista");
+    }
   }
   render() {
     return (
@@ -87,7 +114,15 @@ export default class PreCoaching extends Component {
           <main id="pre-coaching">
             <h2>Antes de iniciar la ruta</h2>
             <hr />
-
+            {this.state.error !== "" ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                style={{ marginBottom: "1.6rem" }}
+              >
+                {this.state.error}
+              </div>
+            ) : null}
             <Switch
               label="¿Tiene el uniforme correspondiente, el kit básico y suficiente material POP?"
               name="uniform-pop"

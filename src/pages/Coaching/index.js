@@ -30,55 +30,90 @@ export default class Coaching extends Component {
     popPricing: false,
     timeManagement: false,
     catalogue: false,
-    relationship: ""
+    relationship: "",
+    cordy: 0.0,
+    cordx: 0.0,
+    error: ""
   };
 
-  handleCoachingSubmit = () => {
+  renderError = (errorMessage) => {
+    this.setState({ error: errorMessage });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    setTimeout(() => {
+      this.setState({ error: "" });
+    }, 4000);
+  };
+
+  handleCoachingSubmit = async () => {
     /**
      * send data to api and
      * save number seller route and type in localstorage
      * redirect to end pass the type by query
      */
-    const {
-      clientCountage,
-      clientId,
-      clientName,
-      loadingSend,
-      lastOrder,
-      sellPlan,
-      pop,
-      stock,
-      exposition,
-      competitorSales,
-      sales,
-      sellPropouse,
-      deliveryPrecautions,
-      popPricing,
-      timeManagement,
-      catalogue,
-      relationship
-    } = this.state;
-    console.log({
-      clientCountage,
-      clientId,
-      clientName,
-      loadingSend,
-      lastOrder,
-      sellPlan,
-      pop,
-      stock,
-      exposition,
-      competitorSales,
-      sales,
-      sellPropouse,
-      deliveryPrecautions,
-      popPricing,
-      timeManagement,
-      catalogue,
-      relationship
-    });
 
-    return this.props.history.push("/fin", this.props.location.state);
+    const supervisor = window.localStorage.getItem("supervisor");
+    const sucursal = window.localStorage.getItem("sucursal");
+    const { seller, route } = this.props.location.state;
+
+    const {
+      clientId,
+      clientName,
+      lastOrder,
+      sellPlan,
+      pop,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      relationship,
+      cordy,
+      cordx
+    } = this.state;
+
+    const data = {
+      supervisor,
+      sucursal,
+      seller,
+      route,
+      clientId,
+      clientName,
+      lastOrder,
+      sellPlan,
+      pop,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      relationship,
+      cordy,
+      cordx
+    };
+
+    this.setState({ loadingSend: true });
+    try {
+      await api.post("/coaching", data);
+      this.setState({ loadingSend: false });
+      return this.props.history.push("/fin", this.props.location.state);
+    } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al hacer el Coaching"
+      );
+      this.setState({
+        loadingLogIn: false
+      });
+    }
   };
 
   componentDidMount() {
@@ -89,6 +124,12 @@ export default class Coaching extends Component {
     } catch (error) {
       this.props.history.push("/preventista");
     }
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({
+        cordy: position.coords.latitude,
+        cordx: position.coords.longitude
+      });
+    });
   }
   render() {
     const { clientCountage } = this.state;
@@ -102,6 +143,15 @@ export default class Coaching extends Component {
               Cliente Numero: <strong>{clientCountage}</strong>
             </h2>
             <hr />
+            {this.state.error !== "" ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                style={{ marginBottom: "1.6rem" }}
+              >
+                {this.state.error}
+              </div>
+            ) : null}
             <Input
               label="Nombre del Cliente"
               type="text"

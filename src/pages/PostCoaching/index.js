@@ -18,10 +18,19 @@ export default class PostCoaching extends Component {
     strongPoints: "",
     weakPoints: "",
     cordy: 0.0,
-    cordx: 0.0
+    cordx: 0.0,
+    error: ""
   };
 
-  handlePostCoachingSubmit = () => {
+  renderError = (errorMessage) => {
+    this.setState({ error: errorMessage });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    setTimeout(() => {
+      this.setState({ error: "" });
+    }, 4000);
+  };
+
+  handlePostCoachingSubmit = async () => {
     /**
      * send data to api and
      * save number seller route and type in localstorage
@@ -49,7 +58,21 @@ export default class PostCoaching extends Component {
       cordy
     };
 
-    api.post("/post-coaching", data);
+    this.setState({ loadingSend: true });
+    try {
+      await api.post("/post-coaching", data);
+      this.setState({ loadingSend: false });
+      return this.props.history.push("/fin", this.props.location.state);
+    } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al hacer el Post Coaching"
+      );
+      this.setState({
+        loadingLogIn: false
+      });
+    }
 
     return this.props.history.push("/fin", this.props.location.state);
   };
@@ -61,6 +84,12 @@ export default class PostCoaching extends Component {
         cordx: position.coords.longitude
       });
     });
+
+    try {
+      const { seller, route } = this.props.location.state;
+    } catch (error) {
+      this.props.history.push("/preventista");
+    }
   }
   render() {
     return (
@@ -71,7 +100,15 @@ export default class PostCoaching extends Component {
           <main id="post-coaching">
             <h2>Despues de terminar la ruta</h2>
             <hr />
-
+            {this.state.error !== "" ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                style={{ marginBottom: "1.6rem" }}
+              >
+                {this.state.error}
+              </div>
+            ) : null}
             <Switch
               label="Comentarios?"
               name="comments"

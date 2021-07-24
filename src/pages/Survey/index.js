@@ -117,7 +117,7 @@ export default class Survey extends Component {
     }
   };
 
-  handleSurveySubmit = () => {
+  handleSurveySubmit = async () => {
     /**
      * check for empty data => configure error
      * send data to api and
@@ -173,9 +173,21 @@ export default class Survey extends Component {
     /**
      * request to api here!!
      */
-    api.post("/survey", data);
-
-    return this.props.history.push("/fin", this.props.location.state);
+    this.setState({ loadingSend: true });
+    try {
+      await api.post("/survey", data);
+      this.setState({ loadingSend: false });
+      return this.props.history.push("/fin", this.props.location.state);
+    } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al hacer el Relevamiento"
+      );
+      this.setState({
+        loadingLogIn: false
+      });
+    }
   };
 
   componentDidMount() {
