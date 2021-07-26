@@ -77,7 +77,6 @@ export default class PreCoaching extends Component {
     this.setState({ loadingSend: true });
     try {
       await api.post("/pre-coaching", data);
-      this.setState({ loadingSend: false });
       return this.props.history.push("/coaching", this.props.location.state);
     } catch (error) {
       this.renderError(
@@ -85,6 +84,7 @@ export default class PreCoaching extends Component {
           ? error.response.data.error
           : "Error no identificado al hacer el Pre Coaching"
       );
+    } finally {
       this.setState({
         loadingLogIn: false
       });

@@ -99,10 +99,15 @@ export default class Coaching extends Component {
       cordx
     };
 
+    if (clientName === "") {
+      return this.renderError(
+        `El campo de nombre del cliente no puede ser vacio`
+      );
+    }
+
     this.setState({ loadingSend: true });
     try {
       await api.post("/coaching", data);
-      this.setState({ loadingSend: false });
       return this.props.history.push("/fin", this.props.location.state);
     } catch (error) {
       this.renderError(
@@ -110,6 +115,7 @@ export default class Coaching extends Component {
           ? error.response.data.error
           : "Error no identificado al hacer el Coaching"
       );
+    } finally {
       this.setState({
         loadingLogIn: false
       });

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import Select from "../../components/Select";
 import Auth from "../../components/Auth";
@@ -15,7 +16,8 @@ export default class Seller extends Component {
     evaluationType: "",
     selectedSellerRoutes: [],
     sellers: [],
-    error: ""
+    error: "",
+    loadingSend: false
   };
 
   renderError = (errorMessage) => {
@@ -73,6 +75,35 @@ export default class Seller extends Component {
       const lastId = storedProgresses[storedProgresses.length - 1].id;
       // set new progress id to autoincrement
       thisProgressId = lastId + 1;
+    }
+
+    if (evaluationType === "relevamiento") {
+      this.setState({ loadingSend: true });
+      try {
+        // get tables datas
+        const tableData = await api.get(
+          `/products/${window.localStorage.getItem("sucursal")}`
+        );
+
+        window.localStorage.setItem(
+          "tableData",
+          JSON.stringify(tableData.data)
+        );
+        this.setState({
+          loadingLogIn: false
+        });
+      } catch (error) {
+        console.log(error);
+        this.renderError(
+          error.response !== undefined
+            ? error.response.data.error
+            : "Error no identificado al cargar datos de relevamiento"
+        );
+        this.setState({
+          loadingLogIn: false
+        });
+        return;
+      }
     }
 
     // redirect and send variables to the next page
@@ -204,12 +235,18 @@ export default class Seller extends Component {
               </div>
             ) : null}
             <button
+              disabled={this.state.loadingSend}
               onClick={this.handleSellerSubmit}
               id="begin-button"
               className="btn btn-primary btn-lg submit-button seller-button"
             >
-              Empezar
+              {this.state.loadingSend ? (
+                <AiOutlineLoading3Quarters className="icon-spin" />
+              ) : (
+                <>Empezar</>
+              )}
             </button>
+
             <div className="or">
               <hr />
               <p>o entonces</p>

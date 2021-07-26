@@ -61,7 +61,6 @@ export default class PostCoaching extends Component {
     this.setState({ loadingSend: true });
     try {
       await api.post("/post-coaching", data);
-      this.setState({ loadingSend: false });
       return this.props.history.push("/fin", this.props.location.state);
     } catch (error) {
       this.renderError(
@@ -69,6 +68,7 @@ export default class PostCoaching extends Component {
           ? error.response.data.error
           : "Error no identificado al hacer el Post Coaching"
       );
+    } finally {
       this.setState({
         loadingLogIn: false
       });

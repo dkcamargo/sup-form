@@ -35,6 +35,7 @@ export default class Seller extends Component {
 
   handleBackToRouteSelection = (e) => {
     // go back to the seller selection leaving the lstorage as it is
+    window.localStorage.removeItem("tableData");
     return this.props.history.push("/preventista");
   };
 

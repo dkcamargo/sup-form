@@ -33,8 +33,25 @@ export default class Survey extends Component {
     surveyWater: {},
     exhibition: {},
     cordy: 0.0,
-    cordx: 0.0
+    cordx: 0.0,
+    redcomLines: {},
+    waterLines: {},
+    sodaLines: {}
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state.redcomLines = JSON.parse(
+      window.localStorage.getItem("tableData")
+    ).redcom;
+    this.state.waterLines = JSON.parse(
+      window.localStorage.getItem("tableData")
+    ).water;
+    this.state.sodaLines = JSON.parse(
+      window.localStorage.getItem("tableData")
+    ).soda;
+  }
 
   renderError = (errorMessage) => {
     this.setState({ error: errorMessage });
@@ -164,7 +181,7 @@ export default class Survey extends Component {
     };
 
     if (frequency === "" || clientName === "") {
-      this.renderError(
+      return this.renderError(
         `El campo de ${
           clientName === "" ? "nombre del cliente" : "frecuencia de visita"
         } no puede ser vacio`
@@ -176,7 +193,6 @@ export default class Survey extends Component {
     this.setState({ loadingSend: true });
     try {
       await api.post("/survey", data);
-      this.setState({ loadingSend: false });
       return this.props.history.push("/fin", this.props.location.state);
     } catch (error) {
       this.renderError(
@@ -184,6 +200,7 @@ export default class Survey extends Component {
           ? error.response.data.error
           : "Error no identificado al hacer el Relevamiento"
       );
+    } finally {
       this.setState({
         loadingLogIn: false
       });
@@ -198,23 +215,16 @@ export default class Survey extends Component {
     } catch (error) {
       this.props.history.push("/preventista");
     }
-
     this.setState({
       surveyRedcom: this.handleTableSelectByContainerId(
         "survey-redcom-products"
-      )
-    });
-    this.setState({
+      ),
       surveySoda: this.handleTableSelectByContainerId(
         "survey-soda-compentence-products"
-      )
-    });
-    this.setState({
+      ),
       surveyWater: this.handleTableSelectByContainerId(
         "survey-water-compentence-products"
-      )
-    });
-    this.setState({
+      ),
       exhibition: this.handleTableSelectByContainerId("exhibition")
     });
 
@@ -275,11 +285,11 @@ export default class Survey extends Component {
               }
             />
             <SwitchToggleButtons
-              label="Frecuencia de visita:"
+              label="Frecuencia de visita por semana:"
               options={[
                 { label: "Dos veces", value: "twice", name: "twice" },
-                { label: "Una vez", value: "once", name: "once" },
-                { label: "No visita", value: "no", name: "no" },
+                { label: "Una ves", value: "once", name: "once" },
+                { label: "Menos que una ves", value: "no", name: "no" },
                 { label: "Distancia", value: "distance", name: "distance" }
               ]}
               name="times-visited"
@@ -293,36 +303,25 @@ export default class Survey extends Component {
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
-                  name: "noproduct",
-                  disabled: "false"
+                  name: "noproduct"
                 },
                 {
                   label: "Gondola",
                   value: "gondola",
-                  name: "gondola",
-                  disabled: "false"
+                  name: "gondola"
                 },
                 {
                   label: "Afiche",
                   value: "afiche",
-                  name: "poster",
-                  disabled: "false"
+                  name: "poster"
                 },
                 {
                   label: "Precificación",
                   value: "precificacion",
-                  name: "pricing",
-                  disabled: "false"
+                  name: "pricing"
                 }
               ]}
-              lines={[
-                { name: "secco", label: "Secco" },
-                { name: "sdlp", label: "Sierra de Los Padres" },
-                { name: "nevares", label: "Nevares" },
-                { name: "vitalissima", label: "Vitalissima" },
-                { name: "quento", label: "Snacks Quento" },
-                { name: "papel", label: "Linea Papel" }
-              ]}
+              lines={this.state.redcomLines}
               onChange={this.handleTableCheckSelect}
               name="survey-redcom-products"
             />
@@ -330,14 +329,7 @@ export default class Survey extends Component {
             <TableSwitches
               name="exhibition"
               label="Exhibición Marcas:"
-              lines={[
-                { name: "secco", label: "Secco" },
-                { name: "sdlp", label: "Sierra de Los Padres" },
-                { name: "nevares", label: "Nevares" },
-                { name: "vitalissima", label: "Vitalissima" },
-                { name: "quento", label: "Snacks Quento" },
-                { name: "papel", label: "Linea Papel" }
-              ]}
+              lines={this.state.redcomLines}
               onChange={this.handleTableCheckSelect}
             />
 
@@ -357,19 +349,13 @@ export default class Survey extends Component {
                   name: "pricing"
                 }
               ]}
-              lines={[
-                { name: "cabalgata", label: "Cabalgata" },
-                { name: "manaos", label: "Manaos" },
-                { name: "caribe", label: "Caribe" },
-                { name: "cunnington", label: "Cunnington" },
-                { name: "axis", label: "Axis" }
-              ]}
+              lines={this.state.sodaLines}
               onChange={this.handleTableCheckSelect}
               name="survey-soda-compentence-products"
             />
 
             <TableCheckToggleButtons
-              label="Relevamiento Competencia Gaseosas:"
+              label="Relevamiento Competencia Aguas:"
               columns={[
                 {
                   label: "Sin Producto",
@@ -384,12 +370,7 @@ export default class Survey extends Component {
                   name: "pricing"
                 }
               ]}
-              lines={[
-                { name: "levite", label: "Levite" },
-                { name: "aquarius", label: "Aquarius" },
-                { name: "awafruit", label: "Awafruit" },
-                { name: "baggio-fresh", label: "Baggio Fresh" }
-              ]}
+              lines={this.state.waterLines}
               onChange={this.handleTableCheckSelect}
               name="survey-water-compentence-products"
             />
