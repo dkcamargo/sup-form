@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Auth from "../../components/Auth";
 import Header from "../../components/Header";
 import FormContainer from "../../components/FormContainer";
-import api from "../../services/api";
 
 import "./continue.css";
 
@@ -22,7 +21,8 @@ export default class Seller extends Component {
       seller,
       route,
       id,
-      sellerName
+      sellerName,
+      stats
     } = progresses.find((progress) => progress.id === progressId);
     // redirect to the next client form
     return this.props.history.push(`/${formType}`, {
@@ -31,7 +31,8 @@ export default class Seller extends Component {
       seller: seller,
       route: route,
       id: id,
-      sellerName
+      sellerName,
+      stats
     });
   };
 
@@ -59,7 +60,7 @@ export default class Seller extends Component {
                 <hr />
                 <div className="progresses">
                   {progresses.map((progress, index) => (
-                    <div className="card">
+                    <div className="card" key={index}>
                       <div className="card-header">
                         Ruta: <strong>{progress.route}</strong>
                       </div>

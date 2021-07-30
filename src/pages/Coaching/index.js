@@ -44,6 +44,23 @@ export default class Coaching extends Component {
     }, 4000);
   };
 
+  getStats() {
+    let stats = 0;
+    stats = this.state.lastOrder ? stats + 1 : stats;
+    stats = this.state.sellPlan ? stats + 1 : stats;
+    stats = this.state.pop ? stats + 1 : stats;
+    stats = this.state.stock ? stats + 1 : stats;
+    stats = this.state.exposition ? stats + 1 : stats;
+    stats = this.state.competitorSales ? stats + 1 : stats;
+    stats = this.state.sales ? stats + 1 : stats;
+    stats = this.state.sellPropouse ? stats + 1 : stats;
+    stats = this.state.deliveryPrecautions ? stats + 1 : stats;
+    stats = this.state.popPricing ? stats + 1 : stats;
+    stats = this.state.timeManagement ? stats + 1 : stats;
+    stats = this.state.catalogue ? stats + 1 : stats;
+    return stats;
+  }
+
   handleCoachingSubmit = async () => {
     /**
      * send data to api and
@@ -104,7 +121,8 @@ export default class Coaching extends Component {
         `El campo de nombre del cliente no puede ser vacio`
       );
     }
-
+    this.props.location.state.stats =
+      this.props.location.state.stats + this.getStats();
     this.setState({ loadingSend: true });
     try {
       await api.post("/coaching", data);

@@ -10,7 +10,7 @@ export default class Seller extends Component {
   state = {
     lastOne: false,
     surveyClientCountage: 30,
-    coachingClientCountage: 2
+    coachingClientCountage: 1
   };
 
   handleSameRoute = (e) => {
@@ -21,7 +21,8 @@ export default class Seller extends Component {
       seller,
       route,
       id,
-      sellerName
+      sellerName,
+      stats
     } = this.props.location.state;
     return this.props.history.push(`/${formType}`, {
       formType: formType,
@@ -29,7 +30,8 @@ export default class Seller extends Component {
       seller: seller,
       route: route,
       id: id,
-      sellerName: sellerName
+      sellerName: sellerName,
+      stats
     });
   };
 
@@ -46,11 +48,9 @@ export default class Seller extends Component {
       route,
       clientCountage,
       formType,
-      sellerName
+      sellerName,
+      stats
     } = this.props.location.state;
-
-    console.log("/fin location.state:");
-    console.log(this.props.location.state);
 
     // get progresses from lstorage
     const storedProgresses = JSON.parse(
@@ -81,7 +81,8 @@ export default class Seller extends Component {
           clientCountage,
           route,
           seller,
-          sellerName
+          sellerName,
+          stats
         });
       }
     }
@@ -95,7 +96,8 @@ export default class Seller extends Component {
           clientCountage,
           route,
           seller,
-          sellerName
+          sellerName,
+          stats
         });
       }
     }
@@ -132,7 +134,10 @@ export default class Seller extends Component {
               route: route,
               id: id,
               sellerName: sellerName,
-              postCoaching: true
+              postCoaching: true,
+              // stats / coaching qtd plus question number qtd
+              finalStats:
+                this.props.location.state.stats / (coachingClientCountage * 12)
             });
           }
         }

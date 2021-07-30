@@ -9,6 +9,13 @@
   padding: 1.6rem;
 }
 
+#post-coaching #puntaje {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Roboto;
+}
+
 #post-coaching main > * {
   margin: 0.8rem 1.6rem;
 }

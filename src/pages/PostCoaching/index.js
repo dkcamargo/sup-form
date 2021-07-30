@@ -19,7 +19,8 @@ export default class PostCoaching extends Component {
     weakPoints: "",
     cordy: 0.0,
     cordx: 0.0,
-    error: ""
+    error: "",
+    finalStats: 0.0
   };
 
   renderError = (errorMessage) => {
@@ -40,7 +41,14 @@ export default class PostCoaching extends Component {
     const sucursal = window.localStorage.getItem("sucursal");
     const { seller, route } = this.props.location.state;
 
-    const { comments, strongPoints, weakPoints, cordx, cordy } = this.state;
+    const {
+      comments,
+      strongPoints,
+      weakPoints,
+      cordx,
+      cordy,
+      finalStats
+    } = this.state;
 
     const commentsText = !comments
       ? "Sin Comentarios"
@@ -54,6 +62,7 @@ export default class PostCoaching extends Component {
       commentsText,
       strongPoints,
       weakPoints,
+      finalStats,
       cordx,
       cordy
     };
@@ -86,7 +95,10 @@ export default class PostCoaching extends Component {
     });
 
     try {
-      const { seller, route } = this.props.location.state;
+      const { finalStats } = this.props.location.state;
+      this.setState({
+        finalStats
+      });
     } catch (error) {
       this.props.history.push("/preventista");
     }
@@ -109,6 +121,21 @@ export default class PostCoaching extends Component {
                 {this.state.error}
               </div>
             ) : null}
+
+            <div
+              className="alert alert-info"
+              role="alert"
+              id="puntaje"
+              style={{ marginBottom: "1.6rem" }}
+            >
+              <div>Puntaje final:</div>
+              <div>
+                {Math.round((this.state.finalStats + Number.EPSILON) * 10000) /
+                  100}
+                %
+              </div>
+            </div>
+
             <Switch
               label="Comentarios?"
               name="comments"

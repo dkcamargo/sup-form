@@ -117,7 +117,8 @@ export default class Seller extends Component {
           (seller) => seller.value === this.state.selectedSeller
         ).label,
         route: this.state.selectedRoute,
-        id: thisProgressId
+        id: thisProgressId,
+        stats: 0
       }
     );
   };
