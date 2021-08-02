@@ -99,6 +99,7 @@ export default class Home extends Component {
     });
 
     this.getOpttions();
+    console.log(process.env.NODE_ENV);
   }
 
   render() {
