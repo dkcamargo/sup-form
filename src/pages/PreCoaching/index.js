@@ -98,12 +98,6 @@ export default class PreCoaching extends Component {
         cordx: position.coords.longitude
       });
     });
-
-    try {
-      const { seller, route } = this.props.location.state;
-    } catch (error) {
-      this.props.history.push("/preventista");
-    }
   }
   render() {
     return (

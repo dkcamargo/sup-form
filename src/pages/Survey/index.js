@@ -86,14 +86,22 @@ export default class Survey extends Component {
       tag.id.split("-")[1] === "gondola" ||
       tag.id.split("-")[1] === "pricing"
     ) {
-      if (tag.checked) {
+      if (
+          !tag.checked && (
+            document
+              .getElementById(`${tag.id.split("-")[0]}-pricing`).checked === false && 
+            document
+              .getElementById(`${tag.id.split("-")[0]}-gondola`).checked === false 
+
+          )
+        ) {
+          document
+            .getElementById(`${tag.id.split("-")[0]}-noproduct`)
+            .removeAttribute("disabled");
+        } else {
         document
           .getElementById(`${tag.id.split("-")[0]}-noproduct`)
           .setAttribute("disabled", true);
-      } else {
-        document
-          .getElementById(`${tag.id.split("-")[0]}-noproduct`)
-          .removeAttribute("disabled");
       }
     }
   }
