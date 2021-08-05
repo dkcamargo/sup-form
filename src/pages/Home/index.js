@@ -100,7 +100,7 @@ export default class Home extends Component {
     () => {
       this.renderError("Geolocalización no activada");
       return
-    }
+    },
     {
       enableHighAccuracy: true
     });
