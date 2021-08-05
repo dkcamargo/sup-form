@@ -96,6 +96,9 @@ export default class Home extends Component {
         cordy: position.coords.latitude,
         cordx: position.coords.longitude
       });
+    },
+    {
+      enableHighAccuracy: true
     });
 
     this.getOpttions();
