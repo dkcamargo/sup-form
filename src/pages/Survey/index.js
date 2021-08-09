@@ -69,30 +69,20 @@ export default class Survey extends Component {
     if (tag.id.split("-")[1] === "noproduct") {
       if (tag.checked) {
         document
-          .getElementById(`${tag.id.split("-")[0]}-gondola`)
-          .setAttribute("disabled", true);
-        document
           .getElementById(`${tag.id.split("-")[0]}-pricing`)
           .setAttribute("disabled", true);
       } else {
-        document
-          .getElementById(`${tag.id.split("-")[0]}-gondola`)
-          .removeAttribute("disabled");
         document
           .getElementById(`${tag.id.split("-")[0]}-pricing`)
           .removeAttribute("disabled");
       }
     } else if (
-      tag.id.split("-")[1] === "gondola" ||
       tag.id.split("-")[1] === "pricing"
     ) {
       if (
           !tag.checked && (
             document
-              .getElementById(`${tag.id.split("-")[0]}-pricing`).checked === false && 
-            document
-              .getElementById(`${tag.id.split("-")[0]}-gondola`).checked === false 
-
+              .getElementById(`${tag.id.split("-")[0]}-pricing`).checked === false
           )
         ) {
           document
@@ -314,20 +304,15 @@ export default class Survey extends Component {
                   name: "noproduct"
                 },
                 {
-                  label: "Gondola",
-                  value: "gondola",
-                  name: "gondola"
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
                 },
                 {
                   label: "Afiche",
                   value: "afiche",
                   name: "poster"
                 },
-                {
-                  label: "Precificación",
-                  value: "precificacion",
-                  name: "pricing"
-                }
               ]}
               lines={this.state.redcomLines}
               onChange={this.handleTableCheckSelect}
@@ -349,13 +334,16 @@ export default class Survey extends Component {
                   value: "sin-producto",
                   name: "noproduct"
                 },
-                { label: "Gondola", value: "gondola", name: "gondola" },
-                { label: "Afiche", value: "afiche", name: "poster" },
                 {
                   label: "Precificación",
                   value: "precificacion",
                   name: "pricing"
-                }
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
               ]}
               lines={this.state.sodaLines}
               onChange={this.handleTableCheckSelect}
@@ -370,13 +358,16 @@ export default class Survey extends Component {
                   value: "sin-producto",
                   name: "noproduct"
                 },
-                { label: "Gondola", value: "gondola", name: "gondola" },
-                { label: "Afiche", value: "afiche", name: "poster" },
                 {
                   label: "Precificación",
                   value: "precificacion",
                   name: "pricing"
-                }
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
               ]}
               lines={this.state.waterLines}
               onChange={this.handleTableCheckSelect}

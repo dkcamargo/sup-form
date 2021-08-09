@@ -10,9 +10,21 @@
   padding: 1.6rem;
 }
 
-.continue h2 {
+.continue .title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.continue .title .loading {
+  height: 2rem;
+  width: 10%;
+}
+
+.continue .title h2 {
   font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
+  width: 90%;
 }
 
 .progresses > * {

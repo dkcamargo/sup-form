@@ -89,9 +89,6 @@ export default class Seller extends Component {
           "tableData",
           JSON.stringify(tableData.data)
         );
-        this.setState({
-          loadingLogIn: false
-        });
       } catch (error) {
         console.log(error);
         this.renderError(
@@ -99,10 +96,11 @@ export default class Seller extends Component {
             ? error.response.data.error
             : "Error no identificado al cargar datos de relevamiento"
         );
+        return;
+      } finally {
         this.setState({
           loadingLogIn: false
         });
-        return;
       }
     }
 
