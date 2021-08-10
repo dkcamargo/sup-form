@@ -21,6 +21,9 @@ export default class Seller extends Component {
   };
 
   renderError = (errorMessage) => {
+    /**
+     * RENDER AN ERROR MESSAGE FOR  1500ms AND THEN UNREDER IT
+     */
     this.setState({ error: errorMessage });
     setTimeout(() => {
       this.setState({ error: "" });
@@ -77,14 +80,27 @@ export default class Seller extends Component {
       thisProgressId = lastId + 1;
     }
 
+
+
+    /**
+     * CONFIGURING THE PRODUCTS IN THE FORM BY SUCURSAL
+     * ONLY IF ITS SURVEY BECAUSE COACHING DOES NOT NEED THE PRODUCTS
+     */
     if (evaluationType === "relevamiento") {
+      /**
+       * DISABLING THE BUTTON TILL THE NEXT PAGE DATA ARE RECIVED
+       */
       this.setState({ loadingSend: true });
       try {
-        // get tables datas
+        /**
+         * GET ALL THE PRODUCTS FOR EACH TABLE FROM API
+         */
         const tableData = await api.get(
           `/products/${window.localStorage.getItem("sucursal")}`
         );
-
+        /**\
+         * SET THE PRODUCTS FOR EACH TABLE IN LS
+         */
         window.localStorage.setItem(
           "tableData",
           JSON.stringify(tableData.data)
@@ -96,45 +112,68 @@ export default class Seller extends Component {
             ? error.response.data.error
             : "Error no identificado al cargar datos de relevamiento"
         );
+        /**
+         * RETURN SO IT DONT REDIRECT TO THE NEXT PAGE
+         */
         return;
       } finally {
+        /**
+         * UNSET THE LOADING ASPECT
+         */
         this.setState({
           loadingLogIn: false
         });
       }
     }
 
-    // redirect and send variables to the next page
+    /**
+     * 
+     *  redirect and send variables to the next page
+     */ 
     return this.props.history.push(
       `/${evaluationType === "relevamiento" ? "relevamiento" : "pre-coaching"}`,
       {
-        formType: evaluationType,
-        clientCountage: 1,
+        formType: evaluationType, 
+        clientCountage: 1, 
         seller: this.state.selectedSeller,
         sellerName: this.state.sellers.find(
           (seller) => seller.value === this.state.selectedSeller
         ).label,
         route: this.state.selectedRoute,
-        id: thisProgressId,
-        stats: 0
+        id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
+        stats: 0 //POINTAGE IN COACHING
       }
     );
   };
 
   handleContinue = () => {
+    /**
+     * REDIRECT TO CONTINUE ROUTE ../Continue/index
+     */
     return this.props.history.push("/continuar");
   };
 
   handleLogOut = () => {
+    /**
+     * CLEAR THE LS AND GO BACK TO LOGING PAGE
+     * IT DELETES ALL YOUR PROGRESSES
+     */
     window.localStorage.clear();
     return this.props.history.push("/");
   };
 
   getSellers = async () => {
+    /**
+     * GET ALL SELLERS BY SUPERVISOR AND SUCURSAL FROM API
+     * 
+     */
     try {
       const supervisor = window.localStorage.getItem("supervisor");
       const sucursal = window.localStorage.getItem("sucursal");
       const response = await api.get(`/sellers/${sucursal}/${supervisor}`);
+      /**
+       * SET THE SELECT OPTIONS
+       */
       this.setState({
         sellers: response.data.map((row) => {
           return { value: row.id, label: row.name };
@@ -148,17 +187,26 @@ export default class Seller extends Component {
       );
     }
   };
+
   componentDidMount() {
+    /**
+     * GET THE SELLERS
+     */
     this.getSellers();
   }
 
   constructor(props) {
     super(props);
-
+    /**
+     * DEFINE A FIRSTLY DATA FOR THE SELECTS OPTIONS
+     */
     this.state.selectedSeller = "";
     this.state.sellers = [];
   }
   render() {
+    /**
+     * JSX BABY
+     */
     return (
       <>
         <Header />

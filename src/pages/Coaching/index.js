@@ -44,7 +44,14 @@ export default class Coaching extends Component {
     }, 4000);
   };
 
-  getStats() {
+  getStats(actualStats) {
+    /**
+     * TODO
+     * SEPARATE EVERY QUESTION COUNTAGE IN A DIFERENT COUNTER ADD IT ALL TO A OBJECT
+     * GET THE DATA FROM ACTUAL STATS {default=0}
+     * ADD THE COUNTAGES
+     * RETURN THE NEW STATS OBJECT
+     */
     let stats = 0;
     stats = this.state.lastOrder ? stats + 1 : stats;
     stats = this.state.sellPlan ? stats + 1 : stats;
@@ -121,9 +128,13 @@ export default class Coaching extends Component {
         `El campo de nombre del cliente no puede ser vacio`
       );
     }
-    this.props.location.state.stats =
-      this.props.location.state.stats + this.getStats();
+    /**
+     * THS STATS IN A OBJECT AND RE INSERT IT INTO THE LOCATION STATE
+     */
+    this.props.location.state.stats = this.getStats(this.props.location.state.stats);
+      
     this.setState({ loadingSend: true });
+
     try {
       await api.post("/coaching", data);
       return this.props.history.push("/fin", this.props.location.state);
@@ -148,13 +159,29 @@ export default class Coaching extends Component {
     } catch (error) {
       this.props.history.push("/preventista");
     }
+
+    /**
+     * CONFIGURING GEOLOCALIZATION 
+     */
+    if (!("geolocation" in navigator)) {
+      this.renderError("Geolocalización no activada");
+    }
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
         cordy: position.coords.latitude,
         cordx: position.coords.longitude
       });
+    },
+    () => {
+      this.renderError("Geolocalización no activada");
+      return
+    },
+    {
+      enableHighAccuracy: true
     });
   }
+
   render() {
     const { clientCountage } = this.state;
     return (
