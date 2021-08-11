@@ -106,6 +106,49 @@ export default class Seller extends Component {
     return;
   };
 
+  /**
+   * GET ALL THE STATISTICS PERCENTAGES
+   * @param {obj for the countage of the coaching statistics} stats
+   * @param {divisor for taking the average} divisor 
+   * @returns object with percentage for each question
+   */
+  getFinalStats = (stats, formsSubmited, questionsQuantity) => {
+      const {
+        lastOrder,
+        sellPlan,
+        pop,
+        stock,
+        exposition,
+        competitorSales,
+        sales,
+        sellPropouse,
+        deliveryPrecautions,
+        popPricing, 
+        timeManagement,
+        catalogue
+      } = stats;
+
+      let total = 0;
+      for(var stat in stats) {
+        total = total + stats[stat]
+      }
+      return {
+        lastOrder: lastOrder / formsSubmited,
+        sellPlan: sellPlan / formsSubmited,
+        pop: pop / formsSubmited,
+        stock: stock / formsSubmited,
+        exposition: exposition / formsSubmited,
+        competitorSales: competitorSales / formsSubmited,
+        sales: sales / formsSubmited,
+        sellPropouse: sellPropouse / formsSubmited,
+        deliveryPrecautions: deliveryPrecautions / formsSubmited,
+        popPricing: popPricing / formsSubmited,
+        timeManagement: timeManagement / formsSubmited,
+        catalogue: catalogue / formsSubmited,
+        total: total / (formsSubmited * questionsQuantity)
+      }
+  };
+
   componentDidMount() {
     try {
       const { clientCountage, formType } = this.props.location.state;
@@ -135,9 +178,7 @@ export default class Seller extends Component {
               id: id,
               sellerName: sellerName,
               postCoaching: true,
-              // stats / coaching qtd plus question number qtd
-              finalStats:
-                this.props.location.state.stats / (coachingClientCountage * 12)
+              finalStats: this.getFinalStats(this.props.location.state.stats, clientCountage, 12)
             });
           }
         }

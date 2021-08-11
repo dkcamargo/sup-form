@@ -52,20 +52,53 @@ export default class Coaching extends Component {
      * ADD THE COUNTAGES
      * RETURN THE NEW STATS OBJECT
      */
-    let stats = 0;
-    stats = this.state.lastOrder ? stats + 1 : stats;
-    stats = this.state.sellPlan ? stats + 1 : stats;
-    stats = this.state.pop ? stats + 1 : stats;
-    stats = this.state.stock ? stats + 1 : stats;
-    stats = this.state.exposition ? stats + 1 : stats;
-    stats = this.state.competitorSales ? stats + 1 : stats;
-    stats = this.state.sales ? stats + 1 : stats;
-    stats = this.state.sellPropouse ? stats + 1 : stats;
-    stats = this.state.deliveryPrecautions ? stats + 1 : stats;
-    stats = this.state.popPricing ? stats + 1 : stats;
-    stats = this.state.timeManagement ? stats + 1 : stats;
-    stats = this.state.catalogue ? stats + 1 : stats;
-    return stats;
+    //STATISTICS
+    const {
+      lastOrder,
+      sellPlan,
+      pop,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue
+    } = this.state;
+    /*
+    stats: {
+      lastOrder: 0.0,
+      sellPlan: 0.0,
+      pop: 0.0,
+      stock: 0.0,
+      exposition: 0.0,
+      competitorSales: 0.0,
+      sales: 0.0,
+      sellPropouse: 0.0,
+      deliveryPrecautions: 0.0,
+      popPricing: 0.0,
+      timeManagement: 0.0,
+      catalogue: 0.0,
+      total: 0.0 //AVG
+    } //POINTAGE IN COACHING
+    */
+    let newStats = {};
+    newStats.lastOrder = lastOrder ? actualStats.lastOrder + 1 : actualStats.lastOrder;
+    newStats.sellPlan = sellPlan ? actualStats.sellPlan + 1 : actualStats.sellPlan;
+    newStats.pop = pop ? actualStats.pop + 1 : actualStats.pop;
+    newStats.stock = stock ? actualStats.stock + 1 : actualStats.stock;
+    newStats.exposition = exposition ? actualStats.exposition + 1 : actualStats.exposition;
+    newStats.competitorSales = competitorSales ? actualStats.competitorSales + 1 : actualStats.competitorSales;
+    newStats.sales = sales ? actualStats.sales + 1 : actualStats.sales;
+    newStats.sellPropouse = sellPropouse ? actualStats.sellPropouse + 1 : actualStats.sellPropouse;
+    newStats.deliveryPrecautions = deliveryPrecautions ? actualStats.deliveryPrecautions + 1 : actualStats.deliveryPrecautions;
+    newStats.popPricing = popPricing ? actualStats.popPricing + 1 : actualStats.popPricing;
+    newStats.timeManagement = timeManagement ? actualStats.timeManagement + 1 : actualStats.timeManagement;
+    newStats.catalogue = catalogue ? actualStats.catalogue + 1 : actualStats.catalogue;
+
+    return newStats;
   }
 
   handleCoachingSubmit = async () => {

@@ -20,7 +20,7 @@ export default class PostCoaching extends Component {
     cordy: 0.0,
     cordx: 0.0,
     error: "",
-    finalStats: 0.0
+    finalStats: []
   };
 
   renderError = (errorMessage) => {
@@ -62,7 +62,7 @@ export default class PostCoaching extends Component {
       commentsText,
       strongPoints,
       weakPoints,
-      finalStats,
+      finalStats: finalStats.total,
       cordx,
       cordy
     };
@@ -113,8 +113,24 @@ export default class PostCoaching extends Component {
 
     try {
       const { finalStats } = this.props.location.state;
+
+      const statsData = [
+        {color: 'primary',data: finalStats.lastOrder, label: "¿Indaga sobre el último pedido?"},
+        {color: 'secondary',data: finalStats.sellPlan, label: "¿Planifica el pedido antes de ingresar al PDV?"},
+        {color: 'danger',data: finalStats.pop, label: "¿POP?"},
+        {color: 'info',data: finalStats.stock, label: "¿Verifica el stock en todas las áreas del PDV?"},
+        {color: 'success',data: finalStats.exposition, label: "¿Trabaja en una mayor exposición de los productos?"},
+        {color: 'warning',data: finalStats.competitorSales, label: "¿Indaga y verifica la situación y las acciones de la competencia?"},
+        {color: 'primary',data: finalStats.sales, label: "¿Comunica las acciones comerciales vigentes?"},
+        {color: 'secondary',data: finalStats.sellPropouse, label: "¿Realiza la propuesta de ventas, ofreciendo todos los productos?"},
+        {color: 'danger',data: finalStats.deliveryPrecautions, label: "¿Toma todos los recaudos necesarios para facilitar la entrega? (pedido, dinero, horario, etc.)"},
+        {color: 'info',data: finalStats.popPricing, label: "¿Renueva, coloca y pone precios al POP? Siguiendo criterios del PDV"},
+        {color: 'success',data: finalStats.timeManagement, label: "¿Administra el tiempo de permanencia en el PDV?"},
+        {color: 'warning',data: finalStats.catalogue, label: "Uso de Catálogo"},
+        {color: 'primary',data: finalStats.total, label: "Puntaje final:"},
+      ]
       this.setState({
-        finalStats
+        finalStats: statsData
       });
     } catch (error) {
       this.props.history.push("/preventista");
@@ -139,21 +155,27 @@ export default class PostCoaching extends Component {
                 {this.state.error}
               </div>
             ) : null}
+            {
+              this.state.finalStats.map(stat => {
+                return(
+                <div
+                  className={`alert alert-${stat.color}`}
+                  role="alert"
+                  id="puntaje"
+                  style={{marginBottom: "1.6rem" }}
+                >
+                    <div>{stat.label}</div>
+                    <div>
+                      {Math.round((stat.data + Number.EPSILON) * 10000) /
+                        100}
+                      %
+                    </div>
+                </div>
 
-            <div
-              className="alert alert-info"
-              role="alert"
-              id="puntaje"
-              style={{ marginBottom: "1.6rem" }}
-            >
-              <div>Puntaje final:</div>
-              <div>
-                {Math.round((this.state.finalStats + Number.EPSILON) * 10000) /
-                  100}
-                %
-              </div>
-            </div>
-
+                )
+              })
+            }
+            
             <Switch
               label="Comentarios?"
               name="comments"

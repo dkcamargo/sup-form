@@ -52,6 +52,11 @@ export default class Seller extends Component {
     }
   };
 
+  /**
+   * WHEN STARTING A FORM RETRIVING DATA AND CONDITIONALLY REDIRECTING
+   * @param {click event} event 
+   * @returns 
+   */
   handleSellerSubmit = async (event) => {
     const { evaluationType, selectedSeller, selectedRoute } = this.state;
 
@@ -141,9 +146,22 @@ export default class Seller extends Component {
         ).label,
         route: this.state.selectedRoute,
         id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
-        stats: 0 //POINTAGE IN COACHING
+        //STATISTICS
+        stats: {
+          lastOrder: 0.0,
+          sellPlan: 0.0,
+          pop: 0.0,
+          stock: 0.0,
+          exposition: 0.0,
+          competitorSales: 0.0,
+          sales: 0.0,
+          sellPropouse: 0.0,
+          deliveryPrecautions: 0.0,
+          popPricing: 0.0,
+          timeManagement: 0.0,
+          catalogue: 0.0
       }
-    );
+    });
   };
 
   handleContinue = () => {
