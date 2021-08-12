@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import 'dotenv'
 import Header from "../../components/Header";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
@@ -9,8 +10,8 @@ import "./end.css";
 export default class Seller extends Component {
   state = {
     lastOne: false,
-    surveyClientCountage: 30,
-    coachingClientCountage: 12
+    surveyClientCountage: 1,
+    coachingClientCountage: 1
   };
 
   handleSameRoute = (e) => {
@@ -153,13 +154,18 @@ export default class Seller extends Component {
     try {
       const { clientCountage, formType } = this.props.location.state;
       const { surveyClientCountage, coachingClientCountage } = this.state;
+      console.log(`
+        ${clientCountage}
+        ${coachingClientCountage}
+        ${`${clientCountage}` === `${coachingClientCountage}`}
+      `)
 
       if (formType === "relevamiento") {
-        if (clientCountage === surveyClientCountage) {
+        if (`${clientCountage}` === `${surveyClientCountage}`) {
           this.setState({ lastOne: true });
         }
       } else if (formType === "coaching") {
-        if (clientCountage === coachingClientCountage) {
+        if (`${clientCountage}` === `${coachingClientCountage}`) {
           if (this.props.location.state.postCoaching) {
             this.setState({ lastOne: true });
           } else {
@@ -195,8 +201,8 @@ export default class Seller extends Component {
   constructor(props) {
     super(props)
 
-    this.state.coachingClientCountage = process.env.COACHING_CLIENTS || 12;
-    this.state.surveyClientCountage = process.env.SURVEY_CLIENTS || 30;
+    this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS;
+    this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 30;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // conditional rendering the NextClient btn
