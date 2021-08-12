@@ -9,8 +9,8 @@ import "./end.css";
 export default class Seller extends Component {
   state = {
     lastOne: false,
-    surveyClientCountage: process.env.SURVEY_CLIENTS,
-    coachingClientCountage: process.env.COACHING_CLIENTS
+    surveyClientCountage: 30,
+    coachingClientCountage: 12
   };
 
   handleSameRoute = (e) => {
@@ -190,6 +190,13 @@ export default class Seller extends Component {
       this.props.history.push("/preventista");
       return;
     }
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state.coachingClientCountage = process.env.COACHING_CLIENTS || 12;
+    this.state.surveyClientCountage = process.env.SURVEY_CLIENTS || 30;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // conditional rendering the NextClient btn
