@@ -10,7 +10,7 @@ export default class Seller extends Component {
   state = {
     lastOne: false,
     surveyClientCountage: 30,
-    coachingClientCountage: 2
+    coachingClientCountage: 12
   };
 
   handleSameRoute = (e) => {

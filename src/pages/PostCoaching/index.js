@@ -218,7 +218,9 @@ export default class PostCoaching extends Component {
                   <PercentageAlert
                   colors={stat.colors}
                   >
-                      <div>{stat.label}</div>
+                      <div
+                        style={{maxWidth: '80%'}}
+                      >{stat.label}</div>
                       <div>
                         {Math.round((stat.data + Number.EPSILON) * 10000) /
                           100}
