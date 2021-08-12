@@ -55,6 +55,22 @@ export default class PostCoaching extends Component {
       ? "Sin Comentarios"
       : this.state.commentsText;
 
+    const {
+      lastOrder,
+      sellPlan,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      popStat: pop,
+      total
+    } = this.props.location.state.finalStats;
+
     const data = {
       supervisor,
       sucursal,
@@ -63,23 +79,23 @@ export default class PostCoaching extends Component {
       commentsText,
       strongPoints,
       weakPoints,
-      lastOrder: finalStats.lastOrder,
-      sellPlan: finalStats.sellPlan,
-      pop: finalStats.pop,
-      stock: finalStats.stock,
-      exposition: finalStats.exposition,
-      competitorSales: finalStats.competitorSales,
-      sales: finalStats.sales,
-      sellPropouse: finalStats.sellPropouse,
-      deliveryPrecautions: finalStats.deliveryPrecautions,
-      popPricing: finalStats.popPricing,
-      timeManagement: finalStats.timeManagement,
-      catalogue: finalStats.catalogue,
-      total: finalStats.total,
+      lastOrder,
+      sellPlan,
+      pop,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      total,
       cordx,
       cordy
     };
-
+    console.log(data)
     this.setState({ loadingSend: true });
     try {
       await api.post("/post-coaching", data);
@@ -174,7 +190,7 @@ export default class PostCoaching extends Component {
       const statsData = [
         {colors: this.getColorByPercentage(finalStats.lastOrder), data: finalStats.lastOrder, label: "¿Indaga sobre el último pedido?"},
         {colors: this.getColorByPercentage(finalStats.sellPlan), data: finalStats.sellPlan, label: "¿Planifica el pedido antes de ingresar al PDV?"},
-        {colors: this.getColorByPercentage(finalStats.pop), data: finalStats.pop, label: "¿POP?"},
+        {colors: this.getColorByPercentage(finalStats.popStat), data: finalStats.popStat, label: "¿POP?"},
         {colors: this.getColorByPercentage(finalStats.stock), data: finalStats.stock, label: "¿Verifica el stock en todas las áreas del PDV?"},
         {colors: this.getColorByPercentage(finalStats.exposition), data: finalStats.exposition, label: "¿Trabaja en una mayor exposición de los productos?"},
         {colors: this.getColorByPercentage(finalStats.competitorSales), data: finalStats.competitorSales, label: "¿Indaga y verifica la situación y las acciones de la competencia?"},
@@ -213,10 +229,11 @@ export default class PostCoaching extends Component {
               </div>
             ) : null}
             {
-              this.state.finalStats.map(stat => {
+              this.state.finalStats.map((stat, index) => {
                 return(
                   <PercentageAlert
                   colors={stat.colors}
+                  key={index}
                   >
                       <div
                         style={{maxWidth: '80%'}}

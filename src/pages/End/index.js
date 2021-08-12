@@ -10,7 +10,7 @@ export default class Seller extends Component {
   state = {
     lastOne: false,
     surveyClientCountage: 30,
-    coachingClientCountage: 12
+    coachingClientCountage: 1
   };
 
   handleSameRoute = (e) => {
@@ -135,7 +135,7 @@ export default class Seller extends Component {
       return {
         lastOrder: lastOrder / formsSubmited,
         sellPlan: sellPlan / formsSubmited,
-        pop: pop / formsSubmited,
+        popStat: pop / formsSubmited,
         stock: stock / formsSubmited,
         exposition: exposition / formsSubmited,
         competitorSales: competitorSales / formsSubmited,
