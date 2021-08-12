@@ -9,8 +9,8 @@ import "./end.css";
 export default class Seller extends Component {
   state = {
     lastOne: false,
-    surveyClientCountage: 30,
-    coachingClientCountage: 1
+    surveyClientCountage: process.env.SURVEY_CLIENTS,
+    coachingClientCountage: process.env.COACHING_CLIENTS
   };
 
   handleSameRoute = (e) => {
