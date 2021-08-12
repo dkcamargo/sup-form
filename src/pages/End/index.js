@@ -154,11 +154,7 @@ export default class Seller extends Component {
     try {
       const { clientCountage, formType } = this.props.location.state;
       const { surveyClientCountage, coachingClientCountage } = this.state;
-      console.log(`
-        ${clientCountage}
-        ${coachingClientCountage}
-        ${`${clientCountage}` === `${coachingClientCountage}`}
-      `)
+      
 
       if (formType === "relevamiento") {
         if (`${clientCountage}` === `${surveyClientCountage}`) {

@@ -95,7 +95,6 @@ export default class PostCoaching extends Component {
       cordx,
       cordy
     };
-    console.log(data)
     this.setState({ loadingSend: true });
     try {
       await api.post("/post-coaching", data);
