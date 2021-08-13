@@ -31,12 +31,14 @@ export default class Survey extends Component {
     surveyRedcom: {},
     surveySoda: {},
     surveyWater: {},
+    surveyWines: {},
     exhibition: {},
     cordy: 0.0,
     cordx: 0.0,
     redcomLines: {},
     waterLines: {},
-    sodaLines: {}
+    sodaLines: {},
+    winesLines: {}
   };
 
   constructor(props) {
@@ -51,6 +53,9 @@ export default class Survey extends Component {
     this.state.sodaLines = JSON.parse(
       window.localStorage.getItem("tableData")
     ).soda;
+    this.state.winesLines = JSON.parse(
+      window.localStorage.getItem("tableData")
+    ).wine;
   }
 
   renderError = (errorMessage) => {
@@ -127,6 +132,8 @@ export default class Survey extends Component {
       this.setState({ surveySoda: updatedData });
     } else if (container === "survey-water-compentence-products") {
       this.setState({ surveyWater: updatedData });
+    } else if (container === "survey-wines-compentence-products") {
+      this.setState({ surveyWines: updatedData });
     } else if (container === "exhibition") {
       this.setState({ exhibition: updatedData });
     }
@@ -222,6 +229,9 @@ export default class Survey extends Component {
       ),
       surveyWater: this.handleTableSelectByContainerId(
         "survey-water-compentence-products"
+      ),
+      surveyWines: this.handleTableSelectByContainerId(
+        "survey-wines-compentence-products"
       ),
       exhibition: this.handleTableSelectByContainerId("exhibition")
     });
@@ -327,7 +337,7 @@ export default class Survey extends Component {
             />
 
             <TableCheckToggleButtons
-              label="Relevamiento Competencia Gaseosas:"
+              label="Relevamiento Competencia de Gaseosas:"
               columns={[
                 {
                   label: "Sin Producto",
@@ -351,7 +361,7 @@ export default class Survey extends Component {
             />
 
             <TableCheckToggleButtons
-              label="Relevamiento Competencia Aguas:"
+              label="Relevamiento Competencia de Aguas:"
               columns={[
                 {
                   label: "Sin Producto",
@@ -372,6 +382,30 @@ export default class Survey extends Component {
               lines={this.state.waterLines}
               onChange={this.handleTableCheckSelect}
               name="survey-water-compentence-products"
+            />
+
+            <TableCheckToggleButtons
+              label="Relevamiento Competencia de Vinos:"
+              columns={[
+                {
+                  label: "Sin Producto",
+                  value: "sin-producto",
+                  name: "noproduct"
+                },
+                {
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
+              ]}
+              lines={this.state.winesLines}
+              onChange={this.handleTableCheckSelect}
+              name="survey-wines-compentence-products"
             />
             <Textarea
               label="Comentarios Generales:"
