@@ -59,18 +59,22 @@ export default class Home extends Component {
     }
     try {
       this.setState({ loadingLogIn: true });
-      await api.post("/login", {
+      const response = await api.post("/login", {
         userId,
         password,
         sucursal,
         cordy,
         cordx
       });
+
+      const userData = response.data.user;
+
       this.setState({ loadingLogIn: false });
       //load session cookie
       window.localStorage.setItem("logged", true);
       window.localStorage.setItem("supervisor", userId);
       window.localStorage.setItem("sucursal", sucursal);
+      window.localStorage.setItem("roll", userData.roll);
       // redirect now
       this.props.history.push("/preventista");
     } catch (error) {
@@ -96,10 +100,10 @@ export default class Home extends Component {
         cordy: position.coords.latitude,
         cordx: position.coords.longitude
       });
-    });
+    },
+    {enableHighAccuracy: true});
 
     this.getOpttions();
-    console.log(process.env.NODE_ENV);
   }
 
   render() {

@@ -1,0 +1,15 @@
+#statistics {
+  background: #fff;
+  width: 95%;
+  max-width: 54rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  padding: 1.6rem;
+  /* padding-top: 0; */
+}
+
+#statistics h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.6rem;
+}

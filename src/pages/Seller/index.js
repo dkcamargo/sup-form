@@ -5,6 +5,7 @@ import Select from "../../components/Select";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
 import Header from "../../components/Header";
+import Nav from "../../components/Nav";
 import api from "../../services/api";
 
 import "./seller.css";
@@ -167,6 +168,7 @@ export default class Seller extends Component {
         <Auth />
         <FormContainer>
           <main id="seller">
+            <Nav active="form"/>
             <h2>Elección de Ruta</h2>
             <hr />
             <Select
