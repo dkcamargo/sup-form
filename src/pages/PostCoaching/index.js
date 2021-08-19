@@ -8,6 +8,7 @@ import Switch from "../../components/Switch";
 import api from "../../services/api";
 
 import "./post_coaching.css";
+import {PercentageAlert} from "./post_coaching.js";
 import FormContainer from "../../components/FormContainer";
 
 export default class PostCoaching extends Component {
@@ -20,7 +21,7 @@ export default class PostCoaching extends Component {
     cordy: 0.0,
     cordx: 0.0,
     error: "",
-    finalStats: 0.0
+    finalStats: []
   };
 
   renderError = (errorMessage) => {
@@ -54,6 +55,22 @@ export default class PostCoaching extends Component {
       ? "Sin Comentarios"
       : this.state.commentsText;
 
+    const {
+      lastOrder,
+      sellPlan,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      popStat: pop,
+      total
+    } = this.props.location.state.finalStats;
+
     const data = {
       supervisor,
       sucursal,
@@ -62,11 +79,22 @@ export default class PostCoaching extends Component {
       commentsText,
       strongPoints,
       weakPoints,
-      finalStats,
+      lastOrder,
+      sellPlan,
+      pop,
+      stock,
+      exposition,
+      competitorSales,
+      sales,
+      sellPropouse,
+      deliveryPrecautions,
+      popPricing,
+      timeManagement,
+      catalogue,
+      total,
       cordx,
       cordy
     };
-
     this.setState({ loadingSend: true });
     try {
       await api.post("/post-coaching", data);
@@ -86,23 +114,101 @@ export default class PostCoaching extends Component {
     return this.props.history.push("/fin", this.props.location.state);
   };
 
+  getColorByPercentage(percentage) {
+    let red;
+    let green
+    /**
+     * PARSING TO WORK 0 => 100
+     */
+    percentage = percentage * 100;
+
+    /**\
+     * IF THERE'S MORE THEN 50
+     * THIS IS THE CONDITION FOR FLOWING THRU THE YELLOW
+     * 0% 50% WE INCREASE THE GREEN VALUE
+     * 0% R255 G0 RED
+     * 50% R255 G255 = YELLOW
+     * 
+     * AFTER THAT WE HAVE TO DECREASE THE RED VALUE
+     * 100% R0 G255 = GREEN
+     */
+    if(percentage - 50 <= 0) {
+      red = 255;
+      green = ((percentage) * 255 ) / 50;
+    } else {
+      green = 255;
+      red = 255 - ((percentage - 50 ) * 255 ) / 50;
+    }
+
+    /**
+     * ROUNDING CUZ WE ARE WORKING WITH INTEGERS
+     */
+    red = Math.round(red + Number.EPSILON);
+    green = Math.round(green + Number.EPSILON);
+
+    /**
+     * COLOR = TRUE COLOR BUT 50% DARKER
+     * BACKGROUND = TRUE COLOR WITH BUT 0.3 OPACITY
+     * 
+     * a little bit of blue bc it looks noice
+     */
+    return {
+      color: `rgb(${red - (red / 2)},${green - (green / 2)}, 50)`,
+      backgroundColor: `rgba(${red},${green}, 50, 0.3)`
+    };
+  }
+  
   componentDidMount() {
+    /**
+     * CONFIGURING GEOLOCALIZATION 
+     */
+    if (!("geolocation" in navigator)) {
+      this.renderError("Geolocalización no activada");
+    }
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
         cordy: position.coords.latitude,
         cordx: position.coords.longitude
       });
+    },
+    () => {
+      this.renderError("Geolocalización no activada");
+      return
+    },
+    {
+      enableHighAccuracy: true
     });
+
+
+    
 
     try {
       const { finalStats } = this.props.location.state;
+
+      const statsData = [
+        {colors: this.getColorByPercentage(finalStats.lastOrder), data: finalStats.lastOrder, label: "¿Indaga sobre el último pedido?"},
+        {colors: this.getColorByPercentage(finalStats.sellPlan), data: finalStats.sellPlan, label: "¿Planifica el pedido antes de ingresar al PDV?"},
+        {colors: this.getColorByPercentage(finalStats.popStat), data: finalStats.popStat, label: "¿POP?"},
+        {colors: this.getColorByPercentage(finalStats.stock), data: finalStats.stock, label: "¿Verifica el stock en todas las áreas del PDV?"},
+        {colors: this.getColorByPercentage(finalStats.exposition), data: finalStats.exposition, label: "¿Trabaja en una mayor exposición de los productos?"},
+        {colors: this.getColorByPercentage(finalStats.competitorSales), data: finalStats.competitorSales, label: "¿Indaga y verifica la situación y las acciones de la competencia?"},
+        {colors: this.getColorByPercentage(finalStats.sales), data: finalStats.sales, label: "¿Comunica las acciones comerciales vigentes?"},
+        {colors: this.getColorByPercentage(finalStats.sellPropouse), data: finalStats.sellPropouse, label: "¿Realiza la propuesta de ventas, ofreciendo todos los productos?"},
+        {colors: this.getColorByPercentage(finalStats.deliveryPrecautions), data: finalStats.deliveryPrecautions, label: "¿Toma todos los recaudos necesarios para facilitar la entrega? (pedido, dinero, horario, etc.)"},
+        {colors: this.getColorByPercentage(finalStats.popPricing), data: finalStats.popPricing, label: "¿Renueva, coloca y pone precios al POP? Siguiendo criterios del PDV"},
+        {colors: this.getColorByPercentage(finalStats.timeManagement), data: finalStats.timeManagement, label: "¿Administra el tiempo de permanencia en el PDV?"},
+        {colors: this.getColorByPercentage(finalStats.catalogue), data: finalStats.catalogue, label: "Uso de Catálogo"},
+        {colors: this.getColorByPercentage(finalStats.total), data: finalStats.total, label: "Puntaje final:"},
+      ]
       this.setState({
-        finalStats
+        finalStats: statsData
       });
     } catch (error) {
       this.props.history.push("/preventista");
     }
   }
+
   render() {
     return (
       <>
@@ -121,21 +227,26 @@ export default class PostCoaching extends Component {
                 {this.state.error}
               </div>
             ) : null}
-
-            <div
-              className="alert alert-info"
-              role="alert"
-              id="puntaje"
-              style={{ marginBottom: "1.6rem" }}
-            >
-              <div>Puntaje final:</div>
-              <div>
-                {Math.round((this.state.finalStats + Number.EPSILON) * 10000) /
-                  100}
-                %
-              </div>
-            </div>
-
+            {
+              this.state.finalStats.map((stat, index) => {
+                return(
+                  <PercentageAlert
+                  colors={stat.colors}
+                  key={index}
+                  >
+                      <div
+                        style={{maxWidth: '80%'}}
+                      >{stat.label}</div>
+                      <div>
+                        {Math.round((stat.data + Number.EPSILON) * 10000) /
+                          100}
+                        %
+                      </div>
+                  </PercentageAlert>
+                )
+              })
+            }
+            
             <Switch
               label="Comentarios?"
               name="comments"

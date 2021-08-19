@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import 'dotenv'
 import Header from "../../components/Header";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
@@ -9,8 +10,8 @@ import "./end.css";
 export default class Seller extends Component {
   state = {
     lastOne: false,
-    surveyClientCountage: 30,
-    coachingClientCountage: 12
+    surveyClientCountage: 1,
+    coachingClientCountage: 1
   };
 
   handleSameRoute = (e) => {
@@ -106,17 +107,61 @@ export default class Seller extends Component {
     return;
   };
 
+  /**
+   * GET ALL THE STATISTICS PERCENTAGES
+   * @param {obj for the countage of the coaching statistics} stats
+   * @param {divisor for taking the average} divisor 
+   * @returns object with percentage for each question
+   */
+  getFinalStats = (stats, formsSubmited, questionsQuantity) => {
+      const {
+        lastOrder,
+        sellPlan,
+        pop,
+        stock,
+        exposition,
+        competitorSales,
+        sales,
+        sellPropouse,
+        deliveryPrecautions,
+        popPricing, 
+        timeManagement,
+        catalogue
+      } = stats;
+
+      let total = 0;
+      for(var stat in stats) {
+        total = total + stats[stat]
+      }
+      return {
+        lastOrder: lastOrder / formsSubmited,
+        sellPlan: sellPlan / formsSubmited,
+        popStat: pop / formsSubmited,
+        stock: stock / formsSubmited,
+        exposition: exposition / formsSubmited,
+        competitorSales: competitorSales / formsSubmited,
+        sales: sales / formsSubmited,
+        sellPropouse: sellPropouse / formsSubmited,
+        deliveryPrecautions: deliveryPrecautions / formsSubmited,
+        popPricing: popPricing / formsSubmited,
+        timeManagement: timeManagement / formsSubmited,
+        catalogue: catalogue / formsSubmited,
+        total: total / (formsSubmited * questionsQuantity)
+      }
+  };
+
   componentDidMount() {
     try {
       const { clientCountage, formType } = this.props.location.state;
       const { surveyClientCountage, coachingClientCountage } = this.state;
+      
 
       if (formType === "relevamiento") {
-        if (clientCountage === surveyClientCountage) {
+        if (`${clientCountage}` === `${surveyClientCountage}`) {
           this.setState({ lastOne: true });
         }
       } else if (formType === "coaching") {
-        if (clientCountage === coachingClientCountage) {
+        if (`${clientCountage}` === `${coachingClientCountage}`) {
           if (this.props.location.state.postCoaching) {
             this.setState({ lastOne: true });
           } else {
@@ -135,9 +180,7 @@ export default class Seller extends Component {
               id: id,
               sellerName: sellerName,
               postCoaching: true,
-              // stats / coaching qtd plus question number qtd
-              finalStats:
-                this.props.location.state.stats / (coachingClientCountage * 12)
+              finalStats: this.getFinalStats(this.props.location.state.stats, clientCountage, 12)
             });
           }
         }
@@ -149,6 +192,13 @@ export default class Seller extends Component {
       this.props.history.push("/preventista");
       return;
     }
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS;
+    this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 30;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // conditional rendering the NextClient btn

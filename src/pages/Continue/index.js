@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import Auth from "../../components/Auth";
 import Header from "../../components/Header";
 import FormContainer from "../../components/FormContainer";
+import api from "../../services/api";
 
 import "./continue.css";
 
@@ -11,7 +13,7 @@ export default class Seller extends Component {
     error: "",
     progresses: []
   };
-  handleContinue = (progressId) => {
+  handleContinue = async (progressId) => {
     // send all info as parameters creating a recurtion
     const { progresses } = this.state;
     // get the info of the selected progress
@@ -24,6 +26,34 @@ export default class Seller extends Component {
       sellerName,
       stats
     } = progresses.find((progress) => progress.id === progressId);
+
+    if (formType === "relevamiento") {
+      this.setState({ loadingSend: true });
+      try {
+        // get tables datas
+        const tableData = await api.get(
+          `/products/${window.localStorage.getItem("sucursal")}`
+        );
+
+        window.localStorage.setItem(
+          "tableData",
+          JSON.stringify(tableData.data)
+        );
+      } catch (error) {
+        console.log(error);
+        this.renderError(
+          error.response !== undefined
+            ? error.response.data.error
+            : "Error no identificado al cargar datos de relevamiento"
+        );
+        return;
+      } finally {
+        this.setState({
+          loadingLogIn: false
+        });
+      }
+    }
+
     // redirect to the next client form
     return this.props.history.push(`/${formType}`, {
       formType: formType,
@@ -56,7 +86,14 @@ export default class Seller extends Component {
           <main className="continue">
             {progresses !== null && progresses.length !== 0 ? (
               <>
-                <h2>Elegí la ruta que querés continuar:</h2>
+                <div className="title">
+                  <h2>Elegí la ruta que querés continuar:</h2>
+                  {this.state.loadingSend ? (
+                    <AiOutlineLoading3Quarters className="icon-spin loading" />
+                  ) : (
+                    <></>
+                  )}
+                </div>
                 <hr />
                 <div className="progresses">
                   {progresses.map((progress, index) => (
@@ -81,6 +118,7 @@ export default class Seller extends Component {
                           <button
                             onClick={() => this.handleContinue(progress.id)}
                             className="btn btn-primary btn-lg"
+                            disabled={this.state.loadingSend}
                           >
                             Continuar
                           </button>

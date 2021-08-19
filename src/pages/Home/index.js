@@ -101,7 +101,13 @@ export default class Home extends Component {
         cordx: position.coords.longitude
       });
     },
-    {enableHighAccuracy: true});
+    () => {
+      this.renderError("Geolocalización no activada");
+      return
+    },
+    {
+      enableHighAccuracy: true
+    });
 
     this.getOpttions();
   }

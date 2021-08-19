@@ -31,12 +31,14 @@ export default class Survey extends Component {
     surveyRedcom: {},
     surveySoda: {},
     surveyWater: {},
+    surveyWines: {},
     exhibition: {},
     cordy: 0.0,
     cordx: 0.0,
     redcomLines: {},
     waterLines: {},
-    sodaLines: {}
+    sodaLines: {},
+    winesLines: {}
   };
 
   constructor(props) {
@@ -51,6 +53,9 @@ export default class Survey extends Component {
     this.state.sodaLines = JSON.parse(
       window.localStorage.getItem("tableData")
     ).soda;
+    this.state.winesLines = JSON.parse(
+      window.localStorage.getItem("tableData")
+    ).wine;
   }
 
   renderError = (errorMessage) => {
@@ -69,30 +74,20 @@ export default class Survey extends Component {
     if (tag.id.split("-")[1] === "noproduct") {
       if (tag.checked) {
         document
-          .getElementById(`${tag.id.split("-")[0]}-gondola`)
-          .setAttribute("disabled", true);
-        document
           .getElementById(`${tag.id.split("-")[0]}-pricing`)
           .setAttribute("disabled", true);
       } else {
-        document
-          .getElementById(`${tag.id.split("-")[0]}-gondola`)
-          .removeAttribute("disabled");
         document
           .getElementById(`${tag.id.split("-")[0]}-pricing`)
           .removeAttribute("disabled");
       }
     } else if (
-      tag.id.split("-")[1] === "gondola" ||
       tag.id.split("-")[1] === "pricing"
     ) {
       if (
           !tag.checked && (
             document
-              .getElementById(`${tag.id.split("-")[0]}-pricing`).checked === false && 
-            document
-              .getElementById(`${tag.id.split("-")[0]}-gondola`).checked === false 
-
+              .getElementById(`${tag.id.split("-")[0]}-pricing`).checked === false
           )
         ) {
           document
@@ -137,6 +132,8 @@ export default class Survey extends Component {
       this.setState({ surveySoda: updatedData });
     } else if (container === "survey-water-compentence-products") {
       this.setState({ surveyWater: updatedData });
+    } else if (container === "survey-wines-compentence-products") {
+      this.setState({ surveyWines: updatedData });
     } else if (container === "exhibition") {
       this.setState({ exhibition: updatedData });
     }
@@ -233,6 +230,9 @@ export default class Survey extends Component {
       surveyWater: this.handleTableSelectByContainerId(
         "survey-water-compentence-products"
       ),
+      surveyWines: this.handleTableSelectByContainerId(
+        "survey-wines-compentence-products"
+      ),
       exhibition: this.handleTableSelectByContainerId("exhibition")
     });
 
@@ -314,20 +314,15 @@ export default class Survey extends Component {
                   name: "noproduct"
                 },
                 {
-                  label: "Gondola",
-                  value: "gondola",
-                  name: "gondola"
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
                 },
                 {
                   label: "Afiche",
                   value: "afiche",
                   name: "poster"
                 },
-                {
-                  label: "Precificación",
-                  value: "precificacion",
-                  name: "pricing"
-                }
               ]}
               lines={this.state.redcomLines}
               onChange={this.handleTableCheckSelect}
@@ -342,20 +337,23 @@ export default class Survey extends Component {
             />
 
             <TableCheckToggleButtons
-              label="Relevamiento Competencia Gaseosas:"
+              label="Relevamiento Competencia de Gaseosas:"
               columns={[
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
                   name: "noproduct"
                 },
-                { label: "Gondola", value: "gondola", name: "gondola" },
-                { label: "Afiche", value: "afiche", name: "poster" },
                 {
                   label: "Precificación",
                   value: "precificacion",
                   name: "pricing"
-                }
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
               ]}
               lines={this.state.sodaLines}
               onChange={this.handleTableCheckSelect}
@@ -363,24 +361,51 @@ export default class Survey extends Component {
             />
 
             <TableCheckToggleButtons
-              label="Relevamiento Competencia Aguas:"
+              label="Relevamiento Competencia de Aguas:"
               columns={[
                 {
                   label: "Sin Producto",
                   value: "sin-producto",
                   name: "noproduct"
                 },
-                { label: "Gondola", value: "gondola", name: "gondola" },
-                { label: "Afiche", value: "afiche", name: "poster" },
                 {
                   label: "Precificación",
                   value: "precificacion",
                   name: "pricing"
-                }
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
               ]}
               lines={this.state.waterLines}
               onChange={this.handleTableCheckSelect}
               name="survey-water-compentence-products"
+            />
+
+            <TableCheckToggleButtons
+              label="Relevamiento Competencia de Vinos:"
+              columns={[
+                {
+                  label: "Sin Producto",
+                  value: "sin-producto",
+                  name: "noproduct"
+                },
+                {
+                  label: "Precificación",
+                  value: "precificacion",
+                  name: "pricing"
+                },
+                {
+                  label: "Afiche",
+                  value: "afiche",
+                  name: "poster"
+                },
+              ]}
+              lines={this.state.winesLines}
+              onChange={this.handleTableCheckSelect}
+              name="survey-wines-compentence-products"
             />
             <Textarea
               label="Comentarios Generales:"

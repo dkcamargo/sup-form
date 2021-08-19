@@ -92,11 +92,25 @@ export default class PreCoaching extends Component {
   };
 
   componentDidMount() {
+    /**
+     * CONFIGURING GEOLOCALIZATION 
+     */
+     if (!("geolocation" in navigator)) {
+      this.renderError("Geolocalización no activada");
+    }
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
         cordy: position.coords.latitude,
         cordx: position.coords.longitude
       });
+    },
+    () => {
+      this.renderError("Geolocalización no activada");
+      return
+    },
+    {
+      enableHighAccuracy: true
     });
   }
   render() {
