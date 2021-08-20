@@ -157,6 +157,7 @@ export default class Survey extends Component {
       surveyRedcom,
       surveySoda,
       surveyWater,
+      surveyWines,
       exhibition,
       cordy,
       cordx
@@ -180,6 +181,7 @@ export default class Survey extends Component {
       surveyRedcom,
       surveySoda,
       surveyWater,
+      surveyWines,
       exhibition,
       cordy,
       cordx
