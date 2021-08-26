@@ -1,59 +1,40 @@
 import React, { Component } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { PieChart, Pie, Legend, Cell, Tooltip } from 'recharts';
+import { Chart } from "react-google-charts";
+
 
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
 import Header from "../../components/Header";
+import StyledPieChart from "../../components/StyledPieChart";
 import Nav from "../../components/Nav";
 import api from "../../services/api";
 
 import "./statistics.css";
 
-const RADIAN = Math.PI / 180;
-
 export default class Statistics extends Component {
   state = {
-    data: [
-      { name: 'Group A', value: 400, color: '#0275dbbb' },
-      { name: 'Group B', value: 300, color: '#5cb85cbf' },
-      { name: 'Group C', value: 300, color: '#d9534fbf' },
-      { name: 'Group D', value: 200, color: '#f0ad4ebf' },
+    surveyBySupervisor: [
+      ['Supervisor', 'Cuantidad de Relevamientos'],
+      ['Gaston Flores', 11],
+      ['Manuel Andrian', 2],
+      ['Ruben Garay', 2],
+      ['Gustavo Meza', 2],
+      ['Juan Branchi', 1],
+      ['Douglas Camargo', 1],
+  ],
+    surveyBySeller: [
+      ['Preventista', 'Cuantidad de Relevamientos'],
+      ['Facundo Regalado', 4],
+      ['Bellen Escalante', 3],
+      ['Ariel Lezcano', 3],
+      ['Gonzalo Gomez', 2],
     ]
+    
   };
 
-  getTotalData = () => {
-    const { data } = this.state;
-    const countage = data.map( el => el.value ).reduce((accumulator, value) => (accumulator + value));
-    console.log(countage);
-    return countage;
-
-  }
-  
-  renderError = (errorMessage) => {
-    this.setState({ error: errorMessage });
-    setTimeout(() => {
-      this.setState({ error: "" });
-    }, 1500);
-  };
-
-
-  CustomTooltip = (props) => {
-    if (props.active && props.payload && props.payload.length) {
-      const percentage = Math.round((props.payload[0].value / this.getTotalData() + Number.EPSILON) * 10000) / 100;
-      return (
-        <div className="custom-tooltip" style={{ background: '#E5E5E8EE'}}>
-          <p className="label">{`${props.payload[0].name}: ${percentage}%`}</p>
-        </div>
-      );
-    }
-  
-    return null;
-  };
 
   render() {
-    const { CustomTooltip } = this;
     return (
       <>
         <Header />
@@ -63,43 +44,58 @@ export default class Statistics extends Component {
             <Nav active="statistics"/>
             <h2>Estatisticas</h2>
             <hr />
-            <h3>Quantidad de Relevamientos:</h3>
+            <Chart
+              width={'100%'}
+              height="40rem"
+              chartType="ColumnChart"
+              loader={<div>Loading Chart</div>}
+              data={[
+                ['Producto', 'Hay Producto?', 'Esta Afichado?', 'Esta Precificado'],
+                ['Secco', 0.100, 0.75, 0.25],
+                ['Sierra de los Padres', 0.97, 0.48, 0.74],
+                ['Nevares', 0.35, 0.47, 0.89],
+                ['Vitalissima', 0.78, 0.99, 0.23],
+                ['Quentos', 0.98, 0.47, 0.56],
+                ['Estrella Parana', 0.35, 0.45, 0.99],
+              ]}
+              options={{
+                titleTextStyle: {
+                    fontSize: 12,
+                    fontFamily: 'Roboto lt'
+                },
+                legend: { 
+                  alignment:'center', 
+                  position: 'top', 
+                  maxLines: 3,
+                  textStyle: {
+                    fontSize: 9,
+                  }
+                },
 
-            <div
-               style={{
-                 display: 'flex',
-                 flexDirection: 'column',
-                 alignItems: 'center',
-                 justifyContent: 'center'
-
-              }} 
-            >
+                
+                
+                
+                title: 'Relevamientos de Productos Redcom',
+                vAxis: {
+                  format: 'percent',
+                  textStyle: {
+                    fontSize: 8,
+                  }
+                },
+                hAxis: {
+                  textStyle: {
+                    fontSize: 9,
+                  },
+                },
+                
+                chartArea: { left: 24, top: 48, right: 18, bottom: 24 },
+              }}
+              // For tests
+              rootProps={{ 'data-testid': '1' }}
+            />
             
-              <PieChart width={400} height={400}>
-              
-                <Pie
-                  data={this.state.data}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={128}
-                  dataKey="value"
-                  blendStroke="true"
-                  isAnimationActive={false}
-                >
-                
-                  {this.state.data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color}/>
-                  ))}
-                
-                </Pie>
-                
-                
-                <Tooltip content={<CustomTooltip/>}/>
-                <Legend />
-
-                
-              </PieChart>
-            </div>
+            <StyledPieChart label="Quantidad de Relevamientos de cada supervisor:" data={this.state.surveyBySupervisor} />
+            <StyledPieChart label="Quantidad de Relevamientos de cada preventista:" data={this.state.surveyBySeller} />
           </main>
         </FormContainer>
       </>

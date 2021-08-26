@@ -16,14 +16,14 @@ export default class Nav extends Component {
     const isActive = this.state;
     return (
       <ul 
-        class="nav nav-tabs justify-content-end"
+        className="nav nav-tabs justify-content-end"
         style={{marginBottom: '1.6rem'}}
       >
-        <li class="nav-item">
-          <Link id="form-link" class={`nav-link ${isActive.isFormActive?"active":null}`} to="preventista">Formularios</Link>
+        <li className="nav-item">
+          <Link id="form-link" className={`nav-link ${isActive.isFormActive?"active":null}`} to="preventista">Formularios</Link>
         </li>
-        <li class="nav-item">
-          <Link id="statistics-link" class={`nav-link ${isActive.isStatisticsActive?"active":null}`} to="estatisticas">Estatisticas</Link>
+        <li className="nav-item">
+          <Link id="statistics-link" className={`nav-link ${isActive.isStatisticsActive?"active":null}`} to="estatisticas">Estatisticas</Link>
         </li>
       </ul>
     );
