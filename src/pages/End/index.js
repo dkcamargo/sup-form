@@ -64,6 +64,7 @@ export default class Seller extends Component {
       const popedProgress = storedProgresses.filter(
         (progress) => progress.id !== id
       );
+
       // set the progresses without the old data
       progresses = popedProgress;
     } else {
@@ -74,7 +75,7 @@ export default class Seller extends Component {
     // if its survey change the limit of submitions to 30
     if (formType === "relevamiento") {
       // if its not the max number of submitions
-      if (clientCountage !== surveyClientCountage) {
+      if (`${clientCountage}` !== `${surveyClientCountage}`) {
         // append the new data to the progresses array of data
         progresses.push({
           id,
@@ -89,7 +90,7 @@ export default class Seller extends Component {
     }
     if (formType === "coaching") {
       //if its coaching limit of sumitions 12
-      if (clientCountage !== coachingClientCountage) {
+      if (`${clientCountage}` !== `${coachingClientCountage}`) {
         // append the new data to the progresses array of data
         progresses.push({
           id,

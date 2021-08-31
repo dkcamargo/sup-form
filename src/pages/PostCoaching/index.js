@@ -48,7 +48,6 @@ export default class PostCoaching extends Component {
       weakPoints,
       cordx,
       cordy,
-      finalStats
     } = this.state;
 
     const commentsText = !comments
