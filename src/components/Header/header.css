@@ -8,7 +8,7 @@
   color: #fff;
   position: fixed; /* Fixed position - sit on top of the page */
   top: 0;
-  z-index: 6;
+  z-index: 1000;
 }
 
 .header h1 {

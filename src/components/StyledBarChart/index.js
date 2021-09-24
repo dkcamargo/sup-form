@@ -21,9 +21,9 @@ export default class StyledPieChart extends Component {
            */
             [
                 'Producto',
-                'Hay Producto?', { role: "tooltip", type: "string", p:{ html: true }},
-                'Esta Afichado?', { role: "tooltip", type: "string", p:{ html: true }},
-                'Esta Precificado', { role: "tooltip", type: "string", p:{ html: true }}
+                headers[0], { role: "tooltip", type: "string", p:{ html: true }},
+                headers[1], { role: "tooltip", type: "string", p:{ html: true }},
+                headers[2], { role: "tooltip", type: "string", p:{ html: true }}
             ],
         ];
     
@@ -35,8 +35,6 @@ export default class StyledPieChart extends Component {
         )
     
         const ParseToArray = (headers, rootArray) => {
-            console.log(headers)
-            console.log(rootArray)
             return [
                 rootArray[0],
                 rootArray[1],
@@ -49,8 +47,6 @@ export default class StyledPieChart extends Component {
         }
     
         dataArray.forEach(data => {
-            console.log(data)
-            console.log(headers)
             return dataFormatArray.push(ParseToArray(headers, data));
         })
         
@@ -73,7 +69,7 @@ export default class StyledPieChart extends Component {
         } = this.state;
         
         return (
-            <div>
+            <div style={{ marginBlock: '2.4rem'}}>
                 <Chart
                     width={'100%'}
                     height="40rem"

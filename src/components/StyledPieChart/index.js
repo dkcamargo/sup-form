@@ -10,6 +10,7 @@ export default class StyledPieChart extends Component {
     state = {
         chartData: {},
         title: "",
+        colors: [],
         size: 0
     };
 
@@ -18,6 +19,11 @@ export default class StyledPieChart extends Component {
 
         this.state.chartData = props.data;
         this.state.title = props.label;
+        this.state.colors = (props.colors || []).map(color => {
+            return {
+                'color': color
+            }
+        })
         // this.state.size = props.size;
     };
     
@@ -25,6 +31,7 @@ export default class StyledPieChart extends Component {
         const {
             chartData, 
             title,
+            colors
         } = this.state;
         
         return (
@@ -41,6 +48,7 @@ export default class StyledPieChart extends Component {
                         // Redraw when you want
                         chartWrapper.draw();;
                     }}
+                    
                     options={{
                         title: title,
                         titleTextStyle: {
@@ -52,9 +60,10 @@ export default class StyledPieChart extends Component {
                         },
                         is3D: true,
                         chartArea: { left: 15, top: 60, right: 5, bottom: 0 },
-                        
+                        slices: colors
                     }}
                     rootProps={{ 'data-testid': '1' }}
+                    
                 />
             </div>
         )

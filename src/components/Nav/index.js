@@ -23,7 +23,7 @@ export default class Nav extends Component {
           <Link id="form-link" className={`nav-link ${isActive.isFormActive?"active":null}`} to="preventista">Formularios</Link>
         </li>
         <li className="nav-item">
-          <Link id="statistics-link" className={`nav-link ${isActive.isStatisticsActive?"active":null}`} to="estatisticas">Estatisticas</Link>
+          <Link id="statistics-link" className={`nav-link ${isActive.isStatisticsActive?"active":null}`} to="estadisticas">Estadisticas</Link>
         </li>
       </ul>
     );

@@ -16,7 +16,7 @@ const Routes = () => {
     <BrowserRouter>
       <Switch>
         <Route component={Seller} path="/preventista" />
-        <Route component={Statistics} path="/estatisticas" />
+        <Route component={Statistics} path="/estadisticas" />
         <Route component={Survey} path="/relevamiento" />
         <Route component={Coaching} path="/coaching" />
         <Route component={Continue} path="/continuar" />
