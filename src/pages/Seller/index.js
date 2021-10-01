@@ -14,9 +14,9 @@ export default class Seller extends Component {
   state = {
     selectedSeller: "",
     selectedRoute: "",
-    evaluationType: "",
     selectedSellerRoutes: [],
     sellers: [],
+    evaluationType: "",
     error: "",
     loadingSend: false,
     roll: false
