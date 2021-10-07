@@ -8,6 +8,7 @@ import Coaching from "./pages/Coaching";
 import PreCoaching from "./pages/PreCoaching";
 import PostCoaching from "./pages/PostCoaching";
 import Continue from "./pages/Continue";
+import Statistics from "./pages/Statistics";
 import End from "./pages/End";
 
 const Routes = () => {
@@ -15,6 +16,7 @@ const Routes = () => {
     <BrowserRouter>
       <Switch>
         <Route component={Seller} path="/preventista" />
+        <Route component={Statistics} path="/estadisticas" />
         <Route component={Survey} path="/relevamiento" />
         <Route component={Coaching} path="/coaching" />
         <Route component={Continue} path="/continuar" />

@@ -6,6 +6,7 @@
   flex-direction: column;
   border-radius: 4px;
   padding: 1.6rem;
+  /* padding-top: 0; */
 }
 
 #seller h2 {
@@ -34,6 +35,7 @@
 #seller .or hr {
   background: #000;
 }
+
 
 .seller-button {
   margin-top: 1.4rem;

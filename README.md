@@ -10,3 +10,6 @@ Based in a pre existing way of evaluate the sellers it asks for the supervisor c
 ## Coaching
 
 Also Based in a pre existing evaluation it looks for how the sellers can meake a better job while selling their products for the clients, vising also look for a way to evaluate how the seller pass the company seriusness asking questions like are is the seller using the uniform or another example did the seller planned the selling strategies.
+
+## Graphics
+This route of the app is going to provide all statistics from the form which only the Jefes and Admins will have accesss.

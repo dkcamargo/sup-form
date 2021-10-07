@@ -11,7 +11,8 @@ export default class Seller extends Component {
   state = {
     lastOne: false,
     surveyClientCountage: 1,
-    coachingClientCountage: 1
+    coachingClientCountage: 1,
+    formType: ""
   };
 
   handleSameRoute = (e) => {
@@ -152,11 +153,13 @@ export default class Seller extends Component {
   };
 
   componentDidMount() {
+    console.log(this.state.coachingClientCountage);
+    
     try {
       const { clientCountage, formType } = this.props.location.state;
       const { surveyClientCountage, coachingClientCountage } = this.state;
       
-
+      this.setState({formType: formType});
       if (formType === "relevamiento") {
         if (`${clientCountage}` === `${surveyClientCountage}`) {
           this.setState({ lastOne: true });
@@ -198,39 +201,42 @@ export default class Seller extends Component {
   constructor(props) {
     super(props)
 
-    this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS;
+    this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS || 12;
     this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 30;
+    this.state.lastOne = false;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
   // conditional rendering the NextClient btn
   render() {
-    const { lastOne } = this.state;
+    const { lastOne, formType } = this.state;
     return (
       <>
         <Header />
         <Auth />
         <FormContainer>
           <main className="end">
-            <h2>Fin</h2>
+            <h2>Fin - {`${lastOne}`}</h2>
             <div
               className={
-                !lastOne
+                (formType !== 'coaching' && !lastOne)
                   ? "end-button-wrap"
                   : "end-button-wrap end-button-wrap-ended"
               }
             >
-              <button
-                disabled={this.state.loadingLogIn}
-                onClick={this.handleBackToRouteSelection}
-                id="continue-button"
-                className={
-                  !lastOne
-                    ? "btn btn-secondary  btn-lg end-button"
-                    : "btn btn-success  btn-lg end-button end-button-ended"
-                }
-              >
-                Selección de ruta
-              </button>
+              {formType !== 'coaching' || lastOne?
+                <button
+                  disabled={this.state.loadingLogIn}
+                  onClick={this.handleBackToRouteSelection}
+                  id="continue-button"
+                  className={
+                    !lastOne
+                      ? "btn btn-secondary  btn-lg end-button"
+                      : "btn btn-success  btn-lg end-button end-button-ended"
+                  }
+                >
+                  Selección de ruta
+                </button>
+              : null}
               {!lastOne ? (
                 <button
                   disabled={this.state.loadingLogIn}
