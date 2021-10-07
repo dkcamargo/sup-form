@@ -18,8 +18,7 @@ export default class Seller extends Component {
     sellers: [],
     evaluationType: "",
     error: "",
-    loadingSend: false,
-    roll: false
+    loadingSend: false
   };
 
   renderError = (errorMessage) => {
@@ -213,10 +212,6 @@ export default class Seller extends Component {
      * GET THE SELLERS
      */
     this.getSellers();
-    const roll = window.localStorage.getItem("roll");
-    this.setState({
-      roll: roll === 'admin' || roll === 'jefe'
-    })
   }
 
   constructor(props) {
@@ -237,11 +232,7 @@ export default class Seller extends Component {
         <Auth />
         <FormContainer>
           <main id="seller">
-            {
-              this.state.roll?
-                <Nav active="form"/>
-              :<></>
-            }
+            <Nav active="form"/>
             <h2>Elección de Ruta</h2>
             <hr />
             <Select

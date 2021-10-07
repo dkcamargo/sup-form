@@ -58,7 +58,8 @@ export default class Statistics extends Component {
         'Precificacion',
       ],
       data: []
-    }
+    },
+    error: ""
   };
 
 
@@ -66,54 +67,60 @@ export default class Statistics extends Component {
     /**
      * RENDER AN ERROR MESSAGE FOR  1500ms AND THEN UNREDER IT
      */
+    
     this.setState({ error: errorMessage });
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     setTimeout(() => {
       this.setState({ error: "" });
-    }, 1500);
+    }, 5000);
   };
 
 
   getData = async (sucursal) => {
+
     this.setState({sucursal: sucursal});
-    const supervisorResponse = await api.get(`/survey-data/supervisors/${sucursal}`);
-    this.setState({surveyBySupervisor: supervisorResponse.data});
-    
-    
-    const sellerResponse = await api.get(`/survey-data/sellers/${sucursal}`);
-    this.setState({surveyBySeller: sellerResponse.data});
+    try {
+      const response = await api.get(`/survey-data/${sucursal}`);
+      const productsResponse = await api.get(
+        `/survey-data/products/${sucursal}`,
+        {params: {
+          filter: false
+        }}
+      ); 
 
+      this.setState({surveyBySupervisor: response.data.supervisor});
+      this.setState({surveyBySeller: response.data.seller});
+      this.setState({logisticProblems: response.data.logistic});
     
-    const logisticResponse = await api.get(`/survey-data/logistic/${sucursal}`);
-    this.setState({logisticProblems: logisticResponse.data});
-    
-    const productsResponse = await api.get(
-      `/survey-data/products/${sucursal}`,
-      {params: {
-        filter: false
-      }}
-    );    
-    this.setState({surveyCount: productsResponse.data.surveyCount});
-    this.setState(prevState => ({
-      water: {
-        ...prevState.water,           // copy all other key-value pairs of food object
-        data: productsResponse.data.water
-      },
-      redcom: {
-        ...prevState.redcom,           // copy all other key-value pairs of food object
-        data: productsResponse.data.redcom
-      },
-      soda: {
-        ...prevState.soda,           // copy all other key-value pairs of food object
-        data: productsResponse.data.soda
-      },
-      wine: {
-        ...prevState.wine,           // copy all other key-value pairs of food object
-        data: productsResponse.data.wine
-      }
-
-    }))
+      this.setState({surveyCount: productsResponse.data.surveyCount});
+      this.setState(prevState => ({
+        water: {
+          ...prevState.water,           // copy all other key-value pairs of food object
+          data: productsResponse.data.water
+        },
+        redcom: {
+          ...prevState.redcom,           // copy all other key-value pairs of food object
+          data: productsResponse.data.redcom
+        },
+        soda: {
+          ...prevState.soda,           // copy all other key-value pairs of food object
+          data: productsResponse.data.soda
+        },
+        wine: {
+          ...prevState.wine,           // copy all other key-value pairs of food object
+          data: productsResponse.data.wine
+        }
+      }));
     
     this.getSellers(sucursal);
+      
+    } catch (error) {
+      this.renderError(
+      error.response !== undefined
+        ? error.response.data.error
+        : "Error no identificado al cargar datos"
+      );
+    }
   };
   
   clearStates = () => {
@@ -223,53 +230,61 @@ export default class Statistics extends Component {
   }
 
   applyFilter = async () => {
-    console.log(this.state)
-    const sucursal = this.state.sucursal;
-    
-    
-    // clearing charts data to get the new
-    await this.clearSurveyData()
-
-    
-    // retrieving the charts data from the api
-    const productsResponse = await api.get(
-      `/survey-data/products/${sucursal}`,
-      {params: {
-        filter: true,
-        initialDate: this.state.initialDate,
-        finalDate: this.state.finalDate,
-        // if the filters are enabled
-        selectedSeller: document.getElementById('prevetista-enabled').checked ? this.state.selectedSeller : "",
-        selectedRoute: document.getElementById('ruta-enabled').checked ? this.state.selectedRoute : ""
+    try {
+      console.log(this.state)
+      const sucursal = this.state.sucursal;
+      
+      
+      // clearing charts data to get the new
+      await this.clearSurveyData()
+  
+      
+      // retrieving the charts data from the api
+      const productsResponse = await api.get(
+        `/survey-data/products/${sucursal}`,
+        {params: {
+          filter: true,
+          initialDate: this.state.initialDate,
+          finalDate: this.state.finalDate,
+          // if the filters are enabled
+          selectedSeller: document.getElementById('prevetista-enabled').checked ? this.state.selectedSeller : "",
+          selectedRoute: document.getElementById('ruta-enabled').checked ? this.state.selectedRoute : ""
+        }
+      });
+      console.log(productsResponse)
+      if (productsResponse.data.code === 1) {
+        this.setState({sinData: true})
+      } else {
+        this.setState({sinData: false})
       }
-    });
-    console.log(productsResponse)
-    if (productsResponse.data.code === 1) {
-      this.setState({sinData: true})
-    } else {
-      this.setState({sinData: false})
+  
+      // setting the filtered data from api
+      this.setState({surveyCount: productsResponse.data.surveyCount});
+      this.setState(prevState => ({
+        water: {
+          ...prevState.water,           // copy all other key-value pairs of food object
+          data: productsResponse.data.water
+        },
+        redcom: {
+          ...prevState.redcom,           // copy all other key-value pairs of food object
+          data: productsResponse.data.redcom
+        },
+        soda: {
+          ...prevState.soda,           // copy all other key-value pairs of food object
+          data: productsResponse.data.soda
+        },
+        wine: {
+          ...prevState.wine,           // copy all other key-value pairs of food object
+          data: productsResponse.data.wine
+        }
+      }));
+    } catch (error) {
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al cargar datos"
+      );
     }
-
-    // setting the filtered data from api
-    this.setState({surveyCount: productsResponse.data.surveyCount});
-    this.setState(prevState => ({
-      water: {
-        ...prevState.water,           // copy all other key-value pairs of food object
-        data: productsResponse.data.water
-      },
-      redcom: {
-        ...prevState.redcom,           // copy all other key-value pairs of food object
-        data: productsResponse.data.redcom
-      },
-      soda: {
-        ...prevState.soda,           // copy all other key-value pairs of food object
-        data: productsResponse.data.soda
-      },
-      wine: {
-        ...prevState.wine,           // copy all other key-value pairs of food object
-        data: productsResponse.data.wine
-      }
-    }));
   };
 
 
@@ -296,7 +311,18 @@ export default class Statistics extends Component {
           <main id="statistics">
             <Nav active="statistics"/>
             <h2>Estadisticas</h2>
-
+            {this.state.error !== "" ? (
+              <>
+                <hr />
+                <div
+                  className="alert alert-danger"
+                  role="alert"
+                  style={{ marginBottom: "1.6rem" }}
+                >
+                  {this.state.error}
+                </div>
+              </>
+            ) : null}
             {this.state.roll?
               <>
                 <div className="form-group">
@@ -377,16 +403,21 @@ export default class Statistics extends Component {
                       <input 
                         className="form-control" 
                         type="date" 
-                        id="filter-date"
+                        id="filter-date-first"
+                        placeholder="dd-mm-yyyy"
                         style={{ minHeight: "3rem" }}
                         onChange={(e) => this.setState({ initialDate: e.target.value })}
+                        required
                       />
                       <input 
                         className="form-control" 
                         type="date" 
-                        id="filter-date"
+                        id="filter-date-second"
                         style={{ minHeight: "3rem" }}
                         onChange={(e) => this.setState({ finalDate: e.target.value })}
+                        required
+                        placeholder="dd-mm-yyyy"
+                        pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
                       />
                     </div>
                   </div>
