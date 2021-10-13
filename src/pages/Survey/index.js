@@ -220,7 +220,7 @@ export default class Survey extends Component {
         clientCountage: this.props.location.state.clientCountage
       });
     } catch (error) {
-      this.props.history.push("/preventista");
+      this.props.history.push("/");
     }
     this.setState({
       surveyRedcom: this.handleTableSelectByContainerId(

@@ -67,7 +67,7 @@ export default class Seller extends Component {
   };
 
   handleGoBack = () => {
-    return this.props.history.push("/preventista");
+    return this.props.history.push("/");
   };
   componentDidMount() {
     // get the data from lstorage set array on state

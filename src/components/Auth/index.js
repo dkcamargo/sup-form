@@ -12,7 +12,7 @@ export default class Auth extends Component {
     if (logged === "true") {
       return <></>;
     } else {
-      return <Redirect to="/" />;
+      return <Redirect to="/login" />;
     }
   }
 }

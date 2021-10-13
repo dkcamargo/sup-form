@@ -40,7 +40,7 @@ export default class Seller extends Component {
   handleBackToRouteSelection = (e) => {
     // go back to the seller selection leaving the lstorage as it is
     window.localStorage.removeItem("tableData");
-    return this.props.history.push("/preventista");
+    return this.props.history.push("/");
   };
 
   saveProgressInLocalStorage = () => {
@@ -193,7 +193,7 @@ export default class Seller extends Component {
       this.saveProgressInLocalStorage();
     } catch (error) {
       console.log(error);
-      this.props.history.push("/preventista");
+      this.props.history.push("/");
       return;
     }
   }

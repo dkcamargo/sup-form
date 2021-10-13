@@ -1,4 +1,4 @@
-#statistics {
+#coaching-statistics {
   background: #fff;
   width: 95%;
   max-width: 54rem;
@@ -9,12 +9,12 @@
   /* padding-top: 0; */
 }
 
-#statistics h2 {
+#coaching-statistics h2 {
   font-family: "Raleway", sans-serif;
   font-size: 3.6rem;
 }
 
-#statistics .survey-count {
+#coaching-statistics .survey-count {
   font-family: "Roboto", sans-serif;
   font-size: 1.6rem;
   display: flex;
@@ -26,7 +26,7 @@
   padding: 0.6rem;
 }
 
-#statistics .survey-count .countage-data {
+#coaching-statistics .survey-count .countage-data {
   /* color: #0d6efd; */
   margin: 0;
   border: 0;

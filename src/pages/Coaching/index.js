@@ -190,7 +190,7 @@ export default class Coaching extends Component {
         clientCountage: this.props.location.state.clientCountage
       });
     } catch (error) {
-      this.props.history.push("/preventista");
+      this.props.history.push("/");
     }
 
     /**

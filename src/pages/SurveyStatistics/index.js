@@ -11,9 +11,9 @@ import StyledBarChart from "../../components/StyledBarChart";
 import Nav from "../../components/Nav";
 import api from "../../services/api";
 
-import "./statistics.css";
+import "./survey_statistics.css";
 
-export default class Statistics extends Component {
+export default class SurveyStatistics extends Component {
   state = {
     sinData: false,
     sucursal: "",
@@ -308,9 +308,9 @@ export default class Statistics extends Component {
         <Header />
         <Auth />
         <FormContainer>
-          <main id="statistics">
-            <Nav active="statistics"/>
-            <h2>Estadisticas</h2>
+          <main id="survey-statistics">
+            <Nav active="surveys"/>
+            <h2>Estadisticas de los Relevamientos</h2>
             {this.state.error !== "" ? (
               <>
                 <hr />

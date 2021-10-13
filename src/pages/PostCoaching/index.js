@@ -204,7 +204,7 @@ export default class PostCoaching extends Component {
         finalStats: statsData
       });
     } catch (error) {
-      this.props.history.push("/preventista");
+      this.props.history.push("/");
     }
   }
 
