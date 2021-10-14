@@ -14,25 +14,63 @@
   font-size: 3.6rem;
 }
 
-#coaching-statistics .survey-count {
-  font-family: "Roboto", sans-serif;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 60%;
-  align-self: flex-end;
-  margin: 0;
-  padding: 0.6rem;
+#table {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  width: 98%;
+  align-self: center;
 }
 
-#coaching-statistics .survey-count .countage-data {
-  /* color: #0d6efd; */
-  margin: 0;
-  border: 0;
-  padding: 0;
+#table tbody {
+  width: 100%;
+}
 
-  font-family: "Roboto", sans-serif;
+#table thead .table-row {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 4fr 1fr 2fr 2fr 1fr;
+}
+
+#table tbody .table-row {
+  margin-bottom: 0.8rem;
+  display: grid;
+  grid-template-columns: 3fr repeat(4, 1fr);
+  padding: 0.4rem;
+  border: 1px #fff solid;
+  border-radius: 0.8rem;
+}
+
+#table tbody .table-row:hover {
+  border: 1px #000 solid;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
+
+#table .text-data {
+  /* grid-column-start: 1;
+  grid-column-end: 5; */
+  font-size: 1.6rem;
+}
+
+#table  .numeric-data {
   font-size: 1.2rem;
-  font-weight: 600;
+  font-family: 'Noto Sans Mono', monospace;
+}
+
+#table .date {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 524px) {
+  #table thead .table-row .table-header {
+    font-size: 1.2rem;
+  }
+  #table tbody .table-row .numeric-data {
+    font-size: 0.8rem;
+  }
+  #table tbody .table-row .text-data {
+    font-size: 1.2rem;
+  }
 }
