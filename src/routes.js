@@ -10,6 +10,8 @@ import PostCoaching from "./pages/PostCoaching";
 import Continue from "./pages/Continue";
 import SurveyStatistics from "./pages/SurveyStatistics";
 import CoachingStatistics from "./pages/CoachingStatistics";
+import CoachingHistory from "./pages/CoachingHistory";
+import CoachingView from "./pages/CoachingView";
 import End from "./pages/End";
 
 const Routes = () => {
@@ -17,8 +19,10 @@ const Routes = () => {
     <BrowserRouter>
       <Switch>
         <Route component={Home} exact path="/" />
+        <Route component={CoachingStatistics} exact path="/coachings" />
+        <Route component={CoachingHistory} exact path="/coachings/:sucursal/:sellerId" />
+        <Route component={CoachingView} exact path="/coachings/:sucursal/:sellerId/:coachingId" />
         <Route component={SurveyStatistics} path="/relevamientos" />
-        <Route component={CoachingStatistics} path="/coachings" />
         <Route component={Survey} path="/relevamiento" />
         <Route component={Coaching} path="/coaching" />
         <Route component={Continue} path="/continuar" />

@@ -1,0 +1,90 @@
+#coaching-history {
+  background: #fff;
+  width: 95%;
+  max-width: 54rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  padding: 1.6rem;
+  /* padding-top: 0; */
+}
+
+#coaching-history h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.6rem;
+}
+
+/* #coaching-history #history-title {
+  display: flex;
+  /* flex-direction: column; 
+  align-items: flex-start;
+  justify-content: center; 
+/* } */
+
+#history-table {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  width: 98%;
+  align-self: center;
+}
+
+
+#history-table tbody {
+  width: 100%;
+}
+
+#history-table thead .table-row {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+
+#history-table tbody .table-row {
+  margin-bottom: 0.8rem;
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  padding: 0.4rem;
+  border: 1px #fff solid;
+  border-radius: 0.8rem;
+}
+
+#history-table tbody .table-row:hover {
+  border: 1px #000 solid;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
+
+#history-table .text-data {
+  font-size: 1.6rem;
+}
+
+#history-table  .numeric-data {
+  font-size: 1.2rem;
+  font-family: 'Noto Sans Mono', monospace;
+  align-self: flex-end;
+}
+
+#copy-btn {
+  align-self: flex-end;
+  width: 25%;
+  font-size: 1.2rem;
+}
+
+#history-table a {
+  text-decoration: none;
+  color: #000;
+
+}
+
+@media (max-width: 524px) {
+  #history-table thead .table-row .table-header {
+    font-size: 1.2rem;
+  }
+  #history-table tbody .table-row .numeric-data {
+    font-size: 0.8rem;
+  }
+  #history-table tbody .table-row .text-data {
+    font-size: 1.2rem;
+  }
+}

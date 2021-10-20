@@ -1,6 +1,6 @@
 import React from "react";
 
-const Textarea = ({ label, name, ...rest }) => {
+const Textarea = ({ label, name, disabledValue, ...rest }) => {
   return (
     <div
       className="form-floating"
@@ -24,7 +24,7 @@ const Textarea = ({ label, name, ...rest }) => {
         className="form-control"
         id={name}
         {...rest}
-      />
+      ></textarea>
       <label htmlFor={name}>{label}</label>
     </div>
   );

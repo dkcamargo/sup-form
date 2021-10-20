@@ -215,7 +215,7 @@ export default class Seller extends Component {
         <Auth />
         <FormContainer>
           <main className="end">
-            <h2>Fin - {`${lastOne}`}</h2>
+            <h2>Fin</h2>
             <div
               className={
                 (formType !== 'coaching' && !lastOne)

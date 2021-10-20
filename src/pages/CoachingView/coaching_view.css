@@ -1,0 +1,52 @@
+#view-coaching {
+  background: #fff;
+  width: 95%;
+  max-width: 54rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  margin-bottom: 8rem;
+  padding: 1.6rem;
+}
+
+#view-coaching #puntaje {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Roboto;
+}
+
+#view-coaching main > * {
+  margin: 0.8rem 1.6rem;
+}
+
+#view-coaching h2 {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.6rem;
+}
+
+#view-coaching h2 strong {
+  font: normal 4.8rem "Roboto Mono", sans-serif;
+}
+
+#view-coaching .submit-button {
+  margin-top: 2.4rem;
+}
+
+#view-coaching .comments {
+  font-size: 1.6rem;
+  height: 100px;
+  overflow-y: scroll;
+  margin-bottom: 1rem;
+}
+
+#view-coaching .comments:hover {
+  border: solid var(--bs-blue) 1px;
+}
+
+@media (max-width: 391px) {
+  #view-coaching h2,
+  h2 strong {
+    font-size: 2.8rem;
+  }
+}

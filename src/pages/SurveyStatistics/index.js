@@ -15,12 +15,15 @@ import "./survey_statistics.css";
 
 export default class SurveyStatistics extends Component {
   state = {
+    filtered: false,
     sinData: false,
+    supervisors: [],
     sucursal: "",
     initialDate: "",
     finalDate: "",
     selectedSeller: "",
     selectedRoute: "",
+    selectedSupervisor: "",
     selectedSellerRoutes: [],
     sellers: [],
     roll: false,
@@ -80,6 +83,9 @@ export default class SurveyStatistics extends Component {
 
     this.setState({sucursal: sucursal});
     try {
+      this.setState({
+        filtered: false
+      });
       const response = await api.get(`/survey-data/${sucursal}`);
       const productsResponse = await api.get(
         `/survey-data/products/${sucursal}`,
@@ -112,7 +118,7 @@ export default class SurveyStatistics extends Component {
         }
       }));
     
-    this.getSellers(sucursal);
+    this.getOpttions(sucursal);
       
     } catch (error) {
       this.renderError(
@@ -158,7 +164,7 @@ export default class SurveyStatistics extends Component {
     return 
   };
 
-  getSellers = async (sucursal) => {
+  getOpttions = async (sucursal) => {
     /**
      * GET ALL SELLERS BY SUPERVISOR AND SUCURSAL FROM API
      * 
@@ -167,6 +173,13 @@ export default class SurveyStatistics extends Component {
       // const sucursal = this.state.sucursal;
       const supervisor = window.localStorage.getItem("supervisor");
       const response = await api.get(`/sellers/${sucursal}/${supervisor}`);
+      const usersResponse = await api.get(`/users/${sucursal}`);
+      this.setState({
+        supervisors: usersResponse.data.map((row) => {
+          return { value: row.id, label: row.name };
+        })
+      });
+      console.log(usersResponse.data)
       /**
        * SET THE SELECT OPTIONS
        */
@@ -247,6 +260,7 @@ export default class SurveyStatistics extends Component {
           initialDate: this.state.initialDate,
           finalDate: this.state.finalDate,
           // if the filters are enabled
+          selectedSupervisor: document.getElementById('supervisor-enabled').checked ? this.state.selectedSupervisor : "",
           selectedSeller: document.getElementById('prevetista-enabled').checked ? this.state.selectedSeller : "",
           selectedRoute: document.getElementById('ruta-enabled').checked ? this.state.selectedRoute : ""
         }
@@ -278,6 +292,10 @@ export default class SurveyStatistics extends Component {
           data: productsResponse.data.wine
         }
       }));
+
+      this.setState({
+        filtered: true
+      });
     } catch (error) {
       this.renderError(
         error.response !== undefined
@@ -336,7 +354,7 @@ export default class SurveyStatistics extends Component {
                     onChange={e => {
                       this.clearStates();
                       this.getData(e.target.value);
-                      // this.getSellers();
+                      // this.getOpttions();
                     }} 
                     className="form-select" 
                     id="filter-type"
@@ -353,12 +371,24 @@ export default class SurveyStatistics extends Component {
 
             {this.state.sellers.length !== 0?
               <>
-                <StyledPieChart label="Quantidad de Relevamientos de cada supervisor:" data={this.state.surveyBySupervisor} />
-                <StyledPieChart label="Quantidad de Relevamientos de cada preventista:" data={this.state.surveyBySeller} />
-                <StyledPieChart label="Quantidad de PDV con reclamos de logistica:" data={this.state.logisticProblems} colors={["#DC3912", "#3366CC"]} />            
+                <StyledPieChart label="Cantidad de Relevamientos de cada supervisor:" data={this.state.surveyBySupervisor} />
+                <StyledPieChart label="Cantidad de Relevamientos de cada preventista:" data={this.state.surveyBySeller} />
+                <StyledPieChart label="Cantidad de PDV con reclamos de logistica:" data={this.state.logisticProblems} colors={["#DC3912", "#3366CC"]} />            
 
                 <>
                   <h3 style={{marginTop: '2.4rem', marginLeft: '1.2rem'}}>Filtros</h3>
+                  <CheckSelect
+                    options={this.state.supervisors}
+                    loadOption="Cargando"
+                    label="Supervisor"
+                    name="supervisor"
+                    id="supervisor"
+                    onChange={(e) => {
+                      this.setState({
+                        selectedSupervisor: e.target.value
+                      });
+                    }}
+                  />
                   <CheckSelect
                     options={this.state.sellers}
                     loadOption="Cargando"
@@ -421,7 +451,14 @@ export default class SurveyStatistics extends Component {
                       />
                     </div>
                   </div>
-                  <button className="btn btn-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
+                  {this.state.filtered?
+                    <div className="btn-group" role="group" >
+                      <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
+                      <button className="btn btn-outline-danger" type="button" onClick={()=>{this.clearSurveyData();this.getData(this.state.sucursal)}}>Remover Filtros</button>
+                    </div>
+                  :
+                    <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
+                  }
                 </>
 
 

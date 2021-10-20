@@ -1,22 +1,28 @@
 import React, { Component } from "react";
 import Moment from 'react-moment'
+import * as moment from 'moment'
+
+import { Link } from "react-router-dom";
 
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { MdContentCopy } from "react-icons/md";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
 import Header from "../../components/Header";
 import Nav from "../../components/Nav";
 import api from "../../services/api";
 
-import {LateDateAlert} from "./survey_statistics.js";
+import {LateDateAlert} from "./coaching_statistics.js";
 
-import "./survey_statistics.css";
+import "./coaching_statistics.css";
 
 export default class CoachingStatistics extends Component {
   state = {
     error: "",
     sucursal: "",
-    coachings: []
+    coachings: [],
+    copySuccess: "",
+    copyToClipboard: ""
   };
 
 
@@ -73,9 +79,6 @@ export default class CoachingStatistics extends Component {
 
     if (differenceInDays > 30) {
       return '#dc3545'
-    }
-    else if (differenceInDays > 15) {
-      return '#d29d00'
     } else {
       return '#198754'
     }
@@ -85,9 +88,61 @@ export default class CoachingStatistics extends Component {
   componentDidMount() {
     const roll = window.localStorage.getItem("roll");
     this.setState({
-      roll: roll === 'admin'
+      roll: roll === 'admin',
+      copySuccess: 'Copiar!' 
     })
     this.getData(window.localStorage.getItem('sucursal'))
+  };
+
+
+  copyToClipboard = (e) => {
+    this.setState({ copySuccess: 'Copiar!' });
+
+    let tableString = 'Coaching\t\t\t\t\nPreventista\tPop\tCoaching\tExhibicion\tFecha\n';
+
+    const { coachings } = this.state;
+
+    coachings.forEach(({seller, coaching}) => {
+      const date = new Date(coaching.date)
+      const stringDate = moment(date).format('DD/MM/YYYY')
+
+      tableString = tableString.concat(
+        `${seller}\t${
+          coaching.pop.replace(',', '.')
+        }\t${
+          coaching.coaching.replace(',', '.')
+        }\t${
+          coaching.exibition.replace(',', '.')
+        }\t${
+          stringDate
+        }\t\n`
+      )
+      return
+    });
+    
+    navigator.clipboard.writeText(tableString)
+    
+    
+    this.setState({ copySuccess: 'Copiado!' });
+    setTimeout(() => {
+      this.setState({ copySuccess: 'Copiar!' });
+    }, 1000);
+  };
+
+  detectMob() {
+    const toMatch = [
+        /Android/i,
+        /webOS/i,
+        /iPhone/i,
+        /iPad/i,
+        /iPod/i,
+        /BlackBerry/i,
+        /Windows Phone/i
+    ];
+    
+    return toMatch.some((toMatchItem) => {
+        return navigator.userAgent.match(toMatchItem);
+    });
   };
 
 
@@ -98,7 +153,11 @@ export default class CoachingStatistics extends Component {
   }
   
   render() {
-    const { coachings } = this.state;
+    const { 
+      coachings,
+      copySuccess,
+      sucursal
+    } = this.state;
     return (
       <>
         <Header />
@@ -108,6 +167,7 @@ export default class CoachingStatistics extends Component {
             <Nav active="coachings"/>
 
             <h2>Coachings</h2>
+
 
             {this.state.error !== "" ? (
               <>
@@ -146,32 +206,41 @@ export default class CoachingStatistics extends Component {
               </>
             :<></>}
             {coachings.length !== 0?
-              <table id="table">
-                <thead>
-                  <tr className="table-row">
-                    <th className="table-header">Preventista</th>
-                    <th className="table-header">Pop</th>
-                    <th className="table-header">Coaching</th>
-                    <th className="table-header">Exhibicion</th>
-                    <th className="table-header date">Fecha</th>
-                  </tr>
-                </thead>
-                <tbody id="tbody">
-                  {coachings.map(({seller, coaching}) => {
-                    return (
-                      <tr className="table-row">
-                        <td className="table-data text-data">{seller}</td>
-                        <td className="table-data numeric-data">{coaching.pop}</td>
-                        <td className="table-data numeric-data">{coaching.coaching}</td>
-                        <td className="table-data numeric-data">{coaching.exibition}</td>
-                        <LateDateAlert color={this.getDateAlertColor(coaching.date)}>
-                          <Moment add={{ hours: 3 }} format='DD/MM'>{coaching.date}</Moment>
-                        </LateDateAlert>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-            </table>
+              <>
+                {!this.detectMob()?
+                  <button id="copy-btn" className="btn btn-outline-primary" onClick={this.copyToClipboard}>
+                    {copySuccess} <MdContentCopy size={12}/>
+                  </button> 
+                :<></>}
+                <table id="coachings-table">
+                  <thead>
+                    <tr className="table-row">
+                      <th className="table-header">Preventista</th>
+                      <th className="table-header" style={{justifySelf: 'center'}}>Coaching</th>
+                      <th className="table-header" style={{justifySelf: 'center'}}>Pop</th>
+                      <th className="table-header" style={{justifySelf: 'center'}}>Exhibicion</th>
+                      <th className="table-header date">Fecha</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody">
+                    {coachings.map(({name, id, coaching}, index) => {
+                      return (
+                        <Link key={index} to={`/coachings/${sucursal}/${id}`}>
+                          <tr className="table-row">
+                            <td className="table-data text-data">{name}</td>
+                            <td className="table-data numeric-data">{coaching.coaching}</td>
+                            <td className="table-data numeric-data">{coaching.pop}</td>
+                            <td className="table-data numeric-data">{coaching.exibition}</td>
+                            <LateDateAlert color={this.getDateAlertColor(coaching.date)}>
+                              <Moment add={{ hours: 3 }} format='DD/MM'>{coaching.date}</Moment>
+                            </LateDateAlert>
+                          </tr>
+                        </Link>
+                      )
+                    })}
+                  </tbody>
+              </table>
+            </>
             :
               <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
                 Cargando datos de los coachings...<AiOutlineLoading3Quarters className="icon-spin" />

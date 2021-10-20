@@ -14,25 +14,32 @@
   font-size: 3.6rem;
 }
 
-#table {
+#coachings-table {
   font-family: Roboto, sans-serif;
   font-weight: 300;
   width: 98%;
   align-self: center;
 }
 
-#table tbody {
+#history-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#coachings-table tbody {
   width: 100%;
 }
 
-#table thead .table-row {
+#coachings-table thead .table-row {
   font-size: 1.8rem;
   margin-bottom: 1rem;
   display: grid;
-  grid-template-columns: 4fr 1fr 2fr 2fr 1fr;
+  grid-template-columns: 8fr 2fr 2fr 2fr 2fr;
 }
 
-#table tbody .table-row {
+#coachings-table tbody .table-row {
   margin-bottom: 0.8rem;
   display: grid;
   grid-template-columns: 3fr repeat(4, 1fr);
@@ -41,36 +48,47 @@
   border-radius: 0.8rem;
 }
 
-#table tbody .table-row:hover {
+#coachings-table tbody .table-row:hover {
   border: 1px #000 solid;
   padding: 0.4rem;
   border-radius: 0.4rem;
 }
 
-#table .text-data {
-  /* grid-column-start: 1;
-  grid-column-end: 5; */
+#coachings-table .text-data {
   font-size: 1.6rem;
 }
 
-#table  .numeric-data {
+#coachings-table  .numeric-data {
   font-size: 1.2rem;
   font-family: 'Noto Sans Mono', monospace;
+  justify-self: flex-end;
 }
 
-#table .date {
+#coachings-table .date {
   display: flex;
   justify-content: flex-end;
 }
 
+#copy-btn {
+  align-self: flex-end;
+  width: 20%;
+  font-size: 1.2rem;
+}
+
+#coachings-table a {
+  text-decoration: none;
+  color: #000;
+
+}
+
 @media (max-width: 524px) {
-  #table thead .table-row .table-header {
+  #coachings-table thead .table-row .table-header {
     font-size: 1.2rem;
   }
-  #table tbody .table-row .numeric-data {
+  #coachings-table tbody .table-row .numeric-data {
     font-size: 0.8rem;
   }
-  #table tbody .table-row .text-data {
+  #coachings-table tbody .table-row .text-data {
     font-size: 1.2rem;
   }
 }
