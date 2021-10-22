@@ -219,6 +219,17 @@ export default class SurveyStatistics extends Component {
       );
     }
   };
+
+  clearFilters = () => {
+    this.setState({
+      finalDate: new Date().toISOString().split("T")[0],
+      initialDate: new Date('2021-08-20').toISOString().split("T")[0],
+      selectedSeller: "",
+      selectedRoute: "",
+      selectedSupervisor: "",
+      selectedSellerRoutes: []
+    });
+  }
   
   clearSurveyData = () => {
     this.setState(prevState => ({
@@ -318,6 +329,8 @@ export default class SurveyStatistics extends Component {
     super(props)
 
     this.state.sucursal = window.localStorage.getItem('sucursal');
+    this.state.initialDate = new Date('2021-08-20').toISOString().split("T")[0]
+    this.state.finalDate = new Date().toISOString().split("T")[0]
   }
   
   render() {
@@ -353,6 +366,7 @@ export default class SurveyStatistics extends Component {
                   <select 
                     onChange={e => {
                       this.clearStates();
+                      this.clearFilters();
                       this.getData(e.target.value);
                       // this.getOpttions();
                     }} 
@@ -377,84 +391,100 @@ export default class SurveyStatistics extends Component {
 
                 <>
                   <h3 style={{marginTop: '2.4rem', marginLeft: '1.2rem'}}>Filtros</h3>
-                  <CheckSelect
-                    options={this.state.supervisors}
-                    loadOption="Cargando"
-                    label="Supervisor"
-                    name="supervisor"
-                    id="supervisor"
-                    onChange={(e) => {
-                      this.setState({
-                        selectedSupervisor: e.target.value
-                      });
-                    }}
-                  />
-                  <CheckSelect
-                    options={this.state.sellers}
-                    loadOption="Cargando"
-                    label="Vendedor"
-                    name="prevetista"
-                    id="prevetista"
-                    dependent="ruta"
-                    onChange={(e) => {
-                      this.setState({
-                        selectedSeller: e.target.value,
-                        selectedSellerRoutes: []
-                      });
-                      this.handleSellerSelection(e.target.value);
-                    }}
-                  />
-                  <CheckSelect
-                    options={this.state.selectedSellerRoutes}
-                    loadOption={
-                      this.state.selectedSeller !== "" &&
-                      this.state.selectedSellerRoutes !== []
-                        ? "Cargando"
-                        : "Elegí un preventista primero"
-                    }
-                    
-                    label="Ruta"
-                    name="ruta"
-                    id="ruta"
-                    onChange={(e) => this.setState({ selectedRoute: e.target.value })}
-                  />
-                  <div className="mb-3" style={{marginBottom: '2.4rem'}}>
-                    <label 
-                      className="form-label" 
-                      htmlFor="filter-value"
-                      style={{ 
-                        marginLeft: "0.4rem",
-                        marginBottom: "0.8rem"
+                  <div id="filters">
+                    <CheckSelect
+                      options={this.state.supervisors}
+                      loadOption="Cargando"
+                      label="Supervisor"
+                      name="supervisor"
+                      id="supervisor"
+                      onChange={(e) => {
+                        this.setState({
+                          selectedSupervisor: e.target.value
+                        });
                       }}
-                    >
-                      Intervalo
-                    </label>
-                    <div className="input-group">
-                      <input 
-                        className="form-control" 
-                        type="date" 
-                        id="filter-date-first"
-                        placeholder="dd-mm-yyyy"
-                        style={{ minHeight: "3rem" }}
-                        onChange={(e) => this.setState({ initialDate: e.target.value })}
-                        required
-                      />
-                      <input 
-                        className="form-control" 
-                        type="date" 
-                        id="filter-date-second"
-                        style={{ minHeight: "3rem" }}
-                        onChange={(e) => this.setState({ finalDate: e.target.value })}
-                        required
-                        placeholder="dd-mm-yyyy"
-                        pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
-                      />
+                    />
+                    <CheckSelect
+                      options={this.state.sellers}
+                      loadOption="Cargando"
+                      label="Vendedor"
+                      name="prevetista"
+                      id="prevetista"
+                      dependent="ruta"
+                      onChange={(e) => {
+                        this.setState({
+                          selectedSeller: e.target.value,
+                          selectedSellerRoutes: []
+                        });
+                        this.handleSellerSelection(e.target.value);
+                      }}
+                    />
+                    <CheckSelect
+                      options={this.state.selectedSellerRoutes}
+                      loadOption={
+                        this.state.selectedSeller !== "" &&
+                        this.state.selectedSellerRoutes !== []
+                          ? "Cargando"
+                          : "Elegí un preventista primero"
+                      }
+                      
+                      label="Ruta"
+                      name="ruta"
+                      id="ruta"
+                      onChange={(e) => this.setState({ selectedRoute: e.target.value })}
+                    />
+                    <div className="mb-3" style={{marginBottom: '2.4rem'}}>
+                      <label 
+                        className="form-label" 
+                        htmlFor="filter-value"
+                        style={{ 
+                          marginLeft: "0.4rem",
+                          marginBottom: "0.8rem"
+                        }}
+                      >
+                        Intervalo
+                      </label>
+                      <div className="input-group">
+                        <input 
+                          className="form-control" 
+                          type="date" 
+                          id="filter-date-first"
+                          placeholder="dd-mm-yyyy"
+                          style={{ minHeight: "3rem" }}
+                          onChange={(e) => this.setState({ initialDate: e.target.value })}
+                          required
+                          min={new Date('2021-08-20').toISOString().split("T")[0]}
+                          max={new Date().toISOString().split("T")[0]}
+                        />
+                        <input 
+                          className="form-control" 
+                          type="date" 
+                          id="filter-date-second"
+                          style={{ minHeight: "3rem" }}
+                          onChange={(e) => this.setState({ finalDate: e.target.value })}
+                          required
+                          placeholder="dd-mm-yyyy"
+                          min={new Date('2021-08-20').toISOString().split("T")[0]}
+                          max={new Date().toISOString().split("T")[0]}
+                          pattern="[0-9]{2}-[0-9]{2}-[0-9]{4}"
+                        />
+                      </div>
                     </div>
                   </div>
                   {this.state.filtered?
                     <div className="btn-group" role="group" >
                       <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
-                      <button className="btn btn-outline-danger" type="button" onClick={()=>{this.clearSurveyData();this.getData(this.state.sucursal)}}>Remover Filtros</button>
+                      <button 
+                        className="btn btn-outline-danger" 
+                        type="button" 
+                        onClick={()=>{
+                          this.clearFilters();
+                          this.clearSurveyData();
+                          this.getData(this.state.sucursal)
+                        }}
+                      >
+                        Remover Filtros
+                      </button>
                     </div>
                   :
                     <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
