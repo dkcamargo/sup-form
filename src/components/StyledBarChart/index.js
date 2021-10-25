@@ -19,12 +19,21 @@ export default class StyledPieChart extends Component {
            * header data
            * label, TooltipObjects
            */
-            [
-                'Producto',
-                headers[0], { role: "tooltip", type: "string", p:{ html: true }},
-                headers[1], { role: "tooltip", type: "string", p:{ html: true }},
-                headers[2], { role: "tooltip", type: "string", p:{ html: true }}
-            ],
+            headers.length === 3?
+                [
+                    'Producto',
+                    headers[0], { role: "tooltip", type: "string", p:{ html: true }},
+                    headers[1], { role: "tooltip", type: "string", p:{ html: true }},
+                    headers[2], { role: "tooltip", type: "string", p:{ html: true }},
+                ]
+                :
+                [
+                    'Producto',
+                    headers[0], { role: "tooltip", type: "string", p:{ html: true }},
+                    headers[1], { role: "tooltip", type: "string", p:{ html: true }},
+                    headers[2], { role: "tooltip", type: "string", p:{ html: true }},
+                    headers[3], { role: "tooltip", type: "string", p:{ html: true }},
+                ]
         ];
     
         const TooltipHtml = (product, title, percentage) => (
@@ -35,15 +44,29 @@ export default class StyledPieChart extends Component {
         )
     
         const ParseToArray = (headers, rootArray) => {
-            return [
-                rootArray[0],
-                rootArray[1],
-                TooltipHtml(rootArray[0],headers[0],rootArray[1]),
-                rootArray[2],
-                TooltipHtml(rootArray[0],headers[1],rootArray[2]),
-                rootArray[3],
-                TooltipHtml(rootArray[0],headers[2],rootArray[3])
-            ]   
+            if (headers.length === 3) {
+                return [
+                    rootArray[0],
+                    rootArray[1],
+                    TooltipHtml(rootArray[0],headers[0],rootArray[1]),
+                    rootArray[2],
+                    TooltipHtml(rootArray[0],headers[1],rootArray[2]),
+                    rootArray[3],
+                    TooltipHtml(rootArray[0],headers[2],rootArray[3])
+                ];  
+            } else {
+                return [
+                    rootArray[0],
+                    rootArray[1],
+                    TooltipHtml(rootArray[0],headers[0],rootArray[1]),
+                    rootArray[2],
+                    TooltipHtml(rootArray[0],headers[1],rootArray[2]),
+                    rootArray[3],
+                    TooltipHtml(rootArray[0],headers[2],rootArray[3]),
+                    rootArray[4],
+                    TooltipHtml(rootArray[0],headers[3],rootArray[4])
+                ];
+            }
         }
     
         dataArray.forEach(data => {
@@ -51,7 +74,7 @@ export default class StyledPieChart extends Component {
         })
         
         return dataFormatArray
-      };
+    };
 
     constructor(props) {
         super(props)

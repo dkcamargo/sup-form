@@ -30,11 +30,13 @@ export default class SurveyStatistics extends Component {
     surveyBySupervisor: [],
     surveyBySeller: [],
     logisticProblems: [],
+    visitedPdv: [],
     redcom: {
       headers: [
         'Cobertura',
         'Afiche',
         'Precificacion',
+        'Exhibición'
       ],
       data: []
     },
@@ -115,7 +117,8 @@ export default class SurveyStatistics extends Component {
         wine: {
           ...prevState.wine,           // copy all other key-value pairs of food object
           data: productsResponse.data.wine
-        }
+        },
+        visitedPdv: productsResponse.data.visitedPdv
       }));
     
     this.getOpttions(sucursal);
@@ -159,7 +162,8 @@ export default class SurveyStatistics extends Component {
       wine: {
         ...prevState.wine,           // copy all other key-value pairs of food object
         data: []
-      }
+      },
+      visitedPdv: []
     }))
     return 
   };
@@ -248,7 +252,8 @@ export default class SurveyStatistics extends Component {
       wine: {
         ...prevState.wine,           // copy all other key-value pairs of food object
         data: []
-      }
+      },
+      visitedPdv: []
     }));
     return
   }
@@ -301,7 +306,8 @@ export default class SurveyStatistics extends Component {
         wine: {
           ...prevState.wine,           // copy all other key-value pairs of food object
           data: productsResponse.data.wine
-        }
+        },
+        visitedPdv: productsResponse.data.visitedPdv
       }));
 
       this.setState({
@@ -528,6 +534,7 @@ export default class SurveyStatistics extends Component {
                         </div>
                       </h3>
                       <StyledBarChart label="Relevamiento de productos Redcom:" data={this.state.redcom.data} headers={this.state.redcom.headers} />
+                      <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#DC3912", "#3366CC"]} /> 
                       <StyledBarChart label="Relevamiento de competencia de gaseosas:" data={this.state.soda.data} headers={this.state.soda.headers} />
                       <StyledBarChart label="Relevamiento de competencia de aguas:" data={this.state.water.data} headers={this.state.water.headers} />
                       <StyledBarChart label="Relevamiento de competencia de vinos:" data={this.state.wine.data} headers={this.state.wine.headers} />
