@@ -112,7 +112,7 @@ export default class CoachingHistory extends Component {
                     </tr>
                   </thead>
                   <tbody id="tbody">
-                    {coachings.reverse().map((coaching, index) => {
+                    {coachings.map((coaching, index) => {
                       return (
                         <Link key={index} to={`/coachings/${sucursal}/${coaching.sellerId}/${coaching.coachingId}`}>
                           <tr className="table-row">
