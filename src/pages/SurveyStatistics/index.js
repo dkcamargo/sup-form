@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import moment from 'moment'
+import 'moment/locale/es'
 
+import { jsPDF } from "jspdf";
+import html2canvas from 'html2canvas';
 
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Auth from "../../components/Auth";
@@ -322,6 +326,48 @@ export default class SurveyStatistics extends Component {
     }
   };
 
+  download = () => {
+    // const input = ;
+    window.scrollTo(0,0)
+    html2canvas(
+      document.getElementById('pdf'),
+      {
+        ignoreElements: function (el) {return el.className === 'ignore-pdf';},
+        dpi: 300, // Set to 300 DPI
+        scale: 1 // Adjusts your resolution
+      }
+    )
+      .then((canvas) => {
+
+        const imgData = canvas.toDataURL("image/jpeg");
+
+        const pdf = new jsPDF({
+          orientation: "portrait", // landscape or portrait
+          unit: "mm",
+          format: "a4",
+        });
+        const imgProps = pdf.getImageProperties(imgData);
+        const margin = 0.085;
+
+        const pdfWidth = pdf.internal.pageSize.width * (1 - margin);
+        const pdfHeight = pdf.internal.pageSize.height * (1 - margin);
+
+        const x = pdf.internal.pageSize.width * (margin * 1.75);
+        const y = pdf.internal.pageSize.height * (margin / 2);
+
+        const widthRatio = pdfWidth / imgProps.width;
+        const heightRatio = pdfHeight / imgProps.height;
+        const ratio = Math.min(widthRatio, heightRatio);
+
+        const w = imgProps.width * ratio;
+        const h = imgProps.height * ratio;
+
+        pdf.addImage(imgData, "JPEG", x, y, w, h);
+
+        pdf.save(`relevamientos`);
+      });
+  }
+
 
   componentDidMount() {
     const roll = window.localStorage.getItem("roll");
@@ -346,8 +392,13 @@ export default class SurveyStatistics extends Component {
         <Auth />
         <FormContainer>
           <main id="survey-statistics">
-            <Nav active="surveys"/>
+          <div id="pdf">
+            <div className="ignore-pdf">
+              <Nav active="surveys"/>
+            </div>
             <h2>Estadisticas de los Relevamientos</h2>
+            <div className="ignore-pdf">
+
             {this.state.error !== "" ? (
               <>
                 <hr />
@@ -366,7 +417,7 @@ export default class SurveyStatistics extends Component {
                   <label
                     htmlFor="filter-type"
                     style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }}
-                  >
+                    >
                     Sucursal
                   </label>
                   <select 
@@ -387,14 +438,15 @@ export default class SurveyStatistics extends Component {
               </>
             :<></>}
 
-                
+            </div>   
 
             {this.state.sellers.length !== 0?
               <>
-                <StyledPieChart label="Cantidad de Relevamientos de cada supervisor:" data={this.state.surveyBySupervisor} />
-                <StyledPieChart label="Cantidad de Relevamientos de cada preventista:" data={this.state.surveyBySeller} />
-                <StyledPieChart label="Cantidad de PDV con reclamos de logistica:" data={this.state.logisticProblems} colors={["#DC3912", "#3366CC"]} />            
-
+                <div className="ignore-pdf">
+                  <StyledPieChart label="Cantidad de Relevamientos de cada supervisor:" data={this.state.surveyBySupervisor} />
+                  <StyledPieChart label="Cantidad de Relevamientos de cada preventista:" data={this.state.surveyBySeller} />
+                  <StyledPieChart label="Cantidad de PDV con reclamos de logistica:" data={this.state.logisticProblems} colors={["#DC3912", "#3366CC"]} />
+                </div>      
                 <>
                   <h3 style={{marginTop: '2.4rem', marginLeft: '1.2rem'}}>Filtros</h3>
                   <div id="filters">
@@ -477,29 +529,37 @@ export default class SurveyStatistics extends Component {
                       </div>
                     </div>
                   </div>
-                  {this.state.filtered?
-                    <div className="btn-group" role="group" >
+                  <div className="ignore-pdf" style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
+                    {this.state.filtered?
+                      <div className="btn-group" role="group" >
+                        <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
+                        <button 
+                          className="btn btn-outline-danger" 
+                          type="button" 
+                          onClick={()=>{
+                            this.clearFilters();
+                            this.clearSurveyData();
+                            this.getData(this.state.sucursal)
+                          }}
+                        >
+                          Remover Filtros
+                        </button>
+                      </div>
+                    :
                       <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
-                      <button 
-                        className="btn btn-outline-danger" 
-                        type="button" 
-                        onClick={()=>{
-                          this.clearFilters();
-                          this.clearSurveyData();
-                          this.getData(this.state.sucursal)
-                        }}
-                      >
-                        Remover Filtros
+                    }
+                    {!this.state.sinData && this.state.redcom.data.length !== 0?
+                      <button className="btn btn-outline-success" onClick={this.download}>
+                        Download
                       </button>
-                    </div>
-                  :
-                    <button className="btn btn-outline-primary" type="button" onClick={()=>{this.applyFilter()}}>Filtrar</button>
-                  }
+                    :<></>}
+                  </div>
                 </>
 
 
-
-                <hr />
+                <div className="ignore-pdf">
+                  <hr />
+                </div>
                 {this.state.redcom.data.length !== 0?
                   <>
                   {!this.state.sinData?
@@ -513,7 +573,7 @@ export default class SurveyStatistics extends Component {
                           justifyContent: 'space-between', 
                           alignItems: 'center'
                         }}
-                      >
+                        >
                         Relevamientos
                         <div
                           style={{
@@ -534,10 +594,12 @@ export default class SurveyStatistics extends Component {
                         </div>
                       </h3>
                       <StyledBarChart label="Relevamiento de productos Redcom:" data={this.state.redcom.data} headers={this.state.redcom.headers} />
-                      <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#3366CC", "#DC3912"]} /> 
-                      <StyledBarChart label="Relevamiento de competencia de gaseosas:" data={this.state.soda.data} headers={this.state.soda.headers} />
-                      <StyledBarChart label="Relevamiento de competencia de aguas:" data={this.state.water.data} headers={this.state.water.headers} />
-                      <StyledBarChart label="Relevamiento de competencia de vinos:" data={this.state.wine.data} headers={this.state.wine.headers} />
+                      <div className="ignore-pdf">
+                        <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#3366CC", "#DC3912"]} /> 
+                        <StyledBarChart label="Relevamiento de competencia de gaseosas:" data={this.state.soda.data} headers={this.state.soda.headers} />
+                        <StyledBarChart label="Relevamiento de competencia de aguas:" data={this.state.water.data} headers={this.state.water.headers} />
+                        <StyledBarChart label="Relevamiento de competencia de vinos:" data={this.state.wine.data} headers={this.state.wine.headers} />
+                      </div>
                     </>
                   :
                     <div id="loading-chart" className="alert alert-danger" style={{marginTop: '1.6rem'}}>
@@ -546,20 +608,20 @@ export default class SurveyStatistics extends Component {
                   }
                 </>
               :
-                <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+              <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
                   Cargando datos de los graficos...<AiOutlineLoading3Quarters className="icon-spin" />
                 </div>
               }
               </>
             :
-              <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+            <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
                 Cargando datos de los graficos...<AiOutlineLoading3Quarters className="icon-spin" />
               </div>
             }
-            
+          </div>
           </main>
         </FormContainer>
-      </>
+        </>
     );
   }
 }

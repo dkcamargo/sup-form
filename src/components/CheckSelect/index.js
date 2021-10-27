@@ -36,34 +36,36 @@ const CheckSelect = ({ label, name, options, loadOption, dependent, ...rest }) =
             })
           )}
         </select>
-        <div className="input-group-text">
-            <input
-              className="form-check-input mt-0"
-              type="checkbox"
-              value=""
-              checked={enabled}
-              aria-label="Checkbox for following text input"
-              id={`${name}-enabled`}
-              onChange={(e) => {
-                if(e.target.checked === true) {
-                  document.getElementById(name).value = "0";
-                  if(dependent) {
-                    document.getElementById(`${dependent}-enabled`).checked = true;                 
-                    document.getElementById(dependent).disabled = false;
-                    document.getElementById(dependent).value = "0";
+          <div className="ignore-pdf">
+            <div className="input-group-text">
+              <input
+                className="form-check-input mt-0"
+                type="checkbox"
+                value=""
+                checked={enabled}
+                aria-label="Checkbox for following text input"
+                id={`${name}-enabled`}
+                onChange={(e) => {
+                  if(e.target.checked === true) {
+                    document.getElementById(name).value = "0";
+                    if(dependent) {
+                      document.getElementById(`${dependent}-enabled`).checked = true;                 
+                      document.getElementById(dependent).disabled = false;
+                      document.getElementById(dependent).value = "0";
+                    }
+                  } else {
+                    document.getElementById(name).value = "";
+                    if(dependent) {
+                      document.getElementById(`${dependent}-enabled`).checked = false;                  
+                      document.getElementById(dependent).disabled = true;
+                      document.getElementById(dependent).value = "";                  
+                    }
                   }
-                } else {
-                  document.getElementById(name).value = "";
-                  if(dependent) {
-                    document.getElementById(`${dependent}-enabled`).checked = false;                  
-                    document.getElementById(dependent).disabled = true;
-                    document.getElementById(dependent).value = "";                  
-                  }
-                }
-                setEnabled(e.target.checked);
-              }}
-            />
+                  setEnabled(e.target.checked);
+                }}
+              />
           </div>
+        </div>
       </div>
     </div>
   );

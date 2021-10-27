@@ -26,6 +26,10 @@
   padding: 0.6rem;
 }
 
+#survey-statistics .ignore-pdf .btn {
+  margin-block: 0.4rem
+}
+
 #survey-statistics .survey-count .countage-data {
   /* color: #0d6efd; */
   margin: 0;
