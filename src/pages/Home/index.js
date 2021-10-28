@@ -178,7 +178,7 @@ export default class Home extends Component {
      * IT DELETES ALL YOUR PROGRESSES
      */
     window.localStorage.clear();
-    return this.props.history.push("/");
+    return this.props.history.push("/login");
   };
 
   getSellers = async () => {
