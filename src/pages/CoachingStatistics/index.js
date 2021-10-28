@@ -102,12 +102,12 @@ export default class CoachingStatistics extends Component {
 
     const { coachings } = this.state;
 
-    coachings.forEach(({seller, coaching}) => {
+    coachings.forEach(({name, coaching}) => {
       const date = new Date(coaching.date)
       const stringDate = moment(date).format('DD/MM/YYYY')
 
       tableString = tableString.concat(
-        `${seller}\t${
+        `${name}\t${
           coaching.pop.replace(',', '.')
         }\t${
           coaching.coaching.replace(',', '.')
