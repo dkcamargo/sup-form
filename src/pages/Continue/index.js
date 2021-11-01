@@ -6,12 +6,14 @@ import Header from "../../components/Header";
 import FormContainer from "../../components/FormContainer";
 import api from "../../services/api";
 
+
 import "./continue.css";
 
 export default class Seller extends Component {
   state = {
     error: "",
-    progresses: []
+    progresses: [],
+    loading: true
   };
   handleContinue = async (progressId) => {
     // send all info as parameters creating a recurtion
@@ -66,87 +68,107 @@ export default class Seller extends Component {
     });
   };
 
+  getData = async () => {
+    this.setState({
+      loading: true
+    });
+
+    const response = await api.get(`/continue/${window.localStorage.getItem('sucursal')}/${window.localStorage.getItem('supervisor')}`);
+
+    this.setState({
+      progresses: response.data
+    });
+
+    this.setState({
+      loading: false
+    });
+  };
+
   handleGoBack = () => {
     return this.props.history.push("/");
   };
   componentDidMount() {
-    // get the data from lstorage set array on state
-    this.setState({
-      progresses: JSON.parse(window.localStorage.getItem("progress"))
-    });
+    this.getData();
   }
   // render a list of buttons redirect to the selected route in the number it lasted
   render() {
-    const { progresses } = this.state;
+    const { progresses, loading } = this.state;
     return (
       <>
         <Header />
         <Auth />
         <FormContainer>
           <main className="continue">
-            {progresses !== null && progresses.length !== 0 ? (
-              <>
-                <div className="title">
-                  <h2>Elegí la ruta que querés continuar:</h2>
-                  {this.state.loadingSend ? (
-                    <AiOutlineLoading3Quarters className="icon-spin loading" />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-                <hr />
-                <div className="progresses">
-                  {progresses.map((progress, index) => (
-                    <div className="card" key={index}>
-                      <div className="card-header">
-                        Ruta: <strong>{progress.route}</strong>
-                      </div>
-                      <div className="card-body">
-                        <p className="card-text">
-                          Vendedor: <strong>{progress.sellerName}</strong>
-                        </p>
-                        <p className="card-text">
-                          Ultimo Cliente:{" "}
-                          <strong>{progress.clientCountage}</strong>
-                        </p>
-                        <p className="card-text">
-                          Tipo de Formulario:{" "}
-                          {progress.formType.charAt(0).toUpperCase() +
-                            progress.formType.slice(1)}
-                        </p>
-                        <div className="d-grid gap-2">
-                          <button
-                            onClick={() => this.handleContinue(progress.id)}
-                            className="btn btn-primary btn-lg"
-                            disabled={this.state.loadingSend}
-                          >
-                            Continuar
-                          </button>
+            {!loading?
+            <>
+              {progresses !== null && progresses.length !== 0 ? (
+                <>
+                  <div className="title">
+                    <h2>Elegí la ruta que querés continuar:</h2>
+                    {this.state.loadingSend ? (
+                      <AiOutlineLoading3Quarters className="icon-spin loading" />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                  <hr />
+                  <div className="progresses">
+                    {progresses.map((progress, index) => (
+                      <div className="card" key={index}>
+                        <div className="card-header">
+                          Ruta: <strong>{progress.route}</strong>
+                        </div>
+                        <div className="card-body">
+                          <p className="card-text">
+                            Vendedor: <strong>{progress.sellerName}</strong>
+                          </p>
+                          <p className="card-text">
+                            Ultimo Cliente:{" "}
+                            <strong>{progress.clientCountage}</strong>
+                          </p>
+                          <p className="card-text">
+                            Tipo de Formulario:{" "}
+                            {progress.formType.charAt(0).toUpperCase() +
+                              progress.formType.slice(1)}
+                          </p>
+                          <div className="d-grid gap-2">
+                            <button
+                              onClick={() => this.handleContinue(progress.id)}
+                              className="btn btn-primary btn-lg"
+                              disabled={this.state.loadingSend}
+                            >
+                              Continuar
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2>No hay ninguna ruta para continuar!</h2>
+                </>
+              )}
+
+              {this.state.error !== "" ? (
+                <div className="alert alert-danger" role="alert">
+                  {this.state.error}
                 </div>
-              </>
-            ) : (
-              <>
-                <h2>No hay ninguna ruta para continuar!</h2>
-              </>
-            )}
+              ) : null}
 
-            {this.state.error !== "" ? (
-              <div className="alert alert-danger" role="alert">
-                {this.state.error}
-              </div>
-            ) : null}
-
-            <button
-              onClick={this.handleGoBack}
-              id="back-button"
-              className="btn btn-danger  btn-lg submit-button"
-            >
-              Volver
-            </button>
+              <button
+                onClick={this.handleGoBack}
+                id="back-button"
+                className="btn btn-danger  btn-lg submit-button"
+              >
+                Volver
+              </button>
+            </>:
+            <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center', fontSize: 28}}>
+              Cargando rutas a continuar...<AiOutlineLoading3Quarters className="icon-spin" />
+            </div>
+            }
           </main>
         </FormContainer>
       </>

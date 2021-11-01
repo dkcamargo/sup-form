@@ -69,25 +69,10 @@ export default class Home extends Component {
       return this.renderError("Tenés que elegir alguna opción");
     }
 
-    /***
-     * CONFIGURING PROGRESSES ID AUTOINCREMENT
-     */
-    //get the progresses array form lstorage
-    const storedProgresses = JSON.parse(
-      window.localStorage.getItem("progress")
-    );
-    // by default is one
-    var thisProgressId = 1;
-    // if lstorage is not empty get the destinated id for this submition=> id+1
-    if (storedProgresses !== null && storedProgresses.length !== 0) {
-      // get last progress saved id
-      const lastId = storedProgresses[storedProgresses.length - 1].id;
-      // set new progress id to autoincrement
-      thisProgressId = lastId + 1;
-    }
-
-
-
+    
+    
+    
+    
     /**
      * CONFIGURING THE PRODUCTS IN THE FORM BY SUCURSAL
      * ONLY IF ITS SURVEY BECAUSE COACHING DOES NOT NEED THE PRODUCTS
@@ -103,7 +88,7 @@ export default class Home extends Component {
          */
         const tableData = await api.get(
           `/products/${window.localStorage.getItem("sucursal")}`
-        );
+          );
         /**\
          * SET THE PRODUCTS FOR EACH TABLE IN LS
          */
@@ -115,8 +100,8 @@ export default class Home extends Component {
         console.log(error);
         this.renderError(
           error.response !== undefined
-            ? error.response.data.error
-            : "Error no identificado al cargar datos de relevamiento"
+          ? error.response.data.error
+          : "Error no identificado al cargar datos de relevamiento"
         );
         /**
          * RETURN SO IT DONT REDIRECT TO THE NEXT PAGE
@@ -130,6 +115,41 @@ export default class Home extends Component {
           loadingLogIn: false
         });
       }
+    }
+
+    let thisProgressId = -1;
+    
+    this.setState({ loadingSend: true });
+    try {
+        /***
+         * CONFIGURING PROGRESSES ID 
+         */
+        //get the progresses array form api
+        const response = await api.post(`/continue/${window.localStorage.getItem("sucursal")}`, {
+          "supervisor": window.localStorage.getItem("supervisor"),
+          "route": selectedRoute,
+          "formType": evaluationType
+        });
+        thisProgressId = response.data.id;
+
+    } catch (error) {
+      console.log(error);
+      this.renderError(
+        error.response !== undefined
+          ? error.response.data.error
+          : "Error no identificado al cargar datos de relevamiento"
+      );
+      /**
+       * RETURN SO IT DONT REDIRECT TO THE NEXT PAGE
+       */
+      return;
+    } finally {
+      /**
+       * UNSET THE LOADING ASPECT
+       */
+      this.setState({
+        loadingLogIn: false
+      });
     }
 
     /**

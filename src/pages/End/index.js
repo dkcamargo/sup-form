@@ -44,6 +44,25 @@ export default class Seller extends Component {
   };
 
   saveProgressInLocalStorage = () => {
+
+    // TODO CHANGE FOR API PUT REQUEST SAVE IN GGSHEETS
+    /**
+      stats: {
+        lastOrder,
+        sellPlan,
+        pop,
+        stock,
+        exposition,
+        competitorSales,
+        sales,
+        sellPropouse,
+        deliveryPrecautions,
+        popPricing, 
+        timeManagement,
+        catalogue,
+        total
+      };
+    */
     const {
       id,
       seller,
@@ -202,7 +221,7 @@ export default class Seller extends Component {
     super(props)
 
     this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS || 12;
-    this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 30;
+    this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 1;
     this.state.lastOne = false;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
