@@ -22,8 +22,8 @@ export default class Seller extends Component {
     const {
       formType,
       clientCountage,
-      seller,
-      route,
+      sellerId,
+      routeId,
       id,
       sellerName,
       stats
@@ -60,8 +60,8 @@ export default class Seller extends Component {
     return this.props.history.push(`/${formType}`, {
       formType: formType,
       clientCountage: Number(clientCountage) + 1,
-      seller: seller,
-      route: route,
+      seller: sellerId,
+      route: routeId,
       id: id,
       sellerName,
       stats
@@ -75,6 +75,8 @@ export default class Seller extends Component {
 
     const response = await api.get(`/continue/${window.localStorage.getItem('sucursal')}/${window.localStorage.getItem('supervisor')}`);
 
+    console.log(response.data)
+    
     this.setState({
       progresses: response.data
     });

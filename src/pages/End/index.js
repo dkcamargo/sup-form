@@ -4,6 +4,7 @@ import 'dotenv'
 import Header from "../../components/Header";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";
+import api from '../../services/api';
 
 import "./end.css";
 
@@ -43,7 +44,7 @@ export default class Seller extends Component {
     return this.props.history.push("/");
   };
 
-  saveProgressInLocalStorage = () => {
+  saveProgress = () => {
 
     // TODO CHANGE FOR API PUT REQUEST SAVE IN GGSHEETS
     /**
@@ -65,67 +66,15 @@ export default class Seller extends Component {
     */
     const {
       id,
-      seller,
-      route,
       clientCountage,
       formType,
-      sellerName,
-      stats
     } = this.props.location.state;
 
-    // get progresses from lstorage
-    const storedProgresses = JSON.parse(
-      window.localStorage.getItem("progress")
-    );
-
-    var progresses;
-    if (storedProgresses !== null && storedProgresses.length !== 0) {
-      // if its not empty try to find this progress
-      const popedProgress = storedProgresses.filter(
-        (progress) => progress.id !== id
-      );
-
-      // set the progresses without the old data
-      progresses = popedProgress;
+    if (formType === 'relevamiento') {
+      api.put(`/continue/${id}`, {countage: clientCountage});
     } else {
-      progresses = [];
+      api.put(`/continue/${id}`, {countage: clientCountage});
     }
-
-    const { surveyClientCountage, coachingClientCountage } = this.state;
-    // if its survey change the limit of submitions to 30
-    if (formType === "relevamiento") {
-      // if its not the max number of submitions
-      if (`${clientCountage}` !== `${surveyClientCountage}`) {
-        // append the new data to the progresses array of data
-        progresses.push({
-          id,
-          formType,
-          clientCountage,
-          route,
-          seller,
-          sellerName,
-          stats
-        });
-      }
-    }
-    if (formType === "coaching") {
-      //if its coaching limit of sumitions 12
-      if (`${clientCountage}` !== `${coachingClientCountage}`) {
-        // append the new data to the progresses array of data
-        progresses.push({
-          id,
-          formType,
-          clientCountage,
-          route,
-          seller,
-          sellerName,
-          stats
-        });
-      }
-    }
-    // set it all to the local storage
-    window.localStorage.setItem("progress", JSON.stringify(progresses));
-    return;
   };
 
   /**
@@ -181,12 +130,21 @@ export default class Seller extends Component {
       this.setState({formType: formType});
       if (formType === "relevamiento") {
         if (`${clientCountage}` === `${surveyClientCountage}`) {
+          //deleting because it finished
+          api.delete(`/continue/${this.props.location.state.id}`);
+          //setting last one ui
           this.setState({ lastOne: true });
+          return
         }
       } else if (formType === "coaching") {
         if (`${clientCountage}` === `${coachingClientCountage}`) {
+          
           if (this.props.location.state.postCoaching) {
+            //deleting because it finished
+            api.delete(`/continue/${this.props.location.state.id}`);
+            //setting last one ui
             this.setState({ lastOne: true });
+            return
           } else {
             const {
               formType,
@@ -209,7 +167,8 @@ export default class Seller extends Component {
         }
       }
 
-      this.saveProgressInLocalStorage();
+      //if did not finished save progress
+      this.saveProgress();
     } catch (error) {
       console.log(error);
       this.props.history.push("/");
@@ -221,7 +180,7 @@ export default class Seller extends Component {
     super(props)
 
     this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS || 12;
-    this.state.surveyClientCountage = process.env.REACT_APP_SURVEY_CLIENTS || 1;
+    this.state.surveyClientCountage =  2;
     this.state.lastOne = false;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)

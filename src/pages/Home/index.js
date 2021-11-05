@@ -125,7 +125,7 @@ export default class Home extends Component {
          * CONFIGURING PROGRESSES ID 
          */
         //get the progresses array form api
-        const response = await api.post(`/continue/${window.localStorage.getItem("sucursal")}`, {
+        const response = await api.post(`/continue`, {
           "supervisor": window.localStorage.getItem("supervisor"),
           "route": selectedRoute,
           "formType": evaluationType
@@ -155,34 +155,45 @@ export default class Home extends Component {
     /**
      * 
      *  redirect and send variables to the next page
-     */ 
-    return this.props.history.push(
-      `/${evaluationType === "relevamiento" ? "relevamiento" : "pre-coaching"}`,
-      {
-        formType: evaluationType, 
-        clientCountage: 1, 
-        seller: this.state.selectedSeller,
-        sellerName: this.state.sellers.find(
-          (seller) => seller.value === this.state.selectedSeller
-        ).label,
-        route: this.state.selectedRoute,
-        id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
-        //STATISTICS
-        stats: {
-          lastOrder: 0.0,
-          sellPlan: 0.0,
-          pop: 0.0,
-          stock: 0.0,
-          exposition: 0.0,
-          competitorSales: 0.0,
-          sales: 0.0,
-          sellPropouse: 0.0,
-          deliveryPrecautions: 0.0,
-          popPricing: 0.0,
-          timeManagement: 0.0,
-          catalogue: 0.0
-      }
-    });
+     */
+    if (evaluationType === "relevamiento") {
+      return this.props.history.push(`/relevamiento`, {
+          formType: evaluationType, 
+          clientCountage: 1, 
+          seller: this.state.selectedSeller,
+          sellerName: this.state.sellers.find(
+            (seller) => seller.value === this.state.selectedSeller
+          ).label,
+          route: this.state.selectedRoute,
+          id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
+      });
+    } else {
+      return this.props.history.push(`/pre-coaching`, {
+          formType: evaluationType, 
+          clientCountage: 1, 
+          seller: this.state.selectedSeller,
+          sellerName: this.state.sellers.find(
+            (seller) => seller.value === this.state.selectedSeller
+          ).label,
+          route: this.state.selectedRoute,
+          id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
+          //STATISTICS
+          stats: {
+            lastOrder: 0.0,
+            sellPlan: 0.0,
+            pop: 0.0,
+            stock: 0.0,
+            exposition: 0.0,
+            competitorSales: 0.0,
+            sales: 0.0,
+            sellPropouse: 0.0,
+            deliveryPrecautions: 0.0,
+            popPricing: 0.0,
+            timeManagement: 0.0,
+            catalogue: 0.0
+        }
+      });
+    }
   };
 
   handleContinue = () => {
