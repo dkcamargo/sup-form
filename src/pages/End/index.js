@@ -45,35 +45,17 @@ export default class Seller extends Component {
   };
 
   saveProgress = () => {
-
-    // TODO CHANGE FOR API PUT REQUEST SAVE IN GGSHEETS
-    /**
-      stats: {
-        lastOrder,
-        sellPlan,
-        pop,
-        stock,
-        exposition,
-        competitorSales,
-        sales,
-        sellPropouse,
-        deliveryPrecautions,
-        popPricing, 
-        timeManagement,
-        catalogue,
-        total
-      };
-    */
     const {
       id,
       clientCountage,
       formType,
+      stats
     } = this.props.location.state;
 
     if (formType === 'relevamiento') {
       api.put(`/continue/${id}`, {countage: clientCountage});
     } else {
-      api.put(`/continue/${id}`, {countage: clientCountage});
+      api.put(`/continue/${id}`, {countage: clientCountage, stats: stats});
     }
   };
 
@@ -179,7 +161,7 @@ export default class Seller extends Component {
   constructor(props) {
     super(props)
 
-    this.state.coachingClientCountage = process.env.REACT_APP_COACHING_CLIENTS || 12;
+    this.state.coachingClientCountage = 3;
     this.state.surveyClientCountage =  2;
     this.state.lastOne = false;
   }
