@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Moment from 'react-moment'
+import 'moment/locale/es'
 import * as moment from 'moment'
 
 import { Link } from "react-router-dom";
@@ -98,7 +99,7 @@ export default class CoachingStatistics extends Component {
   copyToClipboard = (e) => {
     this.setState({ copySuccess: 'Copiar!' });
 
-    let tableString = 'Coaching\t\t\t\t\nPreventista\tPop\tCoaching\tExhibicion\tFecha\n';
+    let tableString = 'Coaching\t\t\t\t\nPreventista\tPop\tExhibicion\tCoaching\tFecha\n';
 
     const { coachings } = this.state;
 
@@ -110,9 +111,9 @@ export default class CoachingStatistics extends Component {
         `${name}\t${
           coaching.pop.replace(',', '.')
         }\t${
-          coaching.coaching.replace(',', '.')
-        }\t${
           coaching.exibition.replace(',', '.')
+        }\t${
+          coaching.coaching.replace(',', '.')
         }\t${
           stringDate
         }\t\n`
