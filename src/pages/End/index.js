@@ -161,8 +161,8 @@ export default class Seller extends Component {
   constructor(props) {
     super(props)
 
-    this.state.coachingClientCountage = 3;
-    this.state.surveyClientCountage =  2;
+    this.state.coachingClientCountage = 12;
+    this.state.surveyClientCountage =  30;
     this.state.lastOne = false;
   }
   // recovers actual client from localStorage if 30(survey) or 12(coaching)
