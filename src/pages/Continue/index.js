@@ -122,7 +122,7 @@ export default class Seller extends Component {
                         </div>
                         <div className="card-body">
                           <p className="card-text">
-                            Vendedor: <strong>{progress.sellerName}</strong>
+                            Vendedor: <strong>{progress.seller}</strong>
                           </p>
                           <p className="card-text">
                             Ultimo Cliente:{" "}

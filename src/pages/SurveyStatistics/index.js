@@ -594,8 +594,8 @@ export default class SurveyStatistics extends Component {
                         </div>
                       </h3>
                       <StyledBarChart label="Relevamiento de productos Redcom:" data={this.state.redcom.data} headers={this.state.redcom.headers} />
+                      <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#3366CC", "#DC3912"]} /> 
                       <div className="ignore-pdf">
-                        <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#3366CC", "#DC3912"]} /> 
                         <StyledBarChart label="Relevamiento de competencia de gaseosas:" data={this.state.soda.data} headers={this.state.soda.headers} />
                         <StyledBarChart label="Relevamiento de competencia de aguas:" data={this.state.water.data} headers={this.state.water.headers} />
                         <StyledBarChart label="Relevamiento de competencia de vinos:" data={this.state.wine.data} headers={this.state.wine.headers} />
