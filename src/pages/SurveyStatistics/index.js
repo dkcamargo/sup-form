@@ -35,6 +35,7 @@ export default class SurveyStatistics extends Component {
     surveyBySeller: [],
     logisticProblems: [],
     visitedPdv: [],
+    mixedPdv: [],
     redcom: {
       headers: [
         'Cobertura',
@@ -122,7 +123,8 @@ export default class SurveyStatistics extends Component {
           ...prevState.wine,           // copy all other key-value pairs of food object
           data: productsResponse.data.wine
         },
-        visitedPdv: productsResponse.data.visitedPdv
+        visitedPdv: productsResponse.data.visitedPdv,
+        mixedPdv: productsResponse.data.mixedPdv
       }));
     
     this.getOpttions(sucursal);
@@ -167,7 +169,8 @@ export default class SurveyStatistics extends Component {
         ...prevState.wine,           // copy all other key-value pairs of food object
         data: []
       },
-      visitedPdv: []
+      visitedPdv: [],
+      mixedPdv: []
     }))
     return 
   };
@@ -257,7 +260,8 @@ export default class SurveyStatistics extends Component {
         ...prevState.wine,           // copy all other key-value pairs of food object
         data: []
       },
-      visitedPdv: []
+      visitedPdv: [],
+      mixedPdv: []
     }));
     return
   }
@@ -311,7 +315,8 @@ export default class SurveyStatistics extends Component {
           ...prevState.wine,           // copy all other key-value pairs of food object
           data: productsResponse.data.wine
         },
-        visitedPdv: productsResponse.data.visitedPdv
+        visitedPdv: productsResponse.data.visitedPdv,
+        mixedPdv: productsResponse.data.mixedPdv
       }));
 
       this.setState({
@@ -595,6 +600,7 @@ export default class SurveyStatistics extends Component {
                       </h3>
                       <StyledBarChart label="Relevamiento de productos Redcom:" data={this.state.redcom.data} headers={this.state.redcom.headers} />
                       <StyledPieChart label="Cantidad de PDV con visita:" data={this.state.visitedPdv} colors={["#3366CC", "#DC3912"]} /> 
+                      <StyledPieChart label="Cantidad de PDV con Mix de Productos:" data={this.state.mixedPdv} colors={["#3366CC", "#DC3912"]} /> 
                       <div className="ignore-pdf">
                         <StyledBarChart label="Relevamiento de competencia de gaseosas:" data={this.state.soda.data} headers={this.state.soda.headers} />
                         <StyledBarChart label="Relevamiento de competencia de aguas:" data={this.state.water.data} headers={this.state.water.headers} />

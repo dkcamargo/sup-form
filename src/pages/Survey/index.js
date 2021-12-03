@@ -24,6 +24,7 @@ export default class Survey extends Component {
     error: "",
     clientName: "",
     clientVisited: "",
+    clientWithMix: "",
     frequency: "",
     generalComments: "",
     logisticsProblems: "",
@@ -150,6 +151,7 @@ export default class Survey extends Component {
       clientId,
       clientName,
       clientVisited,
+      clientWithMix,
       frequency,
       generalComments,
       logisticsProblems,
@@ -174,6 +176,7 @@ export default class Survey extends Component {
       clientId,
       clientName,
       clientVisited,
+      clientWithMix,
       frequency,
       generalComments,
       logisticsProblems,
@@ -331,12 +334,25 @@ export default class Survey extends Component {
               name="survey-redcom-products"
             />
 
+            <Switch
+              label="Cliente con Mix de productos?"
+              name="client-mix"
+              id="client-mix"
+              onChange={(e) =>
+                this.setState({
+                  clientWithMix: e.target.checked ? true : false
+                })
+              }
+            />
+
             <TableSwitches
               name="exhibition"
               label="Exhibición Marcas:"
               lines={this.state.redcomLines}
               onChange={this.handleTableCheckSelect}
             />
+
+            
 
             <TableCheckToggleButtons
               label="Relevamiento Competencia de Gaseosas:"
