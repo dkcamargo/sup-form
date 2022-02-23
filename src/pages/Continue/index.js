@@ -115,7 +115,7 @@ export default class Seller extends Component {
                   </div>
                   <hr />
                   <div className="progresses">
-                    {progresses.map((progress, index) => (
+                    {progresses.reverse().map((progress, index) => (
                       <div className="card" key={index}>
                         <div className="card-header">
                           Ruta: <strong>{progress.route}</strong>

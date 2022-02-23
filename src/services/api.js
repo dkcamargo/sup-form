@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
-      ? "http://172.25.55.41:8080"
+      ? "https://api-form-sup.herokuapp.com"
       : process.env.REACT_APP_API_HOST
 });
 
