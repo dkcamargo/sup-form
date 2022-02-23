@@ -49,9 +49,9 @@
     ]
   },
   "engines": {
-    "npm": ">=6.0.0",
-    "yarn": ">=1.0.0",
-    "node": "~16.14.0"
+    "npm": "8.3.1",
+    "yarn": "1.22.15",
+    "node": "16.14.0"
   },
   "keywords": [],
   "description": "Its a form for supervisioning street pre-sellers"
