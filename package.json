@@ -48,6 +48,10 @@
       "last 1 safari version"
     ]
   },
+  "engines": {
+    "yarn": ">=1.22..5",
+    "node": ">=14.17.4"
+  },
   "keywords": [],
   "description": "Its a form for supervisioning street pre-sellers"
 }
