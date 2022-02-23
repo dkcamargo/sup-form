@@ -50,7 +50,8 @@
   },
   "engines": {
     "npm": ">=6.0.0",
-    "node": ">=10.0.0"
+    "yarn": ">=1.0.0",
+    "node": ">=14.0.0"
   },
   "keywords": [],
   "description": "Its a form for supervisioning street pre-sellers"
