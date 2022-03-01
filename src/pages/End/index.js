@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import 'dotenv'
 import Header from "../../components/Header";
 import Auth from "../../components/Auth";
 import FormContainer from "../../components/FormContainer";

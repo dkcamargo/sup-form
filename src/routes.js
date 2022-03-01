@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -14,25 +14,25 @@ import CoachingHistory from "./pages/CoachingHistory";
 import CoachingView from "./pages/CoachingView";
 import End from "./pages/End";
 
-const Routes = () => {
+const AppRoutes = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route component={Home} exact path="/" />
-        <Route component={CoachingStatistics} exact path="/coachings" />
-        <Route component={CoachingHistory} exact path="/coachings/:sucursal/:sellerId" />
-        <Route component={CoachingView} exact path="/coachings/:sucursal/:sellerId/:coachingId" />
-        <Route component={SurveyStatistics} path="/relevamientos" />
-        <Route component={Survey} path="/relevamiento" />
-        <Route component={Coaching} path="/coaching" />
-        <Route component={Continue} path="/continuar" />
-        <Route component={PreCoaching} path="/pre-coaching" />
-        <Route component={PostCoaching} path="/post-coaching" />
-        <Route component={End} path="/fin" />
-        <Route component={Login} exact path="/login" />
-      </Switch>
+      <Routes>
+        <Route element={<Home />} path="/" />
+        <Route element={<CoachingStatistics />} exact path="/coachings" />
+        <Route element={<CoachingHistory />} exact path="/coachings/:sucursal/:sellerId" />
+        <Route element={<CoachingView />} exact path="/coachings/:sucursal/:sellerId/:coachingId" />
+        <Route element={<SurveyStatistics />} path="/relevamientos" />
+        <Route element={<Survey />} path="/relevamiento" />
+        <Route element={<Coaching />} path="/coaching" />
+        <Route element={<Continue />} path="/continuar" />
+        <Route element={<PreCoaching />} path="/pre-coaching" />
+        <Route element={<PostCoaching />} path="/post-coaching" />
+        <Route element={<End />} path="/fin" />
+        <Route element={<Login />} exact path="/login" />
+      </Routes>
     </BrowserRouter>
   );
 };
 
-export default Routes;
+export default AppRoutes;

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import moment from 'moment'
 import 'moment/locale/es'
 
 import { jsPDF } from "jspdf";

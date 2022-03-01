@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export default class Auth extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ export default class Auth extends Component {
     if (logged === "true") {
       return <></>;
     } else {
-      return <Redirect to="/login" />;
+      return <Navigate to="/login" />;
     }
   }
 }
