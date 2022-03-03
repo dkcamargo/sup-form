@@ -18,7 +18,7 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Home />} path="/" />
+        <Route element={<Home />} exact path="/" />
         <Route element={<CoachingStatistics />} exact path="/coachings" />
         <Route element={<CoachingHistory />} exact path="/coachings/:sucursal/:sellerId" />
         <Route element={<CoachingView />} exact path="/coachings/:sucursal/:sellerId/:coachingId" />
