@@ -27,7 +27,7 @@ function Home() {
     /**
      * REDIRECT TO CONTINUE ROUTE ../Continue/index
      */
-    return navigate('continuar');
+    return navigate('/continuar');
   };
 
   const logOut = () => {
@@ -36,7 +36,7 @@ function Home() {
      * IT DELETES ALL YOUR PROGRESSES
      */
     window.localStorage.clear();
-    return navigate('login');
+    return navigate('/login');
   };
 
   const startForm = async () => {
@@ -72,18 +72,18 @@ function Home() {
   
   // redirect to survey form
   const redirectAsSurvey = (thisProgressId) => {
-    return navigate('relevamiento', {
+    return navigate('relevamiento', { state: {
       formType: evaluationType, 
       clientCountage: 1, 
       seller: selectedSeller,
       sellerName: sellers.find((seller) => seller.value === selectedSeller).label,
       route: selectedRoute,
       id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
-    });
+    }});
   };
 
   const redirectAsCoaching = (thisProgressId) => {
-    return navigate('pre-coaching', {
+    return navigate('pre-coaching', { state: {
       formType: evaluationType, 
       clientCountage: 1, 
       seller: this.state.selectedSeller,
@@ -104,7 +104,7 @@ function Home() {
         timeManagement: 0.0,
         catalogue: 0.0
       }
-    });
+    }});
   };
   
   // render a error label
