@@ -19,7 +19,7 @@ import FormContainer from "../../components/FormContainer";
 
 function Survey() {
 
-  const {state: locationState} = useLocation() 
+  const {state: locationState} = useLocation();
   const navigate = useNavigate();
   
   const [clientCountage, setClientCountage] = useState(0);

@@ -23,6 +23,12 @@ function FormContainer({ children }) {
     window.addEventListener("render", resizeMarginTop);
     resizeMarginTop();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
+    return (() => {
+      window.removeEventListener("resize", resizeMarginTop);
+      window.removeEventListener("scroll", resizeMarginTop);
+      window.removeEventListener("render", resizeMarginTop);
+    });
   }, []);
   
   

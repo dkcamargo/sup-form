@@ -63,9 +63,9 @@ function Home() {
     console.log('Done configureProgressID!');
 
     if (evaluationType === "relevamiento") {
-      redirectAsSurvey();
+      redirectAsSurvey(thisProgressId);
     } else {
-      redirectAsCoaching();
+      redirectAsCoaching(thisProgressId);
     }
     return;
   }
@@ -120,6 +120,7 @@ function Home() {
 
   const configureProgressID = async () => {
     setLoadingSend(true);
+    let progerssID = -1
     try {
         /***
          * CONFIGURING PROGRESSES ID 
@@ -130,7 +131,7 @@ function Home() {
           "route": selectedRoute,
           "formType": evaluationType
         });
-        return response.data.id;
+        progerssID = response.data.id;
 
     } catch (error) {
       console.log(error);
@@ -142,12 +143,12 @@ function Home() {
       /**
        * RETURN 1 SO IT DONT REDIRECT TO THE NEXT PAGE
        */
-      return -1;
     } finally {
       /**
        * UNSET THE LOADING ASPECT
        */
-        setLoadingSend(false);
+      setLoadingSend(false);
+      return progerssID;
       }
   };
 

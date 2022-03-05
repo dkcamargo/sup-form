@@ -27,6 +27,10 @@ function Header() {
 
   useEffect(() => {
     window.addEventListener("scroll", shrinkOnScroll);
+    
+    return (()=>{
+      window.removeEventListener("scroll", shrinkOnScroll);
+    })
   }, []);
   
   return (
