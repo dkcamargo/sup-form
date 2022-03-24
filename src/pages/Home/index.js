@@ -86,9 +86,9 @@ function Home() {
     return navigate('pre-coaching', { state: {
       formType: evaluationType, 
       clientCountage: 1, 
-      seller: this.state.selectedSeller,
-      sellerName: this.state.sellers.find((seller) => seller.value === this.state.selectedSeller).label,
-      route: this.state.selectedRoute,
+      seller: selectedSeller,
+      sellerName:sellers.find((seller) => seller.value === selectedSeller).label,
+      route: selectedRoute,
       id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
       stats: {
         lastOrder: 0.0,

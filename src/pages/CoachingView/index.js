@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Moment from 'react-moment'
 import moment from 'moment'
@@ -15,6 +16,278 @@ import "./coaching_view.css";
 import {PercentageAlert} from "./coaching_view";
 import FormContainer from "../../components/FormContainer";
 
+
+
+function CoachingView() {
+  const {
+    sellerId,
+    coachingId,
+    sucursal
+  } = useParams();
+
+  const [comment, setComment] = useState("");
+  const [strongPoints, setStrongPoints] = useState("");
+  const [weakPoints, setWeakPoints] = useState("");
+  const [finalStats, setFinalStats] = useState([]);
+  const [date, setDate] = useState("");
+  const [sellerName, setSellerName] = useState("");
+  const [error, setError] = useState("");
+
+  
+  // reder error label
+  const renderError = (errorMessage) => {
+    setError(errorMessage);
+    setTimeout(() => {
+      setError('');
+    }, 2500);
+  };
+  
+  const getColorByPercentage = percentage => {
+    let red;
+    let green
+    /**
+     * PARSING TO WORK 0 => 100
+     */
+    percentage = percentage * 100;
+
+    /*
+     * IF THERE'S MORE THEN 50
+     * THIS IS THE CONDITION FOR FLOWING THRU THE YELLOW
+     * 0% 50% WE INCREASE THE GREEN VALUE
+     * 0% R255 G0 RED
+     * 50% R255 G255 = YELLOW
+     * 
+     * AFTER THAT WE HAVE TO DECREASE THE RED VALUE
+     * 100% R0 G255 = GREEN
+     */
+    if(percentage - 50 <= 0) {
+      red = 255;
+      green = ((percentage) * 255 ) / 50;
+    } else {
+      green = 255;
+      red = 255 - ((percentage - 50 ) * 255 ) / 50;
+    }
+
+    /**
+     * ROUNDING CUZ WE ARE WORKING WITH INTEGERS
+     */
+    red = Math.round(red + Number.EPSILON);
+    green = Math.round(green + Number.EPSILON);
+
+    /**
+     * COLOR = TRUE COLOR BUT 50% DARKER
+     * BACKGROUND = TRUE COLOR WITH BUT 0.3 OPACITY
+     * 
+     * a little bit of blue bc it looks noice
+     */
+    return {
+      color: `rgb(${red - (red / 2)},${green - (green / 2)}, 50)`,
+      backgroundColor: `rgba(${red},${green}, 50, 0.3)`
+    };
+  }
+
+  const download = () => {
+    // const input = ;
+    window.scrollTo(0,0)
+    html2canvas(document.getElementById('pdf-wrap'))
+      .then((canvas) => {
+
+        const imgData = canvas.toDataURL("image/jpeg");
+
+        const pdf = new jsPDF({
+          orientation: "portrait", // landscape or portrait
+          unit: "mm",
+          format: "a4",
+        });
+        const imgProps = pdf.getImageProperties(imgData);
+        const margin = 0.15;
+
+        const pdfWidth = pdf.internal.pageSize.width * (1 - margin);
+        const pdfHeight = pdf.internal.pageSize.height * (1 - margin);
+
+        const x = pdf.internal.pageSize.width * (margin * 1.75);
+        const y = pdf.internal.pageSize.height * (margin / 2);
+
+        const widthRatio = pdfWidth / imgProps.width;
+        const heightRatio = pdfHeight / imgProps.height;
+        const ratio = Math.min(widthRatio, heightRatio);
+
+        const w = imgProps.width * ratio;
+        const h = imgProps.height * ratio;
+
+        pdf.addImage(imgData, "JPEG", x, y, w, h);
+
+        pdf.save(`coaching_${sellerName.toLowerCase().replace(' ', '_')}_${moment(date).add(3, 'hours').format('DD/MM/YY')}`);
+      });
+  }
+  
+  // componentDidMount
+  useEffect(async () => {
+      try {
+
+        const response = await api.get(`/coaching-history/${sucursal}/${sellerId}/${coachingId}`);
+        const { 
+          comment,
+          strongPoints,
+          weakPoints,
+          date
+        } = response.data.coaching;
+        console.log(response.data)
+        const coaching = response.data.coaching;
+        const sellerName = response.data.sellerName;
+
+        setSellerName(sellerName);
+        setDate(new Date(date));
+        setComment(comment);
+        setStrongPoints(strongPoints);
+        setWeakPoints(weakPoints);
+
+        const statsData = [
+          {colors: getColorByPercentage(coaching.lastOrder), data: coaching.lastOrder, label: "¿Indaga sobre el último pedido?"},
+          {colors: getColorByPercentage(coaching.sellPlan), data: coaching.sellPlan, label: "¿Planifica el pedido antes de ingresar al PDV?"},
+          {colors: getColorByPercentage(coaching.popStat), data: coaching.popStat, label: "¿POP?"},
+          {colors: getColorByPercentage(coaching.stock), data: coaching.stock, label: "¿Verifica el stock en todas las áreas del PDV?"},
+          {colors: getColorByPercentage(coaching.exposition), data: coaching.exposition, label: "¿Trabaja en una mayor exposición de los productos?"},
+          {colors: getColorByPercentage(coaching.competitorSales), data: coaching.competitorSales, label: "¿Indaga y verifica la situación y las acciones de la competencia?"},
+          {colors: getColorByPercentage(coaching.sales), data: coaching.sales, label: "¿Comunica las acciones comerciales vigentes?"},
+          {colors: getColorByPercentage(coaching.sellPropouse), data: coaching.sellPropouse, label: "¿Realiza la propuesta de ventas, ofreciendo todos los productos?"},
+          {colors: getColorByPercentage(coaching.deliveryPrecautions), data: coaching.deliveryPrecautions, label: "¿Toma todos los recaudos necesarios para facilitar la entrega? (pedido, dinero, horario, etc.)"},
+          {colors: getColorByPercentage(coaching.popPricing), data: coaching.popPricing, label: "¿Renueva, coloca y pone precios al POP? Siguiendo criterios del PDV"},
+          {colors: getColorByPercentage(coaching.timeManagement), data: coaching.timeManagement, label: "¿Administra el tiempo de permanencia en el PDV?"},
+          {colors: getColorByPercentage(coaching.catalogue), data: coaching.catalogue, label: "Uso de Catálogo"},
+          {colors: getColorByPercentage(coaching.total), data: coaching.total, label: "Puntaje final:"},
+        ]
+        setFinalStats(statsData)
+    } catch (error) {
+      setFinalStats([]);
+      renderError('Falla al buscar datos del sistema! Intente recargar.');
+    }
+  }, []);
+
+  return (
+    <div id="view-coaching-wrap">
+      <Header />
+      <Auth />
+      <FormContainer>
+        <main id="view-coaching">
+        <div id="pdf-wrap">
+          <div id="history-title">
+            <h3>
+              {finalStats.length !== 0? `${sellerName}`: `Historial de Coaching preventista ${sellerId}`}
+            </h3>
+            <h2>
+              {finalStats.length !== 0?  
+                <>
+                  <Moment  locale="es" add={{ hours: 3 }} format='DD MMMM YYYY'>{date}</Moment>
+                </> : 
+                <>
+                  Coaching {coachingId}
+                </>}
+            </h2>
+          </div>
+            <hr />
+            {error !== "" ? (
+              <div
+                className="alert alert-danger"
+                role="alert"
+                style={{ marginBottom: "1.6rem" }}
+              >
+                {error}
+              </div>
+            ) : null}
+            {finalStats.length !== 0?
+              <>
+                {
+                  finalStats.map((stat, index) => {
+                    return(
+                      <PercentageAlert
+                      colors={stat.colors}
+                      key={index}
+                      >
+                          <div
+                            style={{maxWidth: '80%'}}
+                          >{stat.label}</div>
+                          <div>
+                            {Math.round((stat.data + Number.EPSILON) * 10000) /
+                              100}
+                            %
+                          </div>
+                      </PercentageAlert>
+                    )
+                  })
+                }
+                
+                <div className="form-group">
+                  <label style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }} htmlFor="comments-text">
+                    Comentarios:
+                  </label>
+                  <div
+                    className={`form-control comments`}
+                    style={{ minHeight: "3rem" }}
+                    type="text"
+                    aria-disabled
+                    id="comments-text"
+                  >
+                    {comment !== ""? comment: "Sin comentarios!"}
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }} htmlFor="strong-points">
+                    Puntos Fuertes:
+                  </label>
+                  <div
+                    className={`form-control comments`}
+                    style={{ minHeight: "3rem" }}
+                    type="text"
+                    aria-disabled
+                    id="strong-points"
+                  >
+                    {strongPoints !== ""? strongPoints: "Sin comentarios!"}
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label style={{ marginLeft: "0.4rem", marginBottom: "0.8rem" }} htmlFor="weak-points">
+                    Puntos a Desarrollar:
+                  </label>
+                  <div
+                    className={`form-control comments`}
+                    style={{ minHeight: "3rem" }}
+                    type="text"
+                    aria-disabled
+                    id="weak-points"
+                  >
+                    {weakPoints !== ""? weakPoints: "Sin comentarios!"}
+                  </div>
+                </div>
+              </>:
+              <div id="loading-chart" style={{alignSelf: 'center', display: 'flex', alignItems: 'center', justifyContent:'center'}}>
+                Cargando datos de los coachings...<AiOutlineLoading3Quarters className="icon-spin" />
+              </div>
+            }
+          </div>
+          {finalStats.length !== 0?
+            <div className="btn-group" role="group" aria-label="Basic outlined example">
+              <Link className="btn btn-outline-danger" to={`/coachings/${sucursal}/${sellerId}`}>
+                Volver
+              </Link>
+              <button className="btn btn-outline-success" onClick={download}>
+                Download
+              </button>
+            </div>
+          :
+            <Link className="btn btn-outline-danger" to={`/coachings/${sucursal}/${sellerId}`}>
+              Volver
+            </Link>
+          }
+        </main>
+      </FormContainer>
+    </div>
+  );
+}
+
+export default CoachingView;
+
+/*
 export default class CoachingView extends Component {
   state = {
     comments: true,
@@ -75,7 +348,7 @@ export default class CoachingView extends Component {
     let green
     /**
      * PARSING TO WORK 0 => 100
-     */
+     *//*
     percentage = percentage * 100;
 
     /**\
@@ -87,7 +360,7 @@ export default class CoachingView extends Component {
      * 
      * AFTER THAT WE HAVE TO DECREASE THE RED VALUE
      * 100% R0 G255 = GREEN
-     */
+     *//*
     if(percentage - 50 <= 0) {
       red = 255;
       green = ((percentage) * 255 ) / 50;
@@ -98,7 +371,7 @@ export default class CoachingView extends Component {
 
     /**
      * ROUNDING CUZ WE ARE WORKING WITH INTEGERS
-     */
+     *//*
     red = Math.round(red + Number.EPSILON);
     green = Math.round(green + Number.EPSILON);
 
@@ -107,7 +380,7 @@ export default class CoachingView extends Component {
      * BACKGROUND = TRUE COLOR WITH BUT 0.3 OPACITY
      * 
      * a little bit of blue bc it looks noice
-     */
+     *//*
     return {
       color: `rgb(${red - (red / 2)},${green - (green / 2)}, 50)`,
       backgroundColor: `rgba(${red},${green}, 50, 0.3)`
@@ -308,3 +581,4 @@ export default class CoachingView extends Component {
     );
   }
 }
+*/

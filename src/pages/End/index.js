@@ -157,8 +157,15 @@ function End() {
 
     if(formType === 'relevamiento') deleteOldSurveyProgress();
     if (formType === 'coaching') {
-      if(locationState.postCoaching) deleteOldCoachingProgress();
-      else redirectToPostCoaching();
+      console.log(!locationState.postCoaching)
+      if(locationState.postCoaching) {
+        deleteOldCoachingProgress();
+        return
+      } else if(!locationState.postCoaching && locationState.clientCountage === 12) {
+        redirectToPostCoaching();
+      } else {
+        deleteOldCoachingProgress();
+      }
     };
 
     saveThisProgress();
