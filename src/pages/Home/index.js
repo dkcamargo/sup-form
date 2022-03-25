@@ -199,11 +199,9 @@ function Home() {
 
   // get the routes from api
   const getRoutesFromApiBySeller = async (selectedSeller) => {
-      try {
-        const sucursal = window.localStorage.getItem("sucursal");
-  
+      try {  
         const response = await api.get(
-          `/routes/${sucursal}/${selectedSeller}`
+          `/routes/${selectedSeller}`
         );
 
         setSelectedSellerRoutes(response.data.map((row) => ({ value: row.id, label: row.name })));

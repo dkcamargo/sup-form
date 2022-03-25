@@ -10,12 +10,8 @@ import "./login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const sucursales = [
-    { value: 1, label: "Corrientes" },
-    { value: 2, label: "Resistencia" },
-    { value: 3, label: "Posadas" }
-  ];
 
+  const [sucursales, setSucursales] = useState([])
   const [loadingLogIn, setLoadingLogIn ] = useState(false);
   const [users, setUsers ] = useState([]);
   const [userId, setUserId ] = useState("");
@@ -81,7 +77,7 @@ function Login() {
         setCordx(position.coords.longitude)
       },
       () => {
-        this.renderError("Geolocalización no activada");
+        renderError("Geolocalización no activada");
         return
       },
       {
@@ -104,8 +100,10 @@ function Login() {
       
       try {
         // request api
-        const response = await api.get("/users");
-        setUsers(response.data.map((row) => ({ value: row.id, label: row.name })));
+        const response = await api.get("/login-data");
+        
+        setUsers(response.data.supervisors.map((row) => ({ value: row.id, label: row.name })));
+        setSucursales(response.data.branches.map((row) => ({ value: row.id, label: row.name })));
       } catch (error) {
         // catch => render error
         renderError(
