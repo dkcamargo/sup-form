@@ -37,7 +37,7 @@ function Continue() {
         `/products/${window.localStorage.getItem("sucursal")}`
       );
 
-      window.localStorage.setItem(
+      await window.localStorage.setItem(
         "tableData",
         JSON.stringify(tableData.data)
       );
@@ -56,16 +56,36 @@ function Continue() {
   const continueToForm = async (progressId) => {
     // get the info of the selected progress
     const {
-      formType,
-      clientCountage,
-      sellerId,
-      routeId,
       id,
-      sellerName,
-      stats
+      form_type: formType,
+      client_countage: clientCountage,
+      seller_id: sellerId,
+      route_id: routeId,
+      seller_name: sellerName,
+      stats: apiStats
     } = progresses.find((progress) => progress.id === progressId);
 
-    if (formType === "relevamiento") setTableData();
+    let stats = apiStats;
+
+    if (formType === 'coaching') {
+      stats = {
+        id: apiStats.id,
+        lastOrder: apiStats.last_order,
+        sellPlan: apiStats.sell_plan,
+        pop: apiStats.pop,
+        stock: apiStats.stock,
+        exposition: apiStats.exposition,
+        competitorSales: apiStats.competitor_sales,
+        sales: apiStats.sales,
+        sellPropouse: apiStats.sell_propouse,
+        deliveryPrecautions: apiStats.delivery_precautions,
+        popPricing: apiStats.pop_pricing,
+        timeManagement: apiStats.time_management,
+        catalogue: apiStats.catalogue
+      };
+    }
+    
+    if (formType === "relevamiento") await setTableData() 
 
     return navigator(`/${formType}`, { state: {
       formType: formType,
@@ -74,7 +94,7 @@ function Continue() {
       route: routeId,
       id: id,
       sellerName,
-      stats
+      stats: stats
     }});
 
   };
@@ -125,19 +145,19 @@ function Continue() {
                     <div className="card" key={index}>
                       <div className="card-header">
                         Ruta: <strong>{progress.route}</strong>
-                      </div>
+                      </div>  
                       <div className="card-body">
                         <p className="card-text">
-                          Vendedor: <strong>{progress.seller}</strong>
+                          Vendedor: <strong>{progress.seller_name}</strong>
                         </p>
                         <p className="card-text">
                           Ultimo Cliente:{" "}
-                          <strong>{progress.clientCountage}</strong>
+                          <strong>{progress.client_countage}</strong>
                         </p>
                         <p className="card-text">
                           Tipo de Formulario:{" "}
-                          {progress.formType.charAt(0).toUpperCase() +
-                            progress.formType.slice(1)}
+                          {progress.form_type.charAt(0).toUpperCase() +
+                            progress.form_type.slice(1)}
                         </p>
                         <div className="d-grid gap-2">
                           <button

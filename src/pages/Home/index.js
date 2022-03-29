@@ -129,7 +129,8 @@ function Home() {
         const response = await api.post(`/continue`, {
           "supervisor": window.localStorage.getItem("supervisor"),
           "route": selectedRoute,
-          "formType": evaluationType
+          "formType": evaluationType,
+          "branch": window.localStorage.getItem("sucursal")
         });
         progerssID = response.data.id;
 

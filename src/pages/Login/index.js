@@ -40,6 +40,8 @@ function Login() {
         cordx
       });
 
+      console.log(response.data)
+      
       const userData = response.data.user;
 
       setLoadingLogIn(false);
