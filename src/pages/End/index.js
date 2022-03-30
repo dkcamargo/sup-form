@@ -89,10 +89,12 @@ function End() {
       route,
       id,
       sellerName,
-      stats
+      stats,
+      threadId
     } = locationState;
 
     return navigate('/post-coaching', {state: {
+      threadId,
       formType: formType,
       clientCountage: Number(coachingClientCountage),
       seller: seller,
@@ -128,10 +130,12 @@ function End() {
       route,
       id,
       sellerName,
-      stats
+      stats,
+      threadId
     } = locationState;
 
     return navigate(`/${formType}`, { state: {
+      threadId,
       formType: formType,
       clientCountage: Number(clientCountage) + 1,
       seller: seller,
@@ -153,11 +157,8 @@ function End() {
     if(formType === 'relevamiento') setLastOne(locationState.clientCountage === 30);
     if (formType === 'coaching') setLastOne(locationState.clientCountage === 12);
 
-    console.log(locationState);
-
     if(formType === 'relevamiento') deleteOldSurveyProgress();
     if (formType === 'coaching') {
-      console.log(!locationState.postCoaching)
       if(locationState.postCoaching) {
         deleteOldCoachingProgress();
         return

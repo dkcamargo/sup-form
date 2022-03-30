@@ -53,7 +53,10 @@ function Home() {
     await getTableDataFromApi();
     console.log('Done getTableDataFromApi!');
     
-    const thisProgressId = await configureProgressID();
+    const { 
+      progerssID: thisProgressId,
+      threadId
+    } = await configureProgressID();
 
     //if error return and don't redirect
     if (!thisProgressId) {
@@ -65,7 +68,7 @@ function Home() {
     if (evaluationType === "relevamiento") {
       redirectAsSurvey(thisProgressId);
     } else {
-      redirectAsCoaching(thisProgressId);
+      redirectAsCoaching(thisProgressId, threadId);
     }
     return;
   }
@@ -82,7 +85,7 @@ function Home() {
     }});
   };
 
-  const redirectAsCoaching = (thisProgressId) => {
+  const redirectAsCoaching = (thisProgressId, threadId) => {
     return navigate('pre-coaching', { state: {
       formType: evaluationType, 
       clientCountage: 1, 
@@ -90,6 +93,7 @@ function Home() {
       sellerName:sellers.find((seller) => seller.value === selectedSeller).label,
       route: selectedRoute,
       id: thisProgressId, //ID FOR UNDERSTANDING THE PROGRESSES AND AFTER DELETING EM WHEN FINISHED
+      threadId,
       stats: {
         lastOrder: 0.0,
         sellPlan: 0.0,
@@ -121,6 +125,7 @@ function Home() {
   const configureProgressID = async () => {
     setLoadingSend(true);
     let progerssID = -1
+    let threadId = -1
     try {
         /***
          * CONFIGURING PROGRESSES ID 
@@ -133,6 +138,7 @@ function Home() {
           "branch": window.localStorage.getItem("sucursal")
         });
         progerssID = response.data.id;
+        threadId = response.data.threadId;
 
     } catch (error) {
       console.log(error);
@@ -149,8 +155,11 @@ function Home() {
        * UNSET THE LOADING ASPECT
        */
       setLoadingSend(false);
-      return progerssID;
-      }
+      return {
+        progerssID,
+        threadId
+      };
+    }
   };
 
   // get products data from API

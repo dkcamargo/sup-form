@@ -37,12 +37,15 @@ function PostCoaching() {
      */
     const supervisor = window.localStorage.getItem("supervisor");
     const sucursal = window.localStorage.getItem("sucursal");
-    const { seller, route } = locationState;
+    const { seller, route, threadId } = locationState;
 
 
     const commentsText = !comments ? "Sin Comentarios" : commentsText;
 
+    console.log(locationState);
+
     const data = {
+      threadId,
       supervisor,
       sucursal,
       seller,

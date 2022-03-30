@@ -81,6 +81,7 @@ function Coaching() {
     const sucursal = window.localStorage.getItem("sucursal");
 
     const data = {
+      threadId: locationState.threadId,
       supervisor,
       sucursal,
       seller,
@@ -103,7 +104,7 @@ function Coaching() {
       cordy,
       cordx
     };
-
+    
     if (clientName === "") {
       return renderError(
         `El campo de nombre del cliente no puede ser vacio`
@@ -202,7 +203,7 @@ function Coaching() {
             type="text"
             name="client-name"
             id="client-name"
-            onChange={(e) => setClientId(e.target.value)}
+            onChange={(e) => setClientName(e.target.value)}
           />
           <CheckInput
             label="Codigo del Cliente"
@@ -211,7 +212,7 @@ function Coaching() {
             pattern="\d*"
             name="client-id"
             id="client-id"
-            onChange={(e) => setClientName(e.target.value)}
+            onChange={(e) => setClientId(e.target.value)}
           />
 
           <Switch

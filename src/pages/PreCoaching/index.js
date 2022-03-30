@@ -34,9 +34,10 @@ function PreCoaching() {
   const submit = async () => {
     const supervisor = window.localStorage.getItem("supervisor");
     const sucursal = window.localStorage.getItem("sucursal");
-    const { seller, route } = locationState;
+    const { seller, route, threadId } = locationState;
 
     const data = {
+      threadId,
       sucursal,
       supervisor,
       seller,
@@ -56,7 +57,7 @@ function PreCoaching() {
 
     setLoadingSend(true);
     try {
-      await api.post("/pre-coaching", data);
+      const response = await api.post("/pre-coaching", data);
       return navigate('/coaching', {state: locationState})
     } catch (error) {
       renderError(

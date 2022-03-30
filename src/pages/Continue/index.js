@@ -94,6 +94,7 @@ function Continue() {
       route: routeId,
       id: id,
       sellerName,
+      threadId: apiStats.thread_id,
       stats: stats
     }});
 
