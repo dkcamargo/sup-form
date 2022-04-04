@@ -277,6 +277,10 @@ function SurveyStatistics() {
   useEffect(async () => {
     try {
       const response = await api.get(`/survey-data/${sucursal}`);
+      
+      setSurveyBySupervisor([]);
+      setLogisticProblems([]);
+      setSurveyBySeller([]);
 
       setSurveyBySupervisor(response.data.supervisor);
       setLogisticProblems(response.data.logistic);
