@@ -126,17 +126,21 @@ function SurveyStatistics() {
   
       
       setSurveyCount(response.data.surveyCount);
-      console.log(response.data)
-      setSodaGraphData(response.data.soda);
-      setWaterGraphData(response.data.water);
-      setWineGraphData(response.data.wine);
-      
-      setMixedPdv(response.data.visitedPdv);
-      setVisitedPdv(response.data.mixedPdv);
       setFiltered(true);
-      // chane the state of this as last one because the render rends when this is complete all them togheter
-      // the data in the other charts won't render
-      setRedcoGraphData(response.data.redcom);
+      if(response.data.surveyCount !== `${0}`) {
+        console.log(response.data)
+        setSodaGraphData(response.data.soda);
+        setWaterGraphData(response.data.water);
+        setWineGraphData(response.data.wine);
+        
+        setMixedPdv(response.data.mixedPdv);
+        setVisitedPdv(response.data.visitedPdv);
+        // chane the state of this as last one because the render rends when this is complete all them togheter
+        // the data in the other charts won't render
+        setRedcoGraphData(response.data.redcom);
+      } else {
+        setRedcoGraphData([]);
+      }
     } catch (error) {
         renderError(
         error.response !== undefined
@@ -258,8 +262,8 @@ function SurveyStatistics() {
       setWaterGraphData(response.data.water);
       setWineGraphData(response.data.wine);
       
-      setMixedPdv(response.data.visitedPdv);
-      setVisitedPdv([...response.data.mixedPdv]);
+      setMixedPdv(response.data.mixedPdv);
+      setVisitedPdv([...response.data.visitedPdv]);
 
       // chane the state of this as last one because the render rends when this is complete all them togheter
       // the data in the other charts won't render
