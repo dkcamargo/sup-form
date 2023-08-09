@@ -1,52 +1,45 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./form_container.css";
 
-export default class FormContainer extends Component {
-  state = {
-    headerHeight: "0px"
+
+function FormContainer({ children }) {
+
+  const [headerHeight, setHeaderHeight ] = useState('0px');
+  
+  const resizeMarginTop = () => {
+    setHeaderHeight(`${document.querySelector(".header").clientHeight}px`);
   };
 
-  constructor(props) {
-    super(props);
+  useEffect(()=>{
     try {
-      this.state.headerHeight = `${
-        document.querySelector(".header").clientHeight
-      }px`;
+      setHeaderHeight(`${document.querySelector(".header").clientHeight}px`);
     } catch {
-      this.state.headerHeight = `0px`;
+      setHeaderHeight('0px');
     }
-  }
 
-  resizeMarginTop = () => {
-    this.setState({
-      headerHeight: `${document.querySelector(".header").clientHeight}px`
-    });
-  };
-
-  componentDidMount() {
-    // when the page resize change the margin top for being always above the header
-    window.addEventListener("resize", this.resizeMarginTop);
-    window.addEventListener("scroll", this.resizeMarginTop);
-    window.addEventListener("render", this.resizeMarginTop);
-    this.resizeMarginTop();
+    window.addEventListener("resize", resizeMarginTop);
+    window.addEventListener("scroll", resizeMarginTop);
+    window.addEventListener("render", resizeMarginTop);
+    resizeMarginTop();
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resizeMarginTop);
-    window.removeEventListener("scroll", this.resizeMarginTop);
-    window.removeEventListener("render", this.resizeMarginTop);
-  }
-
-  render() {
-    return (
-      <div
-        id="wrap-form-container"
-        style={{ marginTop: this.state.headerHeight }}
-      >
-        {this.props.children}
-      </div>
-    );
-  }
+    return (() => {
+      window.removeEventListener("resize", resizeMarginTop);
+      window.removeEventListener("scroll", resizeMarginTop);
+      window.removeEventListener("render", resizeMarginTop);
+    });
+  }, []);
+  
+  
+  return (
+    <div
+      id="wrap-form-container"
+      style={{ marginTop: headerHeight }}
+    >
+      {children}
+    </div>
+  );
 }
+
+export default FormContainer;

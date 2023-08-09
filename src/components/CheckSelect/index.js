@@ -36,7 +36,7 @@ const CheckSelect = ({ label, name, options, loadOption, dependent, ...rest }) =
             })
           )}
         </select>
-          <div className="ignore-pdf">
+          <div className="ignore-pdf" style={{heigth: '100%'}}>
             <div className="input-group-text">
               <input
                 className="form-check-input mt-0"
